@@ -1,0 +1,112 @@
+{
+  "name": {
+    "en": "Deye Solar"
+  },
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png"
+  },
+  "class": "solarpanel",
+  "capabilities": [
+    "measure_power",
+    "measure_power.pv1inputpower",
+    "measure_power.pv2inputpower",
+    "measure_voltage.pv1voltage",
+    "measure_voltage.pv2voltage",
+    "measure_current.pv1current",
+    "measure_current.pv2current",
+    "meter_power.dailysolarproduction",
+    "meter_power.totalsolarproduction",
+    "meter_power"
+  ],
+  "capabilitiesOptions": {
+    "measure_power": {
+      "title": {
+        "en": "Total PV Power",
+        "nl": "Totaal PV vermogen"
+      }
+    },
+    "measure_power.pv1inputpower": {
+      "title": {
+        "en": "PV1 Power",
+        "nl": "PV1 vermogen"
+      }
+    },
+    "measure_power.pv2inputpower": {
+      "title": {
+        "en": "PV2 Power",
+        "nl": "PV2 vermogen"
+      }
+    },
+    "measure_voltage.pv1voltage": {
+      "title": {
+        "en": "PV1 Voltage",
+        "nl": "PV1 voltage"
+      },
+      "decimals": 1
+    },
+    "measure_voltage.pv2voltage": {
+      "title": {
+        "en": "PV2 Voltage",
+        "nl": "PV2 voltage"
+      },
+      "decimals": 1
+    },
+    "measure_current.pv1current": {
+      "title": {
+        "en": "PV1 Current",
+        "nl": "PV1 stroom"
+      },
+      "decimals": 1
+    },
+    "measure_current.pv2current": {
+      "title": {
+        "en": "PV2 Current",
+        "nl": "PV2 stroom"
+      },
+      "decimals": 1
+    },
+    "meter_power.dailysolarproduction": {
+      "title": {
+        "en": "Today Solar Power",
+        "nl": "Vandaag Solar opbrengst"
+      },
+      "decimals": 1,
+      "duration": false
+    },
+    "meter_power.totalsolarproduction": {
+      "title": {
+        "en": "Total Solar Power",
+        "nl": "Totaal solar opbrengst"
+      },
+      "decimals": 1,
+      "duration": false
+    },
+    "meter_power": {
+      "title": {
+        "en": "Total Solar Power",
+        "nl": "Totaal solar opbrengst"
+      },
+      "decimals": 1
+    }
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "lan"
+  ],
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

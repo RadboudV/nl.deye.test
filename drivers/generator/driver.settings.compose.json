@@ -1,0 +1,36 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Generator settings from the inverter (read only)"
+    },
+    "children": [
+      {
+        "id": "peakshavingpower",
+        "type": "label",
+        "label": {
+          "en": "Generator Peak Shaving Power (W)",
+          "nl": "Generator Peak Shaving Power (W)"
+        },
+        "value": "unknown"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Generator connected to Deye Inverter"
+    },
+    "children": [
+      {
+        "id": "serial",
+        "type": "label",
+        "label": {
+          "en": "Serial Number",
+          "nl": "Serienummer"
+        },
+        "value": "unknown"
+      }
+    ]
+  }
+]

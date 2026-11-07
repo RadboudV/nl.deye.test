@@ -1,0 +1,10 @@
+{
+  "type": "number",
+  "title": { "en": "Generator Working Time", "nl": "Generator draaitijd" },
+  "units": { "en": "h" },
+  "decimals": 1,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": true
+}

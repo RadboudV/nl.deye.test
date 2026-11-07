@@ -1,0 +1,95 @@
+{
+  "name": {
+    "en": "Deye Generator"
+  },
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png"
+  },
+  "class": "other",
+  "capabilities": [
+    "measure_power",
+    "measure_power.generatorl1power",
+    "measure_power.generatorl2power",
+    "measure_power.generatorl3power",
+    "measure_voltage.generatorl1voltage",
+    "measure_voltage.generatorl2voltage",
+    "measure_voltage.generatorl3voltage",
+    "meter_power.generatordailyproduction",
+    "generatorworkingtime"
+  ],
+  "capabilitiesOptions": {
+    "measure_power": {
+      "title": {
+        "en": "Generator Power",
+        "nl": "Generator vermogen"
+      }
+    },
+    "measure_power.generatorl1power": {
+      "title": {
+        "en": "Generator L1 Power",
+        "nl": "Generator L1 vermogen"
+      }
+    },
+    "measure_power.generatorl2power": {
+      "title": {
+        "en": "Generator L2 Power",
+        "nl": "Generator L2 vermogen"
+      }
+    },
+    "measure_power.generatorl3power": {
+      "title": {
+        "en": "Generator L3 Power",
+        "nl": "Generator L3 vermogen"
+      }
+    },
+    "measure_voltage.generatorl1voltage": {
+      "title": {
+        "en": "Generator L1 Voltage",
+        "nl": "Generator L1 voltage"
+      },
+      "decimals": 1
+    },
+    "measure_voltage.generatorl2voltage": {
+      "title": {
+        "en": "Generator L2 Voltage",
+        "nl": "Generator L2 voltage"
+      },
+      "decimals": 1
+    },
+    "measure_voltage.generatorl3voltage": {
+      "title": {
+        "en": "Generator L3 Voltage",
+        "nl": "Generator L3 voltage"
+      },
+      "decimals": 1
+    },
+    "meter_power.generatordailyproduction": {
+      "title": {
+        "en": "Today Generator Production",
+        "nl": "Vandaag generator opbrengst"
+      },
+      "decimals": 1,
+      "duration": false
+    }
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "lan"
+  ],
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

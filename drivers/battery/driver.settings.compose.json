@@ -1,0 +1,72 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Battery settings from BMS (read only)"
+    },
+    "children": [
+      {
+        "id": "maxchargevoltage",
+        "type": "label",
+        "label": {
+          "en": "Charge Voltage (V)",
+          "nl": "Charge Voltage (V)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "chargecurrent",
+        "type": "label",
+        "label": {
+          "en": "Charge Current (A)",
+          "nl": "Charge Current (A)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "dischargecurrent",
+        "type": "label",
+        "label": {
+          "en": "Discharge Current (A)",
+          "nl": "Discharge Current (A)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "maxchargecurrent",
+        "type": "label",
+        "label": {
+          "en": "Max. Charge Current (A)",
+          "nl": "Max. Charge Current (A)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "maxdischargecurrent",
+        "type": "label",
+        "label": {
+          "en": "Max. Discharge Current (A)",
+          "nl": "Max. Discharge Current (A)"
+        },
+        "value": "unknown"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Battery connected to Deye Inverter"
+    },
+    "children": [
+      {
+        "id": "serial",
+        "type": "label",
+        "label": {
+          "en": "Serial Number",
+          "nl": "Serienummer"
+        },
+        "value": "unknown"
+      }
+    ]
+  }
+]

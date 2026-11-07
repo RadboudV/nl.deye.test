@@ -1,0 +1,24 @@
+{
+    "pair": {
+      "title": "Add Deye Hybrid Inverter",
+      "nosettings": "Please fill in all the required fields.",
+      "intro": "Enter the IP address, port and Modbus ID of your Deye RTU Modbus converter.",
+      "address": "IP Address",
+      "port": "Port",
+      "deviceid": "Device ID",
+      "connect": "Connect",
+	  "noinverter": "Add the Deye Hybrid Inverter first. The battery uses the inverter's connection.",
+      "allhavebattery": "Every Deye inverter already has a battery device.",
+      "noinverter_solar": "Add the Deye Hybrid Inverter first. The solar device uses the inverter's connection.",
+      "allhavesolar": "Every Deye inverter already has a solar device.",
+      "noinverter_generator": "Add the Deye Hybrid Inverter first. The generator device uses the inverter's connection.",
+      "allhavegenerator": "Every Deye inverter already has a generator device."
+    },
+    "Unreachable": "Unreachable",
+    "Off": "Off",
+    "BatteryStandby": "Battery Standby",
+    "Charge": "Battery Charging",
+    "Discharge": "Battery Discharging",
+    "NA": "Information Not Available"
+  }
+  

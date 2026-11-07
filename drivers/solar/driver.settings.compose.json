@@ -1,0 +1,19 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Solar connected to Deye Inverter"
+    },
+    "children": [
+      {
+        "id": "serial",
+        "type": "label",
+        "label": {
+          "en": "Serial Number",
+          "nl": "Serienummer"
+        },
+        "value": "unknown"
+      }
+    ]
+  }
+]

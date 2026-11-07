@@ -1,0 +1,48 @@
+{
+	"name": { "en": "Deye Hybrid Inverter" },
+	"images": {
+		"small": "{{driverAssetsPath}}/images/small.png",
+		"large": "{{driverAssetsPath}}/images/large.png"
+		},
+	"class": "solarpanel",
+	"capabilities": [
+		"meter_power",
+		"meter_power.batterytotalcharge",
+		"meter_power.batterytotaldischarge",
+		"measure_temperature.heatsinktemperature"
+		],
+	"capabilitiesOptions": {
+		"measure_temperature.heatsinktemperature": {
+			"title": {
+				"en": "Heatsink temperature",
+				"nl": "Heatsink temperatuur",
+				"de": "Kühlkörpertemperatur"
+				},
+			"decimals": 2
+			}
+  },
+  	"energy": {
+		"cumulative": true
+		},
+   "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "lan"
+  ],
+"pair": [
+    {
+      "id": "start123"
+    }
+  ],
+"settings": [
+  {
+  "id": "debug_logging",
+  "type": "checkbox",
+  "label": {
+    "en": "Enable debug logging"
+  },
+  "value": false
+  }
+]
+ }

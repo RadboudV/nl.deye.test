@@ -1,0 +1,104 @@
+<script type="text/javascript">
+
+Homey.setTitle( __('pair.title') );
+
+$(function() {
+	$('#connect').click(function() {
+    $('.deye-error').hide();
+
+    var inputaddress = $('#address').val();
+    var inputport = Number($('#port').val());
+    var invertorid = Number($('#invertorid').val());
+
+    var deviceId = Math.random().toString(36).substr(2,5).toLowerCase();
+    var id = Math.round(Math.random() * (100000 - 10000) + 10000);
+
+    if (inputaddress != '' && inputport > 0 && inputport < 65536 && Number.isInteger(invertorid) && invertorid >= 0) {
+      var device_data = {
+        id:  deviceId
+      };
+
+      var settings = {
+        address : inputaddress,
+        port    : inputport,
+        id      : invertorid
+      };
+
+      Homey.addDevice({
+        name   : 'Deye Inverter_' + deviceId,
+        data 	 : device_data,
+        settings : settings
+      }, function(error, result) {
+        if (error) {
+            $('.deye-error').show();
+            $('.deye-error-msg').html(error.message || error.toString() );
+            return;
+        }
+        $('.deye-error').hide();
+
+        Homey.done();
+      })
+
+    } else {
+        $('.deye-error').show();
+        $('.deye-error-msg').html( __('pair.nosettings') );
+    }
+
+	});
+})
+</script>
+
+<style type="text/css">
+  .form-group {
+    width: 100%;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .form-group label {
+    display: block;
+  }
+  .deye-status, .deye-info {
+		display: none;
+	}
+  .deye-info {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  .deye-info .info-label {
+    min-width: 150px;
+    font-weight: 700;
+  }
+  .buttons, .messages {
+    padding-top: 14px;
+  }
+  .button:disabled {
+    color: #ccc;
+  }
+  .button:enabled {
+    background-color: #00c139 !important;
+    color: #fff;
+  }
+</style>
+
+<p data-i18n="pair.intro">Enter the IP address and port of your Deye LSE-3 LAN Logger Stick.</p>
+<div class="deye-pairing">
+  <div class="form-group">
+    <label for="address" data-i18n="pair.address">IP address</label>
+    <input type="text" class="form-control" id="address" placeholder="192.168.1.111" value="192.168.1.111" required>
+  </div>
+  <div class="form-group">
+  	<label for="port" data-i18n="pair.port">Port</label>
+  	<input type="number" class="form-control" id="port" placeholder="502" value="502" required>
+  </div>
+  <div class="form-group">
+  	<label for="invertorid" data-i18n="pair.deviceid">Port</label>
+  	<input type="number" class="form-control" id="invertorid" placeholder="1" value="1" required>
+  </div>
+  <div class="form-group buttons">
+    <button id="connect" class="button" data-i18n="pair.connect">Connect</button>
+  </div>
+</div>
+
+<div class="messages">
+  <p class="deye-status deye-error" style="color: #ff6300;"><i class="fa fa-times"></i> <span class="deye-error-msg"></span></p>
+</div>

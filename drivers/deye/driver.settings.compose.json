@@ -1,0 +1,323 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Deye Inverter Information"
+    },
+    "children": [
+      {
+        "id": "serial",
+        "type": "label",
+        "label": {
+          "en": "Serial Number",
+          "nl": "Serienummer"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "protocolversion",
+        "type": "label",
+        "label": {
+          "en": "Communication protocol version",
+          "nl": "Communicatieprotocol versie"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "ratedpower",
+        "type": "label",
+        "label": {
+          "en": "Rated Power (W)",
+          "nl": "Rated Power (W)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "controlpanelversion",
+        "type": "label",
+        "label": {
+          "en": "Control Panel Version",
+          "nl": "Control Panel Version"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "HMIversion",
+        "type": "label",
+        "label": {
+          "en": "HMI Version",
+          "nl": "HMI Version"
+        },
+        "value": "unknown"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Modbus RTU (TCP) converter settings"
+    },
+    "children": [
+      {
+        "id": "address",
+        "type": "text",
+        "value": "192.168.1.111",
+        "label": {
+          "en": "IP Address",
+          "nl": "IP adres"
+        }
+      },
+      {
+        "id": "port",
+        "type": "number",
+        "value": 502,
+        "step": 1,
+        "label": {
+          "en": "Port",
+          "nl": "Poort"
+        }
+      },
+      {
+        "id": "id",
+        "type": "number",
+        "value": 1,
+        "step": 1,
+        "attr": {
+          "min": 0,
+          "max": 50
+        },
+        "label": {
+          "en": "Modbus ID",
+          "nl": "Modbus ID"
+        }
+      },
+      {
+        "id": "pollinginterval",
+        "type": "number",
+        "value": 30,
+        "min": 5,
+        "max": 600,
+        "units": {
+          "en": "seconds",
+          "nl": "seconden"
+        },
+        "label": {
+          "en": "Polling interval",
+          "nl": "Poll interval"
+        }
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Battery settings from BMS (read only)"
+    },
+    "children": [
+      {
+        "id": "maxchargevoltage",
+        "type": "label",
+        "label": {
+          "en": "Charge Voltage (V)",
+          "nl": "Charge Voltage (V)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "chargecurrent",
+        "type": "label",
+        "label": {
+          "en": "Charge Current (A)",
+          "nl": "Charge Current (A)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "dischargecurrent",
+        "type": "label",
+        "label": {
+          "en": "Discharge Current (A)",
+          "nl": "Discharge Current (A)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "maxchargecurrent",
+        "type": "label",
+        "label": {
+          "en": "Max. Charge Current (A)",
+          "nl": "Max. Charge Current (A)"
+        },
+        "value": "unknown"
+      },
+      {
+        "id": "maxdischargecurrent",
+        "type": "label",
+        "label": {
+          "en": "Max. Discharge Current (A)",
+          "nl": "Max. Discharge Current (A)"
+        },
+        "value": "unknown"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Deye Settings"
+    },
+    "children": [
+      {
+        "id": "settings_timeofuseenabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Time of Use Enabled",
+          "nl": "Time of Use Enabled"
+        },
+        "value": false
+      },
+      {
+        "id": "settings_solarsellenabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Solar Sell Enabled",
+          "nl": "Solar Sell Enabled"
+        },
+        "value": false
+      },
+      {
+        "id": "settings_workmode",
+        "type": "dropdown",
+        "label": {
+          "en": "Workmode",
+          "nl": "Werkmodus"
+        },
+        "value": "SELLING_FIRST",
+        "values": [
+          {
+            "id": "SELLING_FIRST",
+            "label": {
+              "en": "Selling First"
+            }
+          },
+          {
+            "id": "ZERO_EXPORT_TO_LOAD",
+            "label": {
+              "en": "Zero Export To Load"
+            }
+          },
+          {
+            "id": "ZERO_EXPORT_TO_CT",
+            "label": {
+              "en": "Zero Export to CT"
+            }
+          }
+        ]
+      },
+      {
+        "id": "setting_energypriority",
+        "type": "dropdown",
+        "label": {
+          "en": "Energy Priority",
+          "nl": "Energy Priority"
+        },
+        "value": "BATTERY_FIRST",
+        "values": [
+          {
+            "id": "BATTERY_FIRST",
+            "label": {
+              "en": "Battery First"
+            }
+          },
+          {
+            "id": "LOAD_FIRST",
+            "label": {
+              "en": "Load First"
+            }
+          }
+        ]
+      },
+      {
+        "id": "settings_energygridshavingenabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Energy Gridshaving Enabled",
+          "nl": "Energy Gridshaving Enabled"
+        },
+        "value": false
+      },
+      {
+        "id": "settings_energygridshavingpower",
+        "type": "number",
+        "value": 11040,
+        "min": 1000,
+        "max": 16000,
+        "hint": {
+          "en": "Grid Peak Shaving Amount."
+        },
+        "step": 1,
+        "label": {
+          "en": "Grid Shaving Power Amount",
+          "nl": "Grid Shaving Power Amount"
+        }
+      },
+      {
+        "id": "settings_energygridchargeenabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Grid Charge Enabled",
+          "nl": "Grid Charge Enabled"
+        },
+        "value": false
+      },
+      {
+        "id": "settings_energygenchargeenabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Generator Charge Enabled",
+          "nl": "Generator Charge Enabled"
+        },
+        "value": false
+      },
+      {
+        "id": "settings_energygeneratorpower",
+        "type": "number",
+        "value": 11040,
+        "min": 1000,
+        "max": 16000,
+        "hint": {
+          "en": "Generator Peak Shaving Amount."
+        },
+        "step": 1,
+        "label": {
+          "en": "Generator Power Amount",
+          "nl": "Generator Power Amount"
+        }
+      },
+      {
+        "id": "settings_maxoutputtogrid",
+        "type": "number",
+        "value": 3000,
+        "min": 1000,
+        "max": 8000,
+        "hint": {
+          "en": "Maximum power output to the grid."
+        },
+        "step": 1,
+        "label": {
+          "en": "Limit the maximum power output of the grid connection",
+          "nl": "Limit the maximum power output of the grid connection"
+        }
+      },
+      {
+        "id": "settings_asymetricphasefeeding",
+        "type": "checkbox",
+        "label": {
+          "en": "Asymetric Phase Feeding",
+          "nl": "Asymetric Phase Feeding"
+        },
+        "value": false
+      }
+    ]
+  }
+]

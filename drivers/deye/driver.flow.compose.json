@@ -1,0 +1,1234 @@
+{
+  "triggers": [
+    {
+      "id": "grid_available_true",
+      "title": {
+        "en": "Grid became available"
+      }
+    },
+    {
+      "id": "grid_available_false",
+      "title": {
+        "en": "Grid became unavailable"
+      }
+    },
+    {
+      "id": "measure_battery_power_changed",
+      "title": {
+        "en": "Power from the battery changed"
+      },
+      "tokens": [
+        {
+          "name": "measure_battery_power",
+          "title": {
+            "en": "Power from the battery"
+          },
+          "type": "number",
+          "example": 333
+        }
+      ]
+    },
+    {
+      "id": "measure_consumption_power_changed",
+      "title": {
+        "en": "Power consumption of the house changed"
+      },
+      "tokens": [
+        {
+          "name": "measure_consumption_power",
+          "title": {
+            "en": "Power consumption of the house"
+          },
+          "type": "number",
+          "example": 277
+        }
+      ]
+    },
+    {
+      "id": "measure_grid_power_changed",
+      "title": {
+        "en": "Power used from the grid changed"
+      },
+      "tokens": [
+        {
+          "name": "measure_grid_power",
+          "title": {
+            "en": "Power used from the grid"
+          },
+          "type": "number",
+          "example": 7
+        }
+      ]
+    },
+    {
+      "id": "measure_solar_power_changed",
+      "title": {
+        "en": "Power from the solar cells changed"
+      },
+      "tokens": [
+        {
+          "name": "measure_solar_power",
+          "title": {
+            "en": "Power from the solar cells"
+          },
+          "type": "number",
+          "example": 1000
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "grid_available",
+      "title": {
+        "en": "Grid !{{available|unavailable}}"
+      }
+    },
+    {
+      "id": "battery_charging",
+      "title": {
+        "en": "!{{Battery|Battery not}} charging"
+      }
+    },
+    {
+      "id": "battery_discharging",
+      "title": {
+        "en": "!{{Battery|Battery not}} discharging"
+      }
+    },
+    {
+      "id": "grid_feeding",
+      "title": {
+        "en": "!{{Feeding|Not feeding}} the grid"
+      }
+    },
+    {
+      "id": "solar_production",
+      "title": {
+        "en": "Solar power !{{available|unavailable}}"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "set_solar_sell",
+      "title": {
+        "en": "Set Solar Sell to..."
+      },
+      "titleFormatted": {
+        "en": "Set Solar Sell to [[onoff]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "onoff",
+          "title": {
+            "en": "On/Off"
+          },
+          "values": [
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_work_mode",
+      "title": {
+        "en": "Set Work Mode to..."
+      },
+      "titleFormatted": {
+        "en": "Set Work Mode to [[workMode]] with zero export power [[zeroExportPower]] W"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "workMode",
+          "title": {
+            "en": "Work Mode"
+          },
+          "values": [
+            {
+              "id": "SELLING_FIRST",
+              "title": {
+                "en": "Selling First"
+              }
+            },
+            {
+              "id": "ZERO_EXPORT_TO_LOAD",
+              "title": {
+                "en": "Zero Export To Load"
+              }
+            },
+            {
+              "id": "ZERO_EXPORT_TO_CT",
+              "title": {
+                "en": "Zero Export to CT"
+              }
+            }
+          ]
+        },
+        {
+          "type": "number",
+          "name": "zeroExportPower",
+          "title": {
+            "en": "Zero export power (W)"
+          },
+          "placeholder": {
+            "en": "empty = unchanged"
+          },
+          "min": -500,
+          "max": 500,
+          "step": 1,
+          "required": false
+        }
+      ],
+      "hint": {
+        "en": "Leave the zero export power empty to keep its current value."
+      }
+    },
+    {
+      "id": "set_energy_pattern",
+      "title": {
+        "en": "Set Energy Pattern to..."
+      },
+      "titleFormatted": {
+        "en": "Set Energy Pattern to [[energyPattern]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "energyPattern",
+          "title": {
+            "en": "Energy Pattern"
+          },
+          "values": [
+            {
+              "id": "BATTERY_FIRST",
+              "title": {
+                "en": "Battery First"
+              }
+            },
+            {
+              "id": "LOAD_FIRST",
+              "title": {
+                "en": "Load First"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_grid_peak_shaving",
+      "title": {
+        "en": "Set Grid Peak Shaving..."
+      },
+      "titleFormatted": {
+        "en": "Set Grid Peak Shaving to [[onoff]] with [[power]] W"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "onoff",
+          "title": {
+            "en": "On/Off"
+          },
+          "values": [
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        },
+        {
+          "type": "number",
+          "name": "power",
+          "title": {
+            "en": "Power (W)"
+          },
+          "min": 0,
+          "max": 65535,
+          "step": 1,
+          "required": false
+        }
+      ],
+      "hint": {
+        "en": "The power is only used when turning peak shaving on, and is required then. When turning it off it can stay empty."
+      }
+    },
+    {
+      "id": "set_battery_grid_charge",
+      "title": {
+        "en": "Set Battery Grid Charge to..."
+      },
+      "titleFormatted": {
+        "en": "Set Battery Grid Charge to [[onoff]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "onoff",
+          "title": {
+            "en": "On/Off"
+          },
+          "values": [
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_battery_gen_charge",
+      "title": {
+        "en": "Set Battery Gen Charge to..."
+      },
+      "titleFormatted": {
+        "en": "Set Battery Gen Charge to [[onoff]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "onoff",
+          "title": {
+            "en": "On/Off"
+          },
+          "values": [
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_battery_max_discharge_current",
+      "title": {
+        "en": "Set Battery Max Discharge Current to..."
+      },
+      "titleFormatted": {
+        "en": "Set Battery Max Discharge Current to [[current]]A"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "current",
+          "title": {
+            "en": "Current"
+          },
+          "min": 0,
+          "max": 120,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "set_battery_max_charge_current",
+      "title": {
+        "en": "Set Battery Max Charge Current to..."
+      },
+      "titleFormatted": {
+        "en": "Set Battery Max Charge Current to [[current]]A"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "current",
+          "title": {
+            "en": "Current"
+          },
+          "min": 0,
+          "max": 120,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "set_battery_low",
+      "title": {
+        "en": "Set Battery Low to..."
+      },
+      "titleFormatted": {
+        "en": "Set Battery Low to [[percent]]%"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "percent",
+          "title": {
+            "en": "Percent"
+          },
+          "min": 1,
+          "max": 100,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "set_battery_grid_charge_current",
+      "title": {
+        "en": "Set Battery Grid Charge Current to..."
+      },
+      "titleFormatted": {
+        "en": "Set Battery Grid Charge Current to [[current]]A"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "current",
+          "title": {
+            "en": "Current"
+          },
+          "min": 0,
+          "max": 120,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "set_timeslot",
+      "title": {
+        "en": "Set time of use timeslot"
+      },
+      "hint": {
+        "en": "Leave a field empty, or choose 'Leave unchanged', to keep its current value in the inverter."
+      },
+      "titleFormatted": {
+        "en": "Set [[slot]]: start [[time]], power [[power]] W, min SOC [[soc]] %, grid charge [[grid]], generator charge [[generator]], solar selling [[sell]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "slot",
+          "title": {
+            "en": "Timeslot"
+          },
+          "values": [
+            {
+              "id": "1",
+              "title": {
+                "en": "Timeslot 1"
+              }
+            },
+            {
+              "id": "2",
+              "title": {
+                "en": "Timeslot 2"
+              }
+            },
+            {
+              "id": "3",
+              "title": {
+                "en": "Timeslot 3"
+              }
+            },
+            {
+              "id": "4",
+              "title": {
+                "en": "Timeslot 4"
+              }
+            },
+            {
+              "id": "5",
+              "title": {
+                "en": "Timeslot 5"
+              }
+            },
+            {
+              "id": "6",
+              "title": {
+                "en": "Timeslot 6"
+              }
+            }
+          ]
+        },
+        {
+          "type": "time",
+          "name": "time",
+          "title": {
+            "en": "Start time"
+          },
+          "placeholder": {
+            "en": "HH:mm"
+          },
+          "required": false
+        },
+        {
+          "type": "number",
+          "name": "power",
+          "title": {
+            "en": "Power limit (W)"
+          },
+          "placeholder": {
+            "en": "empty = unchanged"
+          },
+          "min": 0,
+          "max": 65535,
+          "step": 100,
+          "required": false
+        },
+        {
+          "type": "number",
+          "name": "soc",
+          "title": {
+            "en": "Minimum SOC (%)"
+          },
+          "placeholder": {
+            "en": "empty = unchanged"
+          },
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "required": false
+        },
+        {
+          "type": "dropdown",
+          "name": "grid",
+          "title": {
+            "en": "Grid charge"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "generator",
+          "title": {
+            "en": "Generator charge"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "sell",
+          "title": {
+            "en": "Solar selling"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_timeslot_time",
+      "title": {
+        "en": "Set timeslot start time"
+      },
+      "titleFormatted": {
+        "en": "Set start time of [[slot]] to [[time]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "slot",
+          "title": {
+            "en": "Timeslot"
+          },
+          "values": [
+            {
+              "id": "1",
+              "title": {
+                "en": "Timeslot 1"
+              }
+            },
+            {
+              "id": "2",
+              "title": {
+                "en": "Timeslot 2"
+              }
+            },
+            {
+              "id": "3",
+              "title": {
+                "en": "Timeslot 3"
+              }
+            },
+            {
+              "id": "4",
+              "title": {
+                "en": "Timeslot 4"
+              }
+            },
+            {
+              "id": "5",
+              "title": {
+                "en": "Timeslot 5"
+              }
+            },
+            {
+              "id": "6",
+              "title": {
+                "en": "Timeslot 6"
+              }
+            }
+          ]
+        },
+        {
+          "type": "time",
+          "name": "time",
+          "title": {
+            "en": "Start time"
+          },
+          "placeholder": {
+            "en": "HH:mm"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set_timeslot_power_soc",
+      "title": {
+        "en": "Set timeslot power limit and minimum SOC"
+      },
+      "hint": {
+        "en": "Leave a field empty, or choose 'Leave unchanged', to keep its current value in the inverter."
+      },
+      "titleFormatted": {
+        "en": "Set [[slot]]: power [[power]] W, min SOC [[soc]] %"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "slot",
+          "title": {
+            "en": "Timeslot"
+          },
+          "values": [
+            {
+              "id": "1",
+              "title": {
+                "en": "Timeslot 1"
+              }
+            },
+            {
+              "id": "2",
+              "title": {
+                "en": "Timeslot 2"
+              }
+            },
+            {
+              "id": "3",
+              "title": {
+                "en": "Timeslot 3"
+              }
+            },
+            {
+              "id": "4",
+              "title": {
+                "en": "Timeslot 4"
+              }
+            },
+            {
+              "id": "5",
+              "title": {
+                "en": "Timeslot 5"
+              }
+            },
+            {
+              "id": "6",
+              "title": {
+                "en": "Timeslot 6"
+              }
+            }
+          ]
+        },
+        {
+          "type": "number",
+          "name": "power",
+          "title": {
+            "en": "Power limit (W)"
+          },
+          "placeholder": {
+            "en": "empty = unchanged"
+          },
+          "min": 0,
+          "max": 65535,
+          "step": 100,
+          "required": false
+        },
+        {
+          "type": "number",
+          "name": "soc",
+          "title": {
+            "en": "Minimum SOC (%)"
+          },
+          "placeholder": {
+            "en": "empty = unchanged"
+          },
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "set_timeslot_charge_options",
+      "title": {
+        "en": "Set timeslot grid charge, generator charge and solar selling"
+      },
+      "hint": {
+        "en": "Only the options you change are written; the slot's mode is never touched."
+      },
+      "titleFormatted": {
+        "en": "Set [[slot]]: grid charge [[grid]], generator charge [[generator]], solar selling [[sell]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "slot",
+          "title": {
+            "en": "Timeslot"
+          },
+          "values": [
+            {
+              "id": "1",
+              "title": {
+                "en": "Timeslot 1"
+              }
+            },
+            {
+              "id": "2",
+              "title": {
+                "en": "Timeslot 2"
+              }
+            },
+            {
+              "id": "3",
+              "title": {
+                "en": "Timeslot 3"
+              }
+            },
+            {
+              "id": "4",
+              "title": {
+                "en": "Timeslot 4"
+              }
+            },
+            {
+              "id": "5",
+              "title": {
+                "en": "Timeslot 5"
+              }
+            },
+            {
+              "id": "6",
+              "title": {
+                "en": "Timeslot 6"
+              }
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "grid",
+          "title": {
+            "en": "Grid charge"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "generator",
+          "title": {
+            "en": "Generator charge"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "sell",
+          "title": {
+            "en": "Solar selling"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_all_timeslots",
+      "title": {
+        "en": "Set all time of use timeslots"
+      },
+      "hint": {
+        "en": "Applies the same values to all 6 timeslots. Start times are not changed. Leave a field empty, or choose 'Leave unchanged', to keep its current value."
+      },
+      "titleFormatted": {
+        "en": "Set all timeslots: power [[power]] W, min SOC [[soc]] %, grid charge [[grid]], generator charge [[generator]], solar selling [[sell]]"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "power",
+          "title": {
+            "en": "Power limit (W)"
+          },
+          "placeholder": {
+            "en": "empty = unchanged"
+          },
+          "min": 0,
+          "max": 65535,
+          "step": 100,
+          "required": false
+        },
+        {
+          "type": "number",
+          "name": "soc",
+          "title": {
+            "en": "Minimum SOC (%)"
+          },
+          "placeholder": {
+            "en": "empty = unchanged"
+          },
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "required": false
+        },
+        {
+          "type": "dropdown",
+          "name": "grid",
+          "title": {
+            "en": "Grid charge"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "generator",
+          "title": {
+            "en": "Generator charge"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "sell",
+          "title": {
+            "en": "Solar selling"
+          },
+          "values": [
+            {
+              "id": "keep",
+              "title": {
+                "en": "Leave unchanged"
+              }
+            },
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_max_sell_power",
+      "title": {
+        "en": "Set max sell power"
+      },
+      "titleFormatted": {
+        "en": "Set max sell power to [[power]] W"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "power",
+          "title": {
+            "en": "Power (W)"
+          },
+          "min": 0,
+          "max": 65535,
+          "step": 100
+        }
+      ]
+    },
+    {
+      "id": "set_max_solar_power",
+      "title": {
+        "en": "Set max solar power"
+      },
+      "titleFormatted": {
+        "en": "Set max solar power to [[power]] W"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "power",
+          "title": {
+            "en": "Power (W)"
+          },
+          "min": 0,
+          "max": 65535,
+          "step": 100
+        }
+      ]
+    },
+    {
+      "id": "set_time_of_use_enabled",
+      "title": {
+        "en": "Turn time of use on or off"
+      },
+      "titleFormatted": {
+        "en": "Set time of use to [[onoff]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "onoff",
+          "title": {
+            "en": "On/Off"
+          },
+          "values": [
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "set_time_of_use_day_enabled",
+      "title": {
+        "en": "Turn time of use on or off for a weekday"
+      },
+      "titleFormatted": {
+        "en": "Set time of use to [[onoff]] for [[day]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "onoff",
+          "title": {
+            "en": "On/Off"
+          },
+          "values": [
+            {
+              "id": "on",
+              "title": {
+                "en": "On"
+              }
+            },
+            {
+              "id": "off",
+              "title": {
+                "en": "Off"
+              }
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "day",
+          "title": {
+            "en": "Day"
+          },
+          "values": [
+            {
+              "id": "1",
+              "title": {
+                "en": "Monday"
+              }
+            },
+            {
+              "id": "2",
+              "title": {
+                "en": "Tuesday"
+              }
+            },
+            {
+              "id": "3",
+              "title": {
+                "en": "Wednesday"
+              }
+            },
+            {
+              "id": "4",
+              "title": {
+                "en": "Thursday"
+              }
+            },
+            {
+              "id": "5",
+              "title": {
+                "en": "Friday"
+              }
+            },
+            {
+              "id": "6",
+              "title": {
+                "en": "Saturday"
+              }
+            },
+            {
+              "id": "7",
+              "title": {
+                "en": "Sunday"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "write_register",
+      "title": {
+        "en": "Write value to register (advanced)"
+      },
+      "hint": {
+        "en": "Writes a raw value to a holding register. Must be enabled in the device settings. A wrong value can change inverter behaviour."
+      },
+      "titleFormatted": {
+        "en": "Write [[value]] to register [[address]]"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "address",
+          "title": {
+            "en": "Register"
+          },
+          "min": 0,
+          "max": 65535,
+          "step": 1
+        },
+        {
+          "type": "number",
+          "name": "value",
+          "title": {
+            "en": "Value"
+          },
+          "min": 0,
+          "max": 65535,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "set_zero_export_power",
+      "title": {
+        "en": "Set zero export power"
+      },
+      "titleFormatted": {
+        "en": "Set zero export power to [[power]] W"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "power",
+          "title": {
+            "en": "Power (W)"
+          },
+          "min": -500,
+          "max": 500,
+          "step": 1
+        }
+      ]
+    }
+  ]
+}

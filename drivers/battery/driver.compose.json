@@ -1,0 +1,103 @@
+{
+  "name": {
+    "en": "Deye Home Battery"
+  },
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png"
+  },
+  "class": "battery",
+  "capabilities": [
+    "measure_power",
+    "measure_battery",
+    "measure_voltage.batteryvoltage",
+    "measure_current.batterycurrent",
+    "measure_temperature.batterytemperature",
+    "meter_power.batterytodaycharge",
+    "meter_power.batterytodaydischarge",
+    "meter_power.batterytotalcharge",
+    "meter_power.batterytotaldischarge"
+  ],
+  "energy": {
+    "homeBattery": true,
+    "meterPowerImportedCapability": "meter_power.batterytotalcharge",
+    "meterPowerExportedCapability": "meter_power.batterytotaldischarge",
+    "batteries": [
+      "OTHER"
+    ]
+  },
+  "capabilitiesOptions": {
+    "measure_voltage.batteryvoltage": {
+      "title": {
+        "en": "Battery Voltage",
+        "nl": "Batterij voltage"
+      },
+      "decimals": 2
+    },
+    "measure_current.batterycurrent": {
+      "title": {
+        "en": "Battery Current",
+        "nl": "Batterij stroom"
+      },
+      "decimals": 2
+    },
+    "measure_temperature.batterytemperature": {
+      "title": {
+        "en": "Battery Temperature",
+        "nl": "Accu temperatuur"
+      },
+      "decimals": 1
+    },
+    "meter_power.batterytodaycharge": {
+      "title": {
+        "en": "Today Battery Charge",
+        "nl": "Vandaag vermogen geladen"
+      },
+      "decimals": 1,
+      "duration": false
+    },
+    "meter_power.batterytodaydischarge": {
+      "title": {
+        "en": "Today Battery Discharge",
+        "nl": "Vandaag vermogen ontladen"
+      },
+      "decimals": 1,
+      "duration": false
+    },
+    "meter_power.batterytotalcharge": {
+      "title": {
+        "en": "Total Battery Charge",
+        "nl": "Totaal vermogen geladen"
+      },
+      "decimals": 1,
+      "duration": false
+    },
+    "meter_power.batterytotaldischarge": {
+      "title": {
+        "en": "Total Battery Discharge",
+        "nl": "Totaal vermogen ontladen"
+      },
+      "decimals": 1,
+      "duration": false
+    }
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "lan"
+  ],
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}
