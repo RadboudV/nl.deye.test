@@ -1,2 +1,3 @@
-# nl.deye.test
-Homey App for Deye SG04LP3 (and others)
+# Deye Hybrid Inverter Test
+
+Add support for Deye Hybrid Inverter2 (via modbus RTU)

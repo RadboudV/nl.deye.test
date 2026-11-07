@@ -1,5 +1,4 @@
 import Homey from 'homey';
-import { CapabilityWriter } from './capabilitywriter';
 import type { Snapshot } from './registers';
 import { measured } from './conditions';
 
@@ -37,13 +36,10 @@ export const SOLAR_CAPABILITIES = [
  */
 export class DeyeSolar extends Homey.Device {
 
-  // Only sends a capability value to Homey when it changed since the last snapshot
-  private writer = new CapabilityWriter(this);
-
   private async setCap(capability: string, value: number | null) {
     if (value === null || !Number.isFinite(value)) return;
     if (!this.hasCapability(capability)) await this.addCapability(capability).catch(this.error);
-    await this.writer.set(capability, value).catch(this.error);
+    await this.setCapabilityValue(capability, value).catch(this.error);
   }
 
   private async setSettingIfChanged(key: string, value: string) {

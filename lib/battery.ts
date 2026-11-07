@@ -1,5 +1,4 @@
 import Homey from 'homey';
-import { CapabilityWriter } from './capabilitywriter';
 import type { Measurement, Snapshot } from './registers';
 
 export type BatteryMeasurement = Measurement;
@@ -46,9 +45,6 @@ const SETTINGS_MAP: Record<string, string> = {
  */
 export class DeyeBattery extends Homey.Device {
 
-  // Only sends a capability value to Homey when it changed since the last snapshot
-  private writer = new CapabilityWriter(this);
-
   /** Scaled numeric value for a snapshot key, or null when it is not in the snapshot. */
   protected num(result: Snapshot, key: string): number | null {
     const m = result[key];
@@ -59,7 +55,7 @@ export class DeyeBattery extends Homey.Device {
   private async setCap(capability: string, value: number | null) {
     if (value === null || !Number.isFinite(value)) return;
     if (!this.hasCapability(capability)) await this.addCapability(capability).catch(this.error);
-    await this.writer.set(capability, value).catch(this.error);
+    await this.setCapabilityValue(capability, value).catch(this.error);
   }
 
   private async setSettingIfChanged(key: string, value: string) {

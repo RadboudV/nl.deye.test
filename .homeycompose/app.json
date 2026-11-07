@@ -1,0 +1,29 @@
+{
+  "id": "nl.deye.test",
+  "version": "1.0.17",
+  "compatibility": ">=12.2.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Deye Hybrid Inverter Test"
+  },
+  "description": {
+    "en": "Add support for Deye Inverter (via modbus RTU)"
+  },
+  "category": [
+    "energy"
+  ],
+  "brandColor": "#004098",
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "R. V.",
+    "email": "r.verberne@radboudverberne.nl"
+  }
+}

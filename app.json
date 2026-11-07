@@ -1,0 +1,2269 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "nl.deye.test",
+  "version": "1.0.17",
+  "compatibility": ">=12.2.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Deye Hybrid Inverter Test"
+  },
+  "description": {
+    "en": "Add support for Deye Inverter (via modbus RTU)"
+  },
+  "category": [
+    "energy"
+  ],
+  "brandColor": "#004098",
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "R. V.",
+    "email": "r.verberne@radboudverberne.nl"
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Deye Home Battery"
+      },
+      "images": {
+        "small": "/drivers/battery/assets/images/small.png",
+        "large": "/drivers/battery/assets/images/large.png"
+      },
+      "class": "battery",
+      "capabilities": [
+        "measure_power",
+        "measure_battery",
+        "measure_voltage.batteryvoltage",
+        "measure_current.batterycurrent",
+        "measure_temperature.batterytemperature",
+        "meter_power.batterytodaycharge",
+        "meter_power.batterytodaydischarge",
+        "meter_power.batterytotalcharge",
+        "meter_power.batterytotaldischarge"
+      ],
+      "energy": {
+        "homeBattery": true,
+        "meterPowerImportedCapability": "meter_power.batterytotalcharge",
+        "meterPowerExportedCapability": "meter_power.batterytotaldischarge",
+        "batteries": [
+          "OTHER"
+        ]
+      },
+      "capabilitiesOptions": {
+        "measure_voltage.batteryvoltage": {
+          "title": {
+            "en": "Battery Voltage",
+            "nl": "Batterij voltage"
+          },
+          "decimals": 2
+        },
+        "measure_current.batterycurrent": {
+          "title": {
+            "en": "Battery Current",
+            "nl": "Batterij stroom"
+          },
+          "decimals": 2
+        },
+        "measure_temperature.batterytemperature": {
+          "title": {
+            "en": "Battery Temperature",
+            "nl": "Accu temperatuur"
+          },
+          "decimals": 1
+        },
+        "meter_power.batterytodaycharge": {
+          "title": {
+            "en": "Today Battery Charge",
+            "nl": "Vandaag vermogen geladen"
+          },
+          "decimals": 1,
+          "duration": false
+        },
+        "meter_power.batterytodaydischarge": {
+          "title": {
+            "en": "Today Battery Discharge",
+            "nl": "Vandaag vermogen ontladen"
+          },
+          "decimals": 1,
+          "duration": false
+        },
+        "meter_power.batterytotalcharge": {
+          "title": {
+            "en": "Total Battery Charge",
+            "nl": "Totaal vermogen geladen"
+          },
+          "decimals": 1,
+          "duration": false
+        },
+        "meter_power.batterytotaldischarge": {
+          "title": {
+            "en": "Total Battery Discharge",
+            "nl": "Totaal vermogen ontladen"
+          },
+          "decimals": 1,
+          "duration": false
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "battery",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Battery settings from BMS (read only)"
+          },
+          "children": [
+            {
+              "id": "maxchargevoltage",
+              "type": "label",
+              "label": {
+                "en": "Charge Voltage (V)",
+                "nl": "Charge Voltage (V)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "chargecurrent",
+              "type": "label",
+              "label": {
+                "en": "Charge Current (A)",
+                "nl": "Charge Current (A)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "dischargecurrent",
+              "type": "label",
+              "label": {
+                "en": "Discharge Current (A)",
+                "nl": "Discharge Current (A)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "maxchargecurrent",
+              "type": "label",
+              "label": {
+                "en": "Max. Charge Current (A)",
+                "nl": "Max. Charge Current (A)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "maxdischargecurrent",
+              "type": "label",
+              "label": {
+                "en": "Max. Discharge Current (A)",
+                "nl": "Max. Discharge Current (A)"
+              },
+              "value": "unknown"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Battery connected to Deye Inverter"
+          },
+          "children": [
+            {
+              "id": "serial",
+              "type": "label",
+              "label": {
+                "en": "Serial Number",
+                "nl": "Serienummer"
+              },
+              "value": "unknown"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Deye Hybrid Inverter"
+      },
+      "images": {
+        "small": "/drivers/deye/assets/images/small.png",
+        "large": "/drivers/deye/assets/images/large.png"
+      },
+      "class": "solarpanel",
+      "capabilities": [
+        "meter_power",
+        "meter_power.batterytotalcharge",
+        "meter_power.batterytotaldischarge",
+        "measure_temperature.heatsinktemperature"
+      ],
+      "capabilitiesOptions": {
+        "measure_temperature.heatsinktemperature": {
+          "title": {
+            "en": "Heatsink temperature",
+            "nl": "Heatsink temperatuur",
+            "de": "Kühlkörpertemperatur"
+          },
+          "decimals": 2
+        }
+      },
+      "energy": {
+        "cumulative": true
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "start123"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Deye Inverter Information"
+          },
+          "children": [
+            {
+              "id": "serial",
+              "type": "label",
+              "label": {
+                "en": "Serial Number",
+                "nl": "Serienummer"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "protocolversion",
+              "type": "label",
+              "label": {
+                "en": "Communication protocol version",
+                "nl": "Communicatieprotocol versie"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "ratedpower",
+              "type": "label",
+              "label": {
+                "en": "Rated Power (W)",
+                "nl": "Rated Power (W)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "controlpanelversion",
+              "type": "label",
+              "label": {
+                "en": "Control Panel Version",
+                "nl": "Control Panel Version"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "HMIversion",
+              "type": "label",
+              "label": {
+                "en": "HMI Version",
+                "nl": "HMI Version"
+              },
+              "value": "unknown"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Modbus RTU (TCP) converter settings"
+          },
+          "children": [
+            {
+              "id": "address",
+              "type": "text",
+              "value": "192.168.1.111",
+              "label": {
+                "en": "IP Address",
+                "nl": "IP adres"
+              }
+            },
+            {
+              "id": "port",
+              "type": "number",
+              "value": 502,
+              "step": 1,
+              "label": {
+                "en": "Port",
+                "nl": "Poort"
+              }
+            },
+            {
+              "id": "id",
+              "type": "number",
+              "value": 1,
+              "step": 1,
+              "attr": {
+                "min": 0,
+                "max": 50
+              },
+              "label": {
+                "en": "Modbus ID",
+                "nl": "Modbus ID"
+              }
+            },
+            {
+              "id": "pollinginterval",
+              "type": "number",
+              "value": 30,
+              "min": 5,
+              "max": 600,
+              "units": {
+                "en": "seconds",
+                "nl": "seconden"
+              },
+              "label": {
+                "en": "Polling interval",
+                "nl": "Poll interval"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Battery settings from BMS (read only)"
+          },
+          "children": [
+            {
+              "id": "maxchargevoltage",
+              "type": "label",
+              "label": {
+                "en": "Charge Voltage (V)",
+                "nl": "Charge Voltage (V)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "chargecurrent",
+              "type": "label",
+              "label": {
+                "en": "Charge Current (A)",
+                "nl": "Charge Current (A)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "dischargecurrent",
+              "type": "label",
+              "label": {
+                "en": "Discharge Current (A)",
+                "nl": "Discharge Current (A)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "maxchargecurrent",
+              "type": "label",
+              "label": {
+                "en": "Max. Charge Current (A)",
+                "nl": "Max. Charge Current (A)"
+              },
+              "value": "unknown"
+            },
+            {
+              "id": "maxdischargecurrent",
+              "type": "label",
+              "label": {
+                "en": "Max. Discharge Current (A)",
+                "nl": "Max. Discharge Current (A)"
+              },
+              "value": "unknown"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Deye Settings"
+          },
+          "children": [
+            {
+              "id": "settings_timeofuseenabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Time of Use Enabled",
+                "nl": "Time of Use Enabled"
+              },
+              "value": false
+            },
+            {
+              "id": "settings_solarsellenabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Solar Sell Enabled",
+                "nl": "Solar Sell Enabled"
+              },
+              "value": false
+            },
+            {
+              "id": "settings_workmode",
+              "type": "dropdown",
+              "label": {
+                "en": "Workmode",
+                "nl": "Werkmodus"
+              },
+              "value": "SELLING_FIRST",
+              "values": [
+                {
+                  "id": "SELLING_FIRST",
+                  "label": {
+                    "en": "Selling First"
+                  }
+                },
+                {
+                  "id": "ZERO_EXPORT_TO_LOAD",
+                  "label": {
+                    "en": "Zero Export To Load"
+                  }
+                },
+                {
+                  "id": "ZERO_EXPORT_TO_CT",
+                  "label": {
+                    "en": "Zero Export to CT"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "setting_energypriority",
+              "type": "dropdown",
+              "label": {
+                "en": "Energy Priority",
+                "nl": "Energy Priority"
+              },
+              "value": "BATTERY_FIRST",
+              "values": [
+                {
+                  "id": "BATTERY_FIRST",
+                  "label": {
+                    "en": "Battery First"
+                  }
+                },
+                {
+                  "id": "LOAD_FIRST",
+                  "label": {
+                    "en": "Load First"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "settings_energygridshavingenabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Energy Gridshaving Enabled",
+                "nl": "Energy Gridshaving Enabled"
+              },
+              "value": false
+            },
+            {
+              "id": "settings_energygridshavingpower",
+              "type": "number",
+              "value": 11040,
+              "min": 1000,
+              "max": 16000,
+              "hint": {
+                "en": "Grid Peak Shaving Amount."
+              },
+              "step": 1,
+              "label": {
+                "en": "Grid Shaving Power Amount",
+                "nl": "Grid Shaving Power Amount"
+              }
+            },
+            {
+              "id": "settings_energygridchargeenabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Grid Charge Enabled",
+                "nl": "Grid Charge Enabled"
+              },
+              "value": false
+            },
+            {
+              "id": "settings_energygenchargeenabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Generator Charge Enabled",
+                "nl": "Generator Charge Enabled"
+              },
+              "value": false
+            },
+            {
+              "id": "settings_energygeneratorpower",
+              "type": "number",
+              "value": 11040,
+              "min": 1000,
+              "max": 16000,
+              "hint": {
+                "en": "Generator Peak Shaving Amount."
+              },
+              "step": 1,
+              "label": {
+                "en": "Generator Power Amount",
+                "nl": "Generator Power Amount"
+              }
+            },
+            {
+              "id": "settings_maxoutputtogrid",
+              "type": "number",
+              "value": 3000,
+              "min": 1000,
+              "max": 8000,
+              "hint": {
+                "en": "Maximum power output to the grid."
+              },
+              "step": 1,
+              "label": {
+                "en": "Limit the maximum power output of the grid connection",
+                "nl": "Limit the maximum power output of the grid connection"
+              }
+            },
+            {
+              "id": "settings_asymetricphasefeeding",
+              "type": "checkbox",
+              "label": {
+                "en": "Asymetric Phase Feeding",
+                "nl": "Asymetric Phase Feeding"
+              },
+              "value": false
+            }
+          ]
+        }
+      ],
+      "id": "deye"
+    },
+    {
+      "name": {
+        "en": "Deye Generator"
+      },
+      "images": {
+        "small": "/drivers/generator/assets/images/small.png",
+        "large": "/drivers/generator/assets/images/large.png"
+      },
+      "class": "other",
+      "capabilities": [
+        "measure_power",
+        "measure_power.generatorl1power",
+        "measure_power.generatorl2power",
+        "measure_power.generatorl3power",
+        "measure_voltage.generatorl1voltage",
+        "measure_voltage.generatorl2voltage",
+        "measure_voltage.generatorl3voltage",
+        "meter_power.generatordailyproduction",
+        "generatorworkingtime"
+      ],
+      "capabilitiesOptions": {
+        "measure_power": {
+          "title": {
+            "en": "Generator Power",
+            "nl": "Generator vermogen"
+          }
+        },
+        "measure_power.generatorl1power": {
+          "title": {
+            "en": "Generator L1 Power",
+            "nl": "Generator L1 vermogen"
+          }
+        },
+        "measure_power.generatorl2power": {
+          "title": {
+            "en": "Generator L2 Power",
+            "nl": "Generator L2 vermogen"
+          }
+        },
+        "measure_power.generatorl3power": {
+          "title": {
+            "en": "Generator L3 Power",
+            "nl": "Generator L3 vermogen"
+          }
+        },
+        "measure_voltage.generatorl1voltage": {
+          "title": {
+            "en": "Generator L1 Voltage",
+            "nl": "Generator L1 voltage"
+          },
+          "decimals": 1
+        },
+        "measure_voltage.generatorl2voltage": {
+          "title": {
+            "en": "Generator L2 Voltage",
+            "nl": "Generator L2 voltage"
+          },
+          "decimals": 1
+        },
+        "measure_voltage.generatorl3voltage": {
+          "title": {
+            "en": "Generator L3 Voltage",
+            "nl": "Generator L3 voltage"
+          },
+          "decimals": 1
+        },
+        "meter_power.generatordailyproduction": {
+          "title": {
+            "en": "Today Generator Production",
+            "nl": "Vandaag generator opbrengst"
+          },
+          "decimals": 1,
+          "duration": false
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "generator",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Generator settings from the inverter (read only)"
+          },
+          "children": [
+            {
+              "id": "peakshavingpower",
+              "type": "label",
+              "label": {
+                "en": "Generator Peak Shaving Power (W)",
+                "nl": "Generator Peak Shaving Power (W)"
+              },
+              "value": "unknown"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Generator connected to Deye Inverter"
+          },
+          "children": [
+            {
+              "id": "serial",
+              "type": "label",
+              "label": {
+                "en": "Serial Number",
+                "nl": "Serienummer"
+              },
+              "value": "unknown"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Deye Solar"
+      },
+      "images": {
+        "small": "/drivers/solar/assets/images/small.png",
+        "large": "/drivers/solar/assets/images/large.png"
+      },
+      "class": "solarpanel",
+      "capabilities": [
+        "measure_power",
+        "measure_power.pv1inputpower",
+        "measure_power.pv2inputpower",
+        "measure_voltage.pv1voltage",
+        "measure_voltage.pv2voltage",
+        "measure_current.pv1current",
+        "measure_current.pv2current",
+        "meter_power.dailysolarproduction",
+        "meter_power.totalsolarproduction",
+        "meter_power"
+      ],
+      "capabilitiesOptions": {
+        "measure_power": {
+          "title": {
+            "en": "Total PV Power",
+            "nl": "Totaal PV vermogen"
+          }
+        },
+        "measure_power.pv1inputpower": {
+          "title": {
+            "en": "PV1 Power",
+            "nl": "PV1 vermogen"
+          }
+        },
+        "measure_power.pv2inputpower": {
+          "title": {
+            "en": "PV2 Power",
+            "nl": "PV2 vermogen"
+          }
+        },
+        "measure_voltage.pv1voltage": {
+          "title": {
+            "en": "PV1 Voltage",
+            "nl": "PV1 voltage"
+          },
+          "decimals": 1
+        },
+        "measure_voltage.pv2voltage": {
+          "title": {
+            "en": "PV2 Voltage",
+            "nl": "PV2 voltage"
+          },
+          "decimals": 1
+        },
+        "measure_current.pv1current": {
+          "title": {
+            "en": "PV1 Current",
+            "nl": "PV1 stroom"
+          },
+          "decimals": 1
+        },
+        "measure_current.pv2current": {
+          "title": {
+            "en": "PV2 Current",
+            "nl": "PV2 stroom"
+          },
+          "decimals": 1
+        },
+        "meter_power.dailysolarproduction": {
+          "title": {
+            "en": "Today Solar Power",
+            "nl": "Vandaag Solar opbrengst"
+          },
+          "decimals": 1,
+          "duration": false
+        },
+        "meter_power.totalsolarproduction": {
+          "title": {
+            "en": "Total Solar Power",
+            "nl": "Totaal solar opbrengst"
+          },
+          "decimals": 1,
+          "duration": false
+        },
+        "meter_power": {
+          "title": {
+            "en": "Total Solar Power",
+            "nl": "Totaal solar opbrengst"
+          },
+          "decimals": 1
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "solar",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Solar connected to Deye Inverter"
+          },
+          "children": [
+            {
+              "id": "serial",
+              "type": "label",
+              "label": {
+                "en": "Serial Number",
+                "nl": "Serienummer"
+              },
+              "value": "unknown"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "grid_available_true",
+        "title": {
+          "en": "Grid became available"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "grid_available_false",
+        "title": {
+          "en": "Grid became unavailable"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "measure_battery_power_changed",
+        "title": {
+          "en": "Power from the battery changed"
+        },
+        "tokens": [
+          {
+            "name": "measure_battery_power",
+            "title": {
+              "en": "Power from the battery"
+            },
+            "type": "number",
+            "example": 333
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "measure_consumption_power_changed",
+        "title": {
+          "en": "Power consumption of the house changed"
+        },
+        "tokens": [
+          {
+            "name": "measure_consumption_power",
+            "title": {
+              "en": "Power consumption of the house"
+            },
+            "type": "number",
+            "example": 277
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "measure_grid_power_changed",
+        "title": {
+          "en": "Power used from the grid changed"
+        },
+        "tokens": [
+          {
+            "name": "measure_grid_power",
+            "title": {
+              "en": "Power used from the grid"
+            },
+            "type": "number",
+            "example": 7
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "measure_solar_power_changed",
+        "title": {
+          "en": "Power from the solar cells changed"
+        },
+        "tokens": [
+          {
+            "name": "measure_solar_power",
+            "title": {
+              "en": "Power from the solar cells"
+            },
+            "type": "number",
+            "example": 1000
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "grid_available",
+        "title": {
+          "en": "Grid !{{available|unavailable}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "battery_charging",
+        "title": {
+          "en": "!{{Battery|Battery not}} charging"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "battery_discharging",
+        "title": {
+          "en": "!{{Battery|Battery not}} discharging"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "grid_feeding",
+        "title": {
+          "en": "!{{Feeding|Not feeding}} the grid"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "solar_production",
+        "title": {
+          "en": "Solar power !{{available|unavailable}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "set_solar_sell",
+        "title": {
+          "en": "Set Solar Sell to..."
+        },
+        "titleFormatted": {
+          "en": "Set Solar Sell to [[onoff]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "onoff",
+            "title": {
+              "en": "On/Off"
+            },
+            "values": [
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_work_mode",
+        "title": {
+          "en": "Set Work Mode to..."
+        },
+        "titleFormatted": {
+          "en": "Set Work Mode to [[workMode]] with zero export power [[zeroExportPower]] W"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "workMode",
+            "title": {
+              "en": "Work Mode"
+            },
+            "values": [
+              {
+                "id": "SELLING_FIRST",
+                "title": {
+                  "en": "Selling First"
+                }
+              },
+              {
+                "id": "ZERO_EXPORT_TO_LOAD",
+                "title": {
+                  "en": "Zero Export To Load"
+                }
+              },
+              {
+                "id": "ZERO_EXPORT_TO_CT",
+                "title": {
+                  "en": "Zero Export to CT"
+                }
+              }
+            ]
+          },
+          {
+            "type": "number",
+            "name": "zeroExportPower",
+            "title": {
+              "en": "Zero export power (W)"
+            },
+            "placeholder": {
+              "en": "empty = unchanged"
+            },
+            "min": -500,
+            "max": 500,
+            "step": 1,
+            "required": false
+          }
+        ],
+        "hint": {
+          "en": "Leave the zero export power empty to keep its current value."
+        }
+      },
+      {
+        "id": "set_energy_pattern",
+        "title": {
+          "en": "Set Energy Pattern to..."
+        },
+        "titleFormatted": {
+          "en": "Set Energy Pattern to [[energyPattern]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "energyPattern",
+            "title": {
+              "en": "Energy Pattern"
+            },
+            "values": [
+              {
+                "id": "BATTERY_FIRST",
+                "title": {
+                  "en": "Battery First"
+                }
+              },
+              {
+                "id": "LOAD_FIRST",
+                "title": {
+                  "en": "Load First"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_grid_peak_shaving",
+        "title": {
+          "en": "Set Grid Peak Shaving..."
+        },
+        "titleFormatted": {
+          "en": "Set Grid Peak Shaving to [[onoff]] with [[power]] W"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "onoff",
+            "title": {
+              "en": "On/Off"
+            },
+            "values": [
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          },
+          {
+            "type": "number",
+            "name": "power",
+            "title": {
+              "en": "Power (W)"
+            },
+            "min": 0,
+            "max": 65535,
+            "step": 1,
+            "required": false
+          }
+        ],
+        "hint": {
+          "en": "The power is only used when turning peak shaving on, and is required then. When turning it off it can stay empty."
+        }
+      },
+      {
+        "id": "set_battery_grid_charge",
+        "title": {
+          "en": "Set Battery Grid Charge to..."
+        },
+        "titleFormatted": {
+          "en": "Set Battery Grid Charge to [[onoff]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "onoff",
+            "title": {
+              "en": "On/Off"
+            },
+            "values": [
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_battery_gen_charge",
+        "title": {
+          "en": "Set Battery Gen Charge to..."
+        },
+        "titleFormatted": {
+          "en": "Set Battery Gen Charge to [[onoff]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "onoff",
+            "title": {
+              "en": "On/Off"
+            },
+            "values": [
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_battery_max_discharge_current",
+        "title": {
+          "en": "Set Battery Max Discharge Current to..."
+        },
+        "titleFormatted": {
+          "en": "Set Battery Max Discharge Current to [[current]]A"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "current",
+            "title": {
+              "en": "Current"
+            },
+            "min": 0,
+            "max": 120,
+            "step": 1
+          }
+        ]
+      },
+      {
+        "id": "set_battery_max_charge_current",
+        "title": {
+          "en": "Set Battery Max Charge Current to..."
+        },
+        "titleFormatted": {
+          "en": "Set Battery Max Charge Current to [[current]]A"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "current",
+            "title": {
+              "en": "Current"
+            },
+            "min": 0,
+            "max": 120,
+            "step": 1
+          }
+        ]
+      },
+      {
+        "id": "set_battery_low",
+        "title": {
+          "en": "Set Battery Low to..."
+        },
+        "titleFormatted": {
+          "en": "Set Battery Low to [[percent]]%"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "percent",
+            "title": {
+              "en": "Percent"
+            },
+            "min": 1,
+            "max": 100,
+            "step": 1
+          }
+        ]
+      },
+      {
+        "id": "set_battery_grid_charge_current",
+        "title": {
+          "en": "Set Battery Grid Charge Current to..."
+        },
+        "titleFormatted": {
+          "en": "Set Battery Grid Charge Current to [[current]]A"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "current",
+            "title": {
+              "en": "Current"
+            },
+            "min": 0,
+            "max": 120,
+            "step": 1
+          }
+        ]
+      },
+      {
+        "id": "set_timeslot",
+        "title": {
+          "en": "Set time of use timeslot"
+        },
+        "hint": {
+          "en": "Leave a field empty, or choose 'Leave unchanged', to keep its current value in the inverter."
+        },
+        "titleFormatted": {
+          "en": "Set [[slot]]: start [[time]], power [[power]] W, min SOC [[soc]] %, grid charge [[grid]], generator charge [[generator]], solar selling [[sell]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "slot",
+            "title": {
+              "en": "Timeslot"
+            },
+            "values": [
+              {
+                "id": "1",
+                "title": {
+                  "en": "Timeslot 1"
+                }
+              },
+              {
+                "id": "2",
+                "title": {
+                  "en": "Timeslot 2"
+                }
+              },
+              {
+                "id": "3",
+                "title": {
+                  "en": "Timeslot 3"
+                }
+              },
+              {
+                "id": "4",
+                "title": {
+                  "en": "Timeslot 4"
+                }
+              },
+              {
+                "id": "5",
+                "title": {
+                  "en": "Timeslot 5"
+                }
+              },
+              {
+                "id": "6",
+                "title": {
+                  "en": "Timeslot 6"
+                }
+              }
+            ]
+          },
+          {
+            "type": "time",
+            "name": "time",
+            "title": {
+              "en": "Start time"
+            },
+            "placeholder": {
+              "en": "HH:mm"
+            },
+            "required": false
+          },
+          {
+            "type": "number",
+            "name": "power",
+            "title": {
+              "en": "Power limit (W)"
+            },
+            "placeholder": {
+              "en": "empty = unchanged"
+            },
+            "min": 0,
+            "max": 65535,
+            "step": 100,
+            "required": false
+          },
+          {
+            "type": "number",
+            "name": "soc",
+            "title": {
+              "en": "Minimum SOC (%)"
+            },
+            "placeholder": {
+              "en": "empty = unchanged"
+            },
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "required": false
+          },
+          {
+            "type": "dropdown",
+            "name": "grid",
+            "title": {
+              "en": "Grid charge"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "generator",
+            "title": {
+              "en": "Generator charge"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "sell",
+            "title": {
+              "en": "Solar selling"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_timeslot_time",
+        "title": {
+          "en": "Set timeslot start time"
+        },
+        "titleFormatted": {
+          "en": "Set start time of [[slot]] to [[time]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "slot",
+            "title": {
+              "en": "Timeslot"
+            },
+            "values": [
+              {
+                "id": "1",
+                "title": {
+                  "en": "Timeslot 1"
+                }
+              },
+              {
+                "id": "2",
+                "title": {
+                  "en": "Timeslot 2"
+                }
+              },
+              {
+                "id": "3",
+                "title": {
+                  "en": "Timeslot 3"
+                }
+              },
+              {
+                "id": "4",
+                "title": {
+                  "en": "Timeslot 4"
+                }
+              },
+              {
+                "id": "5",
+                "title": {
+                  "en": "Timeslot 5"
+                }
+              },
+              {
+                "id": "6",
+                "title": {
+                  "en": "Timeslot 6"
+                }
+              }
+            ]
+          },
+          {
+            "type": "time",
+            "name": "time",
+            "title": {
+              "en": "Start time"
+            },
+            "placeholder": {
+              "en": "HH:mm"
+            }
+          }
+        ]
+      },
+      {
+        "id": "set_timeslot_power_soc",
+        "title": {
+          "en": "Set timeslot power limit and minimum SOC"
+        },
+        "hint": {
+          "en": "Leave a field empty, or choose 'Leave unchanged', to keep its current value in the inverter."
+        },
+        "titleFormatted": {
+          "en": "Set [[slot]]: power [[power]] W, min SOC [[soc]] %"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "slot",
+            "title": {
+              "en": "Timeslot"
+            },
+            "values": [
+              {
+                "id": "1",
+                "title": {
+                  "en": "Timeslot 1"
+                }
+              },
+              {
+                "id": "2",
+                "title": {
+                  "en": "Timeslot 2"
+                }
+              },
+              {
+                "id": "3",
+                "title": {
+                  "en": "Timeslot 3"
+                }
+              },
+              {
+                "id": "4",
+                "title": {
+                  "en": "Timeslot 4"
+                }
+              },
+              {
+                "id": "5",
+                "title": {
+                  "en": "Timeslot 5"
+                }
+              },
+              {
+                "id": "6",
+                "title": {
+                  "en": "Timeslot 6"
+                }
+              }
+            ]
+          },
+          {
+            "type": "number",
+            "name": "power",
+            "title": {
+              "en": "Power limit (W)"
+            },
+            "placeholder": {
+              "en": "empty = unchanged"
+            },
+            "min": 0,
+            "max": 65535,
+            "step": 100,
+            "required": false
+          },
+          {
+            "type": "number",
+            "name": "soc",
+            "title": {
+              "en": "Minimum SOC (%)"
+            },
+            "placeholder": {
+              "en": "empty = unchanged"
+            },
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "required": false
+          }
+        ]
+      },
+      {
+        "id": "set_timeslot_charge_options",
+        "title": {
+          "en": "Set timeslot grid charge, generator charge and solar selling"
+        },
+        "hint": {
+          "en": "Only the options you change are written; the slot's mode is never touched."
+        },
+        "titleFormatted": {
+          "en": "Set [[slot]]: grid charge [[grid]], generator charge [[generator]], solar selling [[sell]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "slot",
+            "title": {
+              "en": "Timeslot"
+            },
+            "values": [
+              {
+                "id": "1",
+                "title": {
+                  "en": "Timeslot 1"
+                }
+              },
+              {
+                "id": "2",
+                "title": {
+                  "en": "Timeslot 2"
+                }
+              },
+              {
+                "id": "3",
+                "title": {
+                  "en": "Timeslot 3"
+                }
+              },
+              {
+                "id": "4",
+                "title": {
+                  "en": "Timeslot 4"
+                }
+              },
+              {
+                "id": "5",
+                "title": {
+                  "en": "Timeslot 5"
+                }
+              },
+              {
+                "id": "6",
+                "title": {
+                  "en": "Timeslot 6"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "grid",
+            "title": {
+              "en": "Grid charge"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "generator",
+            "title": {
+              "en": "Generator charge"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "sell",
+            "title": {
+              "en": "Solar selling"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_all_timeslots",
+        "title": {
+          "en": "Set all time of use timeslots"
+        },
+        "hint": {
+          "en": "Applies the same values to all 6 timeslots. Start times are not changed. Leave a field empty, or choose 'Leave unchanged', to keep its current value."
+        },
+        "titleFormatted": {
+          "en": "Set all timeslots: power [[power]] W, min SOC [[soc]] %, grid charge [[grid]], generator charge [[generator]], solar selling [[sell]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "power",
+            "title": {
+              "en": "Power limit (W)"
+            },
+            "placeholder": {
+              "en": "empty = unchanged"
+            },
+            "min": 0,
+            "max": 65535,
+            "step": 100,
+            "required": false
+          },
+          {
+            "type": "number",
+            "name": "soc",
+            "title": {
+              "en": "Minimum SOC (%)"
+            },
+            "placeholder": {
+              "en": "empty = unchanged"
+            },
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "required": false
+          },
+          {
+            "type": "dropdown",
+            "name": "grid",
+            "title": {
+              "en": "Grid charge"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "generator",
+            "title": {
+              "en": "Generator charge"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "sell",
+            "title": {
+              "en": "Solar selling"
+            },
+            "values": [
+              {
+                "id": "keep",
+                "title": {
+                  "en": "Leave unchanged"
+                }
+              },
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_max_sell_power",
+        "title": {
+          "en": "Set max sell power"
+        },
+        "titleFormatted": {
+          "en": "Set max sell power to [[power]] W"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "power",
+            "title": {
+              "en": "Power (W)"
+            },
+            "min": 0,
+            "max": 65535,
+            "step": 100
+          }
+        ]
+      },
+      {
+        "id": "set_max_solar_power",
+        "title": {
+          "en": "Set max solar power"
+        },
+        "titleFormatted": {
+          "en": "Set max solar power to [[power]] W"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "power",
+            "title": {
+              "en": "Power (W)"
+            },
+            "min": 0,
+            "max": 65535,
+            "step": 100
+          }
+        ]
+      },
+      {
+        "id": "set_time_of_use_enabled",
+        "title": {
+          "en": "Turn time of use on or off"
+        },
+        "titleFormatted": {
+          "en": "Set time of use to [[onoff]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "onoff",
+            "title": {
+              "en": "On/Off"
+            },
+            "values": [
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set_time_of_use_day_enabled",
+        "title": {
+          "en": "Turn time of use on or off for a weekday"
+        },
+        "titleFormatted": {
+          "en": "Set time of use to [[onoff]] for [[day]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "dropdown",
+            "name": "onoff",
+            "title": {
+              "en": "On/Off"
+            },
+            "values": [
+              {
+                "id": "on",
+                "title": {
+                  "en": "On"
+                }
+              },
+              {
+                "id": "off",
+                "title": {
+                  "en": "Off"
+                }
+              }
+            ]
+          },
+          {
+            "type": "dropdown",
+            "name": "day",
+            "title": {
+              "en": "Day"
+            },
+            "values": [
+              {
+                "id": "1",
+                "title": {
+                  "en": "Monday"
+                }
+              },
+              {
+                "id": "2",
+                "title": {
+                  "en": "Tuesday"
+                }
+              },
+              {
+                "id": "3",
+                "title": {
+                  "en": "Wednesday"
+                }
+              },
+              {
+                "id": "4",
+                "title": {
+                  "en": "Thursday"
+                }
+              },
+              {
+                "id": "5",
+                "title": {
+                  "en": "Friday"
+                }
+              },
+              {
+                "id": "6",
+                "title": {
+                  "en": "Saturday"
+                }
+              },
+              {
+                "id": "7",
+                "title": {
+                  "en": "Sunday"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "write_register",
+        "title": {
+          "en": "Write value to register (advanced)"
+        },
+        "hint": {
+          "en": "Writes a raw value to a holding register. Must be enabled in the device settings. A wrong value can change inverter behaviour."
+        },
+        "titleFormatted": {
+          "en": "Write [[value]] to register [[address]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "address",
+            "title": {
+              "en": "Register"
+            },
+            "min": 0,
+            "max": 65535,
+            "step": 1
+          },
+          {
+            "type": "number",
+            "name": "value",
+            "title": {
+              "en": "Value"
+            },
+            "min": 0,
+            "max": 65535,
+            "step": 1
+          }
+        ]
+      },
+      {
+        "id": "set_zero_export_power",
+        "title": {
+          "en": "Set zero export power"
+        },
+        "titleFormatted": {
+          "en": "Set zero export power to [[power]] W"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          },
+          {
+            "type": "number",
+            "name": "power",
+            "title": {
+              "en": "Power (W)"
+            },
+            "min": -500,
+            "max": 500,
+            "step": 1
+          }
+        ]
+      }
+    ]
+  },
+  "capabilities": {
+    "generatorworkingtime": {
+      "type": "number",
+      "title": {
+        "en": "Generator Working Time",
+        "nl": "Generator draaitijd"
+      },
+      "units": {
+        "en": "h"
+      },
+      "decimals": 1,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true
+    }
+  }
+}

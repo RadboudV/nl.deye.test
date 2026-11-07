@@ -6,14 +6,11 @@ import { EventEmitter } from 'events';
 import { Deye } from '../../lib/deye';
 import {
   readAllRegisters, readIdentity, findRegisterSet, formatProtocol, protocolHex,
-  RegisterGroup, RegisterSet, Snapshot, SnapshotSource,
+  RegisterSet, Snapshot, SnapshotSource,
 } from '../../lib/registers';
 import { ControlError, RegisterIO } from '../../lib/controls';
 
 import Homey from 'homey';
-
-// Register groups that are only read once (see infoCache)
-const INFO_GROUP: ReadonlySet<RegisterGroup> = new Set<RegisterGroup>(['info']);
 
 // Default polling interval in seconds
 const DEFAULT_POLLING_INTERVAL = 30;
@@ -42,11 +39,6 @@ class MyDeyeDevice extends Deye implements SnapshotSource {
   // It is read on every poll; null = not known yet or not supported.
   private registerSet: RegisterSet | null = null;
   private unsupportedReason: string | null = null;
-
-  // The 'info' registers (serial, rated power, firmware versions) never change, so they are read
-  // once after startup and kept here. Reset when the register map, the connection settings or the
-  // serial number change (= another inverter).
-  private infoCache: Snapshot | null = null;
 
   getSnapshot(): Snapshot { return this.snapshot; }
   
@@ -105,11 +97,6 @@ class MyDeyeDevice extends Deye implements SnapshotSource {
       this.log(set ? `Communication protocol ${label}: using register set ${set.name}` : `Communication protocol ${label} is not supported`);
       this.registerSet = set;
       this.unsupported.clear();
-      this.infoCache = null;
-    }
-    if (this.infoCache && serial && this.infoCache.serial?.value !== serial) {
-      this.log('Serial number changed, reading the info registers again');
-      this.infoCache = null;
     }
     this.setSettingIfChanged('protocolversion', set ? label : `${label} - not supported`);
     if (serial) this.setSettingIfChanged('serial', serial);
@@ -278,7 +265,6 @@ private debug(...args: any[]): void {
 	  this.available = null;
 	  this.registerSet = null;
 	  this.unsupported.clear();
-	  this.infoCache = null;
 	  // onSettings runs before the new values are stored, so poll a moment later
 	  this.homey.setTimeout(() => this.pollDeyeInverter('datavalues'), 1000);
     }
@@ -343,19 +329,9 @@ private debug(...args: any[]): void {
 
       // One snapshot with ALL registers, read in a few block requests. Timeouts and connection
       // errors are thrown and handled below; registers the inverter rejects are skipped.
-      const fresh = await readAllRegisters(client, set, this.unsupported, this.infoCache ? INFO_GROUP : undefined);
+      const finalRes = await readAllRegisters(client, set, this.unsupported);
       // If nothing could be read, treat it as a dead link:
-      if (Object.keys(fresh).length === 0) throw new Error('no registers could be read');
-
-      // Info registers: keep the first valid read (the serial number is the proof), reuse it on later polls
-      let finalRes = fresh;
-      if (this.infoCache) {
-        finalRes = { ...this.infoCache, ...fresh };
-      } else {
-        const info: Snapshot = {};
-        for (const [key, m] of Object.entries(fresh)) if (m.group === 'info') info[key] = m;
-        if (info.serial && info.serial.value.trim() !== '') this.infoCache = info;
-      }
+      if (Object.keys(finalRes).length === 0) throw new Error('no registers could be read');
  
       this.markSuccess();
       if (this.getSetting('modbusstatus') !== 'Connected') {

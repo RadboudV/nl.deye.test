@@ -2,7 +2,6 @@ import Homey from 'homey';
 
 import type { Measurement } from './registers';
 import { OwnEnergyCounter } from './energycounter';
-import { CapabilityWriter } from './capabilitywriter';
 
 // The inverter device processes the inverter groups of the snapshot only.
 // Battery values are handled by the battery device (lib/battery.ts).
@@ -18,9 +17,6 @@ const MAX_BATTERY_TEMP_RAW = 1500;
 const MIN_BATTERY_TEMP_RAW = 1000;
 
 export class Deye extends Homey.Device {
-
-    // Only sends a capability value to Homey when it changed since the last poll
-    protected writer = new CapabilityWriter(this);
 
     // Daily / total energy of the inverter's own power usage (integrated from measure_power.deyeownconsumption)
     private ownCounter?: OwnEnergyCounter;
@@ -46,7 +42,7 @@ export class Deye extends Homey.Device {
                 await this.addCapability(capability).catch(this.error);
                 await this.setCapabilityOptions(capability, { "title": { "en": en, "nl": nl }, "decimals": 2, "duration": false });
             }
-            await this.writer.set(capability, Math.round(value * 1000) / 1000).catch(this.error);
+            await this.setCapabilityValue(capability, Math.round(value * 1000) / 1000).catch(this.error);
         }
 
         // Persist at most every 5 minutes (and at midnight), so a restart loses at most a few minutes of data
@@ -76,7 +72,7 @@ export class Deye extends Homey.Device {
 					await this.addCapability('measure_temperature.heatsinktemperature').catch(this.error);
 				}
                 var heatsinktemperature = Number(result['heatsinktemperature'].value) * (Math.pow(10, Number(result['heatsinktemperature'].scale)));
-                await this.writer.set('measure_temperature.heatsinktemperature', ((heatsinktemperature-1000)/10)).catch(this.error);
+                await this.setCapabilityValue('measure_temperature.heatsinktemperature', ((heatsinktemperature-1000)/10)).catch(this.error);
             }
 // DC Transformer Temperature
 /*
@@ -90,7 +86,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var dctransformertemperature = Number(result['dctransformertemperature'].value) * (Math.pow(10, Number(result['dctransformertemperature'].scale)));
-                await await this.writer.set('measure_temperature.dctransformertemperature', ((dctransformertemperature-1000)/10));
+                await await this.setCapabilityValue('measure_temperature.dctransformertemperature', ((dctransformertemperature-1000)/10));
             }
 */
 //Grid Power
@@ -105,7 +101,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var gridpower = Number(result['gridpower'].value) * (Math.pow(10, Number(result['gridpower'].scale)));
-                await this.writer.set('measure_power.gridpower', gridpower);
+                await this.setCapabilityValue('measure_power.gridpower', gridpower);
             }
 */
 //L1 Grid Voltage
@@ -120,7 +116,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var l1gridvoltage = Number(result['l1gridvoltage'].value) * (Math.pow(10, Number(result['l1gridvoltage'].scale)));
-                await this.writer.set('measure_voltage.l1gridvoltage', l1gridvoltage).catch(this.error);
+                await this.setCapabilityValue('measure_voltage.l1gridvoltage', l1gridvoltage).catch(this.error);
             }
 //L2 Grid Voltage
             if (result['l2gridvoltage'] && result['l2gridvoltage'].value != 'xxx') {
@@ -134,7 +130,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var l2gridvoltage = Number(result['l2gridvoltage'].value) * (Math.pow(10, Number(result['l2gridvoltage'].scale)));
-                await this.writer.set('measure_voltage.l2gridvoltage', l2gridvoltage).catch(this.error);
+                await this.setCapabilityValue('measure_voltage.l2gridvoltage', l2gridvoltage).catch(this.error);
             }
 //L3 Grid Voltage
             if (result['l3gridvoltage'] && result['l3gridvoltage'].value != 'xxx') {
@@ -148,7 +144,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var l3gridvoltage = Number(result['l3gridvoltage'].value) * (Math.pow(10, Number(result['l3gridvoltage'].scale)));
-                await this.writer.set('measure_voltage.l3gridvoltage', l3gridvoltage).catch(this.error);
+                await this.setCapabilityValue('measure_voltage.l3gridvoltage', l3gridvoltage).catch(this.error);
             }
 
 //Inverter Frequency
@@ -164,7 +160,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var inverterfrequency = Number(result['inverterfrequency'].value) * (Math.pow(10, Number(result['inverterfrequency'].scale)));
-                await this.writer.set('measure_frequency.inverterfrequency', inverterfrequency).catch(this.error);
+                await this.setCapabilityValue('measure_frequency.inverterfrequency', inverterfrequency).catch(this.error);
             }
 
 //Load Frequency
@@ -180,7 +176,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var loadfrequency = Number(result['loadfrequency'].value) * (Math.pow(10, Number(result['loadfrequency'].scale)));
-                await this.writer.set('measure_frequency.loadfrequency', loadfrequency).catch(this.error);
+                await this.setCapabilityValue('measure_frequency.loadfrequency', loadfrequency).catch(this.error);
             }
 
 //Grid Frequency
@@ -196,7 +192,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var gridfrequency = Number(result['gridfrequency'].value) * (Math.pow(10, Number(result['gridfrequency'].scale)));
-                await this.writer.set('measure_frequency.gridfrequency', gridfrequency).catch(this.error);
+                await this.setCapabilityValue('measure_frequency.gridfrequency', gridfrequency).catch(this.error);
             }
 // ************
 // ****** Solar
@@ -214,7 +210,7 @@ export class Deye extends Homey.Device {
 				}
                 var pv1inputpower = Number(result['pv1inputpower'].value) * (Math.pow(10, Number(result['pv1inputpower'].scale)));
 				if (pv1inputpower < MAX_PV_POWER) {
-					await this.writer.set('measure_power.pv1inputpower', pv1inputpower).catch(this.error);
+					await this.setCapabilityValue('measure_power.pv1inputpower', pv1inputpower).catch(this.error);
 					}
             }
 //PV2 Input Power
@@ -230,7 +226,7 @@ export class Deye extends Homey.Device {
 				}
                 var pv2inputpower = Number(result['pv2inputpower'].value) * (Math.pow(10, Number(result['pv2inputpower'].scale)));
 				if (pv2inputpower < MAX_PV_POWER) {
-					await this.writer.set('measure_power.pv2inputpower', pv2inputpower).catch(this.error);
+					await this.setCapabilityValue('measure_power.pv2inputpower', pv2inputpower).catch(this.error);
 					}
             }
 /*PV3 Input Power
@@ -245,7 +241,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var pv3inputpower = Number(result['pv3inputpower'].value) * (Math.pow(10, Number(result['pv3inputpower'].scale)));
-                await this.writer.set('measure_power.pv3inputpower', pv3inputpower);
+                await this.setCapabilityValue('measure_power.pv3inputpower', pv3inputpower);
             }
 */
 
@@ -265,7 +261,7 @@ export class Deye extends Homey.Device {
             // var totalpvinputpower = ((Number(result['pv2inputpower'].value) * (Math.pow(10, Number(result['pv2inputpower'].scale)))) + (Number(result['pv1inputpower'].value) * (Math.pow(10, Number(result['pv1inputpower'].scale)))));
 			// var totalpvinputpower = (this.getCapabilityValue('measure_power.pv1inputpower') + this.getCapabilityValue('measure_power.pv2inputpower'));
 			if (totalpvinputpower < MAX_PV_POWER) {
-				await this.writer.set('measure_power.totalpvinputpower', totalpvinputpower).catch(this.error);
+				await this.setCapabilityValue('measure_power.totalpvinputpower', totalpvinputpower).catch(this.error);
 				}
 			}
 //PV1 Voltage
@@ -280,7 +276,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var pv1voltage = Number(result['pv1voltage'].value) * (Math.pow(10, Number(result['pv1voltage'].scale)));
-                await this.writer.set('measure_voltage.pv1voltage', pv1voltage).catch(this.error);
+                await this.setCapabilityValue('measure_voltage.pv1voltage', pv1voltage).catch(this.error);
             }
 //PV2 Voltage
             if (result['pv2voltage'] && result['pv2voltage'].value != 'xxx') {
@@ -294,7 +290,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var pv2voltage = Number(result['pv2voltage'].value) * (Math.pow(10, Number(result['pv2voltage'].scale)));
-                await this.writer.set('measure_voltage.pv2voltage', pv2voltage).catch(this.error);
+                await this.setCapabilityValue('measure_voltage.pv2voltage', pv2voltage).catch(this.error);
             }
 /*PV3 Voltage
             if (result['pv3voltage'] && result['pv3voltage'].value != 'xxx') {
@@ -308,7 +304,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var pv3voltage = Number(result['pv3voltage'].value) * (Math.pow(10, Number(result['pv3voltage'].scale)));
-                await this.writer.set('measure_voltage.pv3voltage', pv3voltage);
+                await this.setCapabilityValue('measure_voltage.pv3voltage', pv3voltage);
             }
 */
 
@@ -324,7 +320,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var dailysolarproduction = Number(result['dailysolarproduction'].value) * (Math.pow(10, Number(result['dailysolarproduction'].scale)));
-                await this.writer.set('meter_power.dailysolarproduction', dailysolarproduction).catch(this.error);
+                await this.setCapabilityValue('meter_power.dailysolarproduction', dailysolarproduction).catch(this.error);
             }
 
 // Total Solar Power
@@ -339,8 +335,8 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var totalsolarproduction = Number(result['totalsolarproduction'].value) * (Math.pow(10, Number(result['totalsolarproduction'].scale)));
-                await this.writer.set('meter_power.totalsolarproduction', totalsolarproduction).catch(this.error);
-				await this.writer.set('meter_power', totalsolarproduction).catch(this.error);
+                await this.setCapabilityValue('meter_power.totalsolarproduction', totalsolarproduction).catch(this.error);
+				await this.setCapabilityValue('meter_power', totalsolarproduction).catch(this.error);
             }
 
 
@@ -360,7 +356,7 @@ export class Deye extends Homey.Device {
                 var batterypower = Number(result['batterypower'].value) * (Math.pow(10, Number(result['batterypower'].scale)));
 
                 if (batterypower < 24150 && batterypower > -24150) {
-					await this.writer.set('measure_power.batterypower', batterypower).catch(this.error);
+					await this.setCapabilityValue('measure_power.batterypower', batterypower).catch(this.error);
 					}
             }
 // Battery Voltage
@@ -375,7 +371,7 @@ export class Deye extends Homey.Device {
 				}
                 var batteryvoltage = Number(result['batteryvoltage'].value) * (Math.pow(10, Number(result['batteryvoltage'].scale)));
 				if (batteryvoltage < MAX_BATTERY_VOLTAGE) {
-					await this.writer.set('measure_voltage.batteryvoltage', batteryvoltage).catch(this.error);
+					await this.setCapabilityValue('measure_voltage.batteryvoltage', batteryvoltage).catch(this.error);
 					}
             }
 // Battery Current
@@ -384,7 +380,7 @@ export class Deye extends Homey.Device {
 					await this.addCapability('measure_current.batterycurrent').catch(this.error);
 				}
                 var batterycurrent = Number(result['batterycurrent'].value) * (Math.pow(10, Number(result['batterycurrent'].scale)));
-					await await this.writer.set('measure_current.batterycurrent', batterycurrent).catch(this.error);
+					await await this.setCapabilityValue('measure_current.batterycurrent', batterycurrent).catch(this.error);
             }
 // Battery Percentage
             if (result['batterypercentage'] && result['batterypercentage'].value != 'xxx') {
@@ -393,7 +389,7 @@ export class Deye extends Homey.Device {
 				}
                 var batterypercentage = Number(result['batterypercentage'].value) * (Math.pow(10, Number(result['batterypercentage'].scale)));
 				if (batterypercentage > 0 && batterypercentage <= 100) {
-					await this.writer.set('measure_battery', batterypercentage).catch(this.error);
+					await this.setCapabilityValue('measure_battery', batterypercentage).catch(this.error);
 					}
             }
 
@@ -410,7 +406,7 @@ export class Deye extends Homey.Device {
                 var batterytemperature = Number(result['batterytemperature'].value) * (Math.pow(10, Number(result['batterytemperature'].scale)));
 
 				if (batterytemperature >= MIN_BATTERY_TEMP_RAW && batterytemperature <= MAX_BATTERY_TEMP_RAW) {
-					await this.writer.set('measure_temperature.batterytemperature', ((batterytemperature-1000)/10)).catch(this.error);
+					await this.setCapabilityValue('measure_temperature.batterytemperature', ((batterytemperature-1000)/10)).catch(this.error);
 					}
             }
 // Today Battery Charge
@@ -425,7 +421,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var batterytodaycharge = Number(result['batterytodaycharge'].value) * (Math.pow(10, Number(result['batterytodaycharge'].scale)));
-                await this.writer.set('meter_power.batterytodaycharge', batterytodaycharge).catch(this.error);
+                await this.setCapabilityValue('meter_power.batterytodaycharge', batterytodaycharge).catch(this.error);
             }
 
 // Total Battery Charge
@@ -440,7 +436,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var batterytotalcharge = Number(result['batterytotalcharge'].value) * (Math.pow(10, Number(result['batterytotalcharge'].scale)));
-                await this.writer.set('meter_power.batterytotalcharge', batterytotalcharge).catch(this.error);
+                await this.setCapabilityValue('meter_power.batterytotalcharge', batterytotalcharge).catch(this.error);
             }
 
 // Today Battery DISCharge
@@ -455,7 +451,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var batterytodaydischarge = Number(result['batterytodaydischarge'].value) * (Math.pow(10, Number(result['batterytodaydischarge'].scale)));
-                await this.writer.set('meter_power.batterytodaydischarge', batterytodaydischarge).catch(this.error);
+                await this.setCapabilityValue('meter_power.batterytodaydischarge', batterytodaydischarge).catch(this.error);
             }
 
 // Total Battery DISCharge
@@ -470,7 +466,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var batterytotaldischarge = Number(result['batterytotaldischarge'].value) * (Math.pow(10, Number(result['batterytotaldischarge'].scale)));
-                await this.writer.set('meter_power.batterytotaldischarge', batterytotaldischarge).catch(this.error);
+                await this.setCapabilityValue('meter_power.batterytotaldischarge', batterytotaldischarge).catch(this.error);
             }
 
 // **************
@@ -488,7 +484,7 @@ export class Deye extends Homey.Device {
 						});
 				}
                 var loadtotalpower = Number(result['loadtotalpower'].value) * (Math.pow(10, Number(result['loadtotalpower'].scale)));
-                await this.writer.set('measure_power.loadtotalpower', loadtotalpower).catch(this.error);
+                await this.setCapabilityValue('measure_power.loadtotalpower', loadtotalpower).catch(this.error);
             }
 // **************
 // ****** Grid
@@ -535,7 +531,7 @@ export class Deye extends Homey.Device {
                 var gridpower = Number(result['gridpower'].value) * (Math.pow(10, Number(result['gridpower'].scale)));
 				
 				if (gridpower < MAX_GRIDPOWER_ABSOLUTE && gridpower > -MAX_GRIDPOWER_ABSOLUTE) {
-					await this.writer.set('measure_power.gridpower', gridpower).catch(this.error);
+					await this.setCapabilityValue('measure_power.gridpower', gridpower).catch(this.error);
 					}
             }
 
@@ -556,7 +552,7 @@ export class Deye extends Homey.Device {
 				}
 				if (Number(result['gridpower'].value) < 24150 && Number(result['gridpower'].value) > -24150 && Number(result['pv1inputpower'].value) < MAX_PV_POWER && Number(result['pv2inputpower'].value) < MAX_PV_POWER && Number(result['batterypower'].value) < 24150 && Number(result['batterypower'].value) > -24150) {
 					var deyeownconsumption = Number(result['gridpower'].value) + Number(result['pv1inputpower'].value) + Number(result['pv2inputpower'].value) - (-Number(result['batterypower'].value)) - Number(result['loadtotalpower'].value)
-					await this.writer.set('measure_power.deyeownconsumption', deyeownconsumption).catch(this.error);
+					await this.setCapabilityValue('measure_power.deyeownconsumption', deyeownconsumption).catch(this.error);
 					await this.countOwnUsage(deyeownconsumption);
 					}
             }

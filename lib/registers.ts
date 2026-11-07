@@ -307,13 +307,11 @@ export function planBlocks(
 // Plans are cached per register set and per set of rejected registers, so a block that
 // would span a rejected address is split around it instead of failing every poll.
 const planCache = new Map<string, ReadBlock[]>();
-const NO_GROUPS: ReadonlySet<RegisterGroup> = new Set();
-function blocksFor(set: RegisterSet, unsupported: Set<string>, skipGroups: ReadonlySet<RegisterGroup> = NO_GROUPS): ReadBlock[] {
-  const signature = `${set.protocol}|${[...unsupported].sort().join(',')}|${[...skipGroups].sort().join(',')}`;
+function blocksFor(set: RegisterSet, unsupported: Set<string>): ReadBlock[] {
+  const signature = `${set.protocol}|${[...unsupported].sort().join(',')}`;
   let blocks = planCache.get(signature);
   if (!blocks) {
-    const usable = Object.fromEntries(Object.entries(set.registers)
-      .filter(([k, def]) => !unsupported.has(k) && !skipGroups.has(def.group)));
+    const usable = Object.fromEntries(Object.entries(set.registers).filter(([k]) => !unsupported.has(k)));
     const avoid = [...unsupported].flatMap((k) =>
       set.registers[k] ? Array.from({ length: set.registers[k].length }, (_, i) => set.registers[k].address + i) : []);
     blocks = planBlocks(usable, avoid);
@@ -365,7 +363,6 @@ export async function readAllRegisters(
   client: ModbusClient,
   set: RegisterSet,
   unsupported: Set<string> = new Set(),
-  skipGroups: ReadonlySet<RegisterGroup> = NO_GROUPS,
 ): Promise<Snapshot> {
   const result: Snapshot = {};
   const put = (key: string, words: number[]) => {
@@ -373,7 +370,7 @@ export async function readAllRegisters(
     result[key] = { value: decode(def, words), scale: def.scale, label: def.label, group: def.group };
   };
 
-  for (const block of blocksFor(set, unsupported, skipGroups)) {
+  for (const block of blocksFor(set, unsupported)) {
     const keys = block.keys.filter((k) => !unsupported.has(k));
     if (keys.length === 0) continue;
 
