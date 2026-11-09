@@ -11,8 +11,6 @@
 		"meter_power.batterytotaldischarge",
 		"meter_power.dailyimported",
 		"meter_power.imported",
-		"meter_power.dailyexported",
-		"meter_power.exported",
 		"measure_temperature.heatsinktemperature"
 		],
 	"capabilitiesOptions": {
@@ -32,22 +30,6 @@
 			"decimals": 2,
 			"duration": false
 			},
-		"meter_power.dailyexported": {
-			"title": {
-				"en": "Today Home Load Exported",
-				"nl": "Vandaag Huisverbruik teruggeleverd"
-				},
-			"decimals": 2,
-			"duration": false
-			},
-		"meter_power.exported": {
-			"title": {
-				"en": "Total Home Load Exported",
-				"nl": "Totaal Huisverbruik teruggeleverd"
-				},
-			"decimals": 2,
-			"duration": false
-			},
 		"measure_temperature.heatsinktemperature": {
 			"title": {
 				"en": "Heatsink temperature",
@@ -59,8 +41,7 @@
   },
   	"energy": {
 		"cumulative": true,
-		"cumulativeImportedCapability": "meter_power.imported",
-		"cumulativeExportedCapability": "meter_power.exported"
+		"cumulativeImportedCapability": "meter_power.imported"
 		},
    "platforms": [
     "local"
