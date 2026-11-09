@@ -48,7 +48,7 @@ export class DeyeBattery extends Homey.Device {
   /** Scaled numeric value for a snapshot key, or null when it is not in the snapshot. */
   protected num(result: Snapshot, key: string): number | null {
     const m = result[key];
-    if (!m || m.value === 'xxx') return null;
+    if (!m) return null;
     return Number(m.value) * Math.pow(10, Number(m.scale));
   }
 
@@ -105,6 +105,6 @@ export class DeyeBattery extends Homey.Device {
       if (v !== null) await this.setSettingIfChanged(settingKey, String(v));
     }
     const serial = result[SERIAL_KEY];
-    if (serial && serial.value !== 'xxx') await this.setSettingIfChanged('serial', serial.value);
+    if (serial) await this.setSettingIfChanged('serial', serial.value);
   }
 }

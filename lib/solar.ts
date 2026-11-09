@@ -76,6 +76,6 @@ export class DeyeSolar extends Homey.Device {
 
     // Read-only information shown in the device settings. Written only when it changed.
     const serial = snapshot[SERIAL_KEY];
-    if (serial && serial.value !== 'xxx') await this.setSettingIfChanged('serial', serial.value);
+    if (serial) await this.setSettingIfChanged('serial', serial.value);
   }
 }

@@ -68,7 +68,7 @@ export class Deye extends Homey.Device {
 //            }
 
 // Heat Sink Temperature
-            if (result['heatsinktemperature'] && result['heatsinktemperature'].value != 'xxx') {
+            if (result['heatsinktemperature']) {
 				if (!this.hasCapability('measure_temperature.heatsinktemperature')) {
 					await this.addCapability('measure_temperature.heatsinktemperature').catch(this.error);
 				}
@@ -77,7 +77,7 @@ export class Deye extends Homey.Device {
             }
 // DC Transformer Temperature
 /*
-            if (result['dctransformertemperature'] && result['dctransformertemperature'].value != 'xxx') {
+            if (result['dctransformertemperature']) {
 				if (!this.hasCapability('measure_temperature.dctransformertemperature')) {
 					await this.addCapability('measure_temperature.dctransformertemperature').catch(this.error);
 					await this.setCapabilityOptions('measure_temperature.dctransformertemperature', { "title": {
@@ -92,7 +92,7 @@ export class Deye extends Homey.Device {
 */
 
 //L1 Grid Voltage
-            if (result['l1gridvoltage'] && result['l1gridvoltage'].value != 'xxx') {
+            if (result['l1gridvoltage']) {
 				if (!this.hasCapability('measure_voltage.l1gridvoltage')) {
 					await this.addCapability('measure_voltage.l1gridvoltage').catch(this.error);
 					await this.setCapabilityOptions('measure_voltage.l1gridvoltage', { "title": {
@@ -106,7 +106,7 @@ export class Deye extends Homey.Device {
                 await this.setCapabilityValue('measure_voltage.l1gridvoltage', l1gridvoltage).catch(this.error);
             }
 //L2 Grid Voltage
-            if (result['l2gridvoltage'] && result['l2gridvoltage'].value != 'xxx') {
+            if (result['l2gridvoltage']) {
 				if (!this.hasCapability('measure_voltage.l2gridvoltage')) {
 					await this.addCapability('measure_voltage.l2gridvoltage').catch(this.error);
 					await this.setCapabilityOptions('measure_voltage.l2gridvoltage', { "title": {
@@ -120,7 +120,7 @@ export class Deye extends Homey.Device {
                 await this.setCapabilityValue('measure_voltage.l2gridvoltage', l2gridvoltage).catch(this.error);
             }
 //L3 Grid Voltage
-            if (result['l3gridvoltage'] && result['l3gridvoltage'].value != 'xxx') {
+            if (result['l3gridvoltage']) {
 				if (!this.hasCapability('measure_voltage.l3gridvoltage')) {
 					await this.addCapability('measure_voltage.l3gridvoltage').catch(this.error);
 					await this.setCapabilityOptions('measure_voltage.l3gridvoltage', { "title": {
@@ -135,7 +135,7 @@ export class Deye extends Homey.Device {
             }
 
 //Inverter Frequency
-            if (result['inverterfrequency'] && result['inverterfrequency'].value != 'xxx') {
+            if (result['inverterfrequency']) {
 				if (!this.hasCapability('measure_frequency.inverterfrequency')) {
 					await this.addCapability('measure_frequency.inverterfrequency').catch(this.error);
 					await this.setCapabilityOptions('measure_frequency.inverterfrequency', { "title": {
@@ -151,7 +151,7 @@ export class Deye extends Homey.Device {
             }
 
 //Load Frequency
-            if (result['loadfrequency'] && result['loadfrequency'].value != 'xxx') {
+            if (result['loadfrequency']) {
 				if (!this.hasCapability('measure_frequency.loadfrequency')) {
 					await this.addCapability('measure_frequency.loadfrequency').catch(this.error);
 					await this.setCapabilityOptions('measure_frequency.loadfrequency', { "title": {
@@ -167,7 +167,7 @@ export class Deye extends Homey.Device {
             }
 
 //Grid Frequency
-            if (result['gridfrequency'] && result['gridfrequency'].value != 'xxx') {
+            if (result['gridfrequency']) {
 				if (!this.hasCapability('measure_frequency.gridfrequency')) {
 					await this.addCapability('measure_frequency.gridfrequency').catch(this.error);
 					await this.setCapabilityOptions('measure_frequency.gridfrequency', { "title": {
@@ -187,7 +187,7 @@ export class Deye extends Homey.Device {
 // ****** Battery
 // **************
 //Battery Power
-            if (result['batterypower'] && result['batterypower'].value != 'xxx') {
+            if (result['batterypower']) {
 				if (!this.hasCapability('measure_power.batterypower')) {
 					await this.addCapability('measure_power.batterypower').catch(this.error);
 					await this.setCapabilityOptions('measure_power.batterypower', { "title": {
@@ -203,7 +203,7 @@ export class Deye extends Homey.Device {
 					}
             }
 // Battery Voltage
-            if (result['batteryvoltage'] && result['batteryvoltage'].value != 'xxx') {
+            if (result['batteryvoltage']) {
 				if (!this.hasCapability('measure_voltage.batteryvoltage')) {
 					await this.addCapability('measure_voltage.batteryvoltage').catch(this.error);
 					await this.setCapabilityOptions('measure_voltage.batteryvoltage', { "title": {
@@ -218,7 +218,7 @@ export class Deye extends Homey.Device {
 					}
             }
 // Battery Current
-            if (result['batterycurrent'] && result['batterycurrent'].value != 'xxx') {
+            if (result['batterycurrent']) {
 				if (!this.hasCapability('measure_current.batterycurrent')) {
 					await this.addCapability('measure_current.batterycurrent').catch(this.error);
 				}
@@ -226,7 +226,7 @@ export class Deye extends Homey.Device {
 					await await this.setCapabilityValue('measure_current.batterycurrent', batterycurrent).catch(this.error);
             }
 // Battery Percentage
-            if (result['batterypercentage'] && result['batterypercentage'].value != 'xxx') {
+            if (result['batterypercentage']) {
 				if (!this.hasCapability('measure_battery')) {
 					await this.addCapability('measure_battery').catch(this.error);
 				}
@@ -237,7 +237,7 @@ export class Deye extends Homey.Device {
             }
 
 // Battery Temperature
-            if (result['batterytemperature'] && result['batterytemperature'].value != 'xxx') {
+            if (result['batterytemperature']) {
 				if (!this.hasCapability('measure_temperature.batterytemperature')) {
 					await this.addCapability('measure_temperature.batterytemperature').catch(this.error);
 					await this.setCapabilityOptions('measure_temperature.batterytemperature', { "title": {
@@ -253,7 +253,7 @@ export class Deye extends Homey.Device {
 					}
             }
 // Today Battery Charge
-            if (result['batterytodaycharge'] && result['batterytodaycharge'].value != 'xxx') {
+            if (result['batterytodaycharge']) {
 				if (!this.hasCapability('meter_power.batterytodaycharge')) {
 					await this.addCapability('meter_power.batterytodaycharge').catch(this.error);
 					await this.setCapabilityOptions('meter_power.batterytodaycharge', { "title": {
@@ -268,7 +268,7 @@ export class Deye extends Homey.Device {
             }
 
 // Total Battery Charge
-            if (result['batterytotalcharge'] && result['batterytotalcharge'].value != 'xxx') {
+            if (result['batterytotalcharge']) {
 				if (!this.hasCapability('meter_power.batterytotalcharge')) {
 					await this.addCapability('meter_power.batterytotalcharge').catch(this.error);
 					await this.setCapabilityOptions('meter_power.batterytotalcharge', { "title": {
@@ -283,7 +283,7 @@ export class Deye extends Homey.Device {
             }
 
 // Today Battery DISCharge
-            if (result['batterytodaydischarge'] && result['batterytodaydischarge'].value != 'xxx') {
+            if (result['batterytodaydischarge']) {
 				if (!this.hasCapability('meter_power.batterytodaydischarge')) {
 					await this.addCapability('meter_power.batterytodaydischarge').catch(this.error);
 					await this.setCapabilityOptions('meter_power.batterytodaydischarge', { "title": {
@@ -298,7 +298,7 @@ export class Deye extends Homey.Device {
             }
 
 // Total Battery DISCharge
-            if (result['batterytotaldischarge'] && result['batterytotaldischarge'].value != 'xxx') {
+            if (result['batterytotaldischarge']) {
 				if (!this.hasCapability('meter_power.batterytotaldischarge')) {
 					await this.addCapability('meter_power.batterytotaldischarge').catch(this.error);
 					await this.setCapabilityOptions('meter_power.batterytotaldischarge', { "title": {
@@ -317,7 +317,7 @@ export class Deye extends Homey.Device {
 // **************
 //Load (connection) Registers
 //Load(home) Power
-            if (result['loadtotalpower'] && result['loadtotalpower'].value != 'xxx') {
+            if (result['loadtotalpower']) {
 				if (!this.hasCapability('measure_power.loadtotalpower')) {
 					await this.addCapability('measure_power.loadtotalpower').catch(this.error);
 					await this.setCapabilityOptions('measure_power.loadtotalpower', { "title": {
@@ -335,7 +335,7 @@ export class Deye extends Homey.Device {
                 ['loadtotalconsumption', 'meter_power.imported', 'Total Home Load Imported', 'Totaal Huisverbruik'],
             ]) {
                 const m = result[key];
-                if (!m || m.value == 'xxx') continue;
+                if (!m) continue;
                 if (!this.hasCapability(capability)) {
                     await this.addCapability(capability).catch(this.error);
                     await this.setCapabilityOptions(capability, { "title": { "en": en, "nl": nl }, "decimals": 2, "duration": false });
@@ -375,7 +375,7 @@ export class Deye extends Homey.Device {
 */
 
 //Grid Power
-            if (result['gridpower'] && result['gridpower'].value != 'xxx') {
+            if (result['gridpower']) {
 				if (!this.hasCapability('measure_power.gridpower')) {
 					await this.addCapability('measure_power.gridpower').catch(this.error);
 					await this.setCapabilityOptions('measure_power.gridpower', { "title": {
@@ -397,7 +397,7 @@ export class Deye extends Homey.Device {
 
 
 // Calculated Deye Own Consumption
-            if (result['batterypower'] && result['batterypower'].value != 'xxx' && result['gridpower'] && result['gridpower'].value != 'xxx' && result['pv1inputpower'] && result['pv1inputpower'].value != 'xxx'  && result['pv2inputpower'] && result['pv2inputpower'].value != 'xxx'  && result['loadtotalpower'] && result['loadtotalpower'].value != 'xxx') {
+            if (result['batterypower'] && result['gridpower'] && result['pv1inputpower']  && result['pv2inputpower']  && result['loadtotalpower']) {
 				if (!this.hasCapability('measure_power.deyeownconsumption')) {
 					await this.addCapability('measure_power.deyeownconsumption').catch(this.error);
 					await this.setCapabilityOptions('measure_power.deyeownconsumption', { "title": {
@@ -420,7 +420,7 @@ export class Deye extends Homey.Device {
 
 // Read Settings and assing them a setting
 /*Cooling Mode
-            if (result['statuscooling'] && result['statuscooling'].value != 'xxx') {
+            if (result['statuscooling']) {
 //			var statuscooling = Number(result['statuscooling'].value);
 			const statuscooling = Number(result['statuscooling'].value) === 1;
 			const current = this.getSetting('settings_coolingmode');
@@ -434,7 +434,7 @@ export class Deye extends Homey.Device {
 			}
             }
 */
-   			if (result['batterysettingschargevoltage'] && result['batterysettingschargevoltage'].value != 'xxx') {
+   			if (result['batterysettingschargevoltage']) {
 				const batterysettingschargevoltage = (Number(result['batterysettingschargevoltage'].value) * (Math.pow(10, Number(result['batterysettingschargevoltage'].scale)))).toString();
 				const current = this.getSetting('maxchargevoltage');		
 				if (current !== batterysettingschargevoltage) {
@@ -443,7 +443,7 @@ export class Deye extends Homey.Device {
             }
 
 
-   			if (result['batterysettingschargecurrent'] && result['batterysettingschargecurrent'].value != 'xxx') {
+   			if (result['batterysettingschargecurrent']) {
 				const batterysettingschargecurrent = (Number(result['batterysettingschargecurrent'].value) * (Math.pow(10, Number(result['batterysettingschargecurrent'].scale)))).toString();
 				const current = this.getSetting('chargecurrent');		
 				if (current !== batterysettingschargecurrent) {
@@ -453,17 +453,17 @@ export class Deye extends Homey.Device {
 
 
 
-//			if (result['batterysettingschargevoltage'] && result['batterysettingschargevoltage'].value != 'xxx') {
+//			if (result['batterysettingschargevoltage']) {
 //				var batterysettingschargevoltage = (Number(result['batterysettingschargevoltage'].value) * (Math.pow(10, Number(result['batterysettingschargevoltage'].scale)))).toString();
 //				await this.setSettings( {maxchargevoltage: batterysettingschargevoltage } ).catch(this.error);
 //			}
 
-//			if (result['batterysettingschargecurrent'] && result['batterysettingschargecurrent'].value != 'xxx') {
+//			if (result['batterysettingschargecurrent']) {
 //				var batterysettingschargecurrent = (Number(result['batterysettingschargecurrent'].value) * (Math.pow(10, Number(result['batterysettingschargecurrent'].scale)))).toString();
 //				await this.setSettings( {chargecurrent: batterysettingschargecurrent } ).catch(this.error);
 //			}
 
-			if (result['batterysettingsdischargecurrent'] && result['batterysettingsdischargecurrent'].value != 'xxx') {
+			if (result['batterysettingsdischargecurrent']) {
 				const batterysettingsdischargecurrent = (Number(result['batterysettingsdischargecurrent'].value) * (Math.pow(10, Number(result['batterysettingsdischargecurrent'].scale)))).toString();
 				const current = this.getSetting('dischargecurrent');		
 				if (current !== batterysettingsdischargecurrent) {
@@ -471,7 +471,7 @@ export class Deye extends Homey.Device {
 				}
 			}
 
-			if (result['batterysettingsmaxchargecurrent'] && result['batterysettingsmaxchargecurrent'].value != 'xxx') {
+			if (result['batterysettingsmaxchargecurrent']) {
 				const batterysettingsmaxchargecurrent = (Number(result['batterysettingsmaxchargecurrent'].value) * (Math.pow(10, Number(result['batterysettingsmaxchargecurrent'].scale)))).toString();
 				const current = this.getSetting('maxchargecurrent');		
 				if (current !== batterysettingsmaxchargecurrent) {
@@ -479,7 +479,7 @@ export class Deye extends Homey.Device {
 				}
 			}
 
-			if (result['batterysettingsmaxdischargecurrent'] && result['batterysettingsmaxdischargecurrent'].value != 'xxx') {
+			if (result['batterysettingsmaxdischargecurrent']) {
 				const batterysettingsmaxdischargecurrent = (Number(result['batterysettingsmaxdischargecurrent'].value) * (Math.pow(10, Number(result['batterysettingsmaxdischargecurrent'].scale)))).toString();
 				const current = this.getSetting('maxdischargecurrent');		
 				if (current !== batterysettingsmaxdischargecurrent) {
@@ -488,7 +488,7 @@ export class Deye extends Homey.Device {
 			}
 
 // Settings: Asymetric Phase Feeding
-			if (result['asymetricphasefeeding'] && result['asymetricphasefeeding'].value != 'xxx') {
+			if (result['asymetricphasefeeding']) {
 				const asymetricphasefeeding = Number(result['asymetricphasefeeding'].value);
 				const current = this.getSetting('settings_asymetricphasefeeding');		
 				if (current !== asymetricphasefeeding) {
@@ -497,7 +497,7 @@ export class Deye extends Homey.Device {
 			}
 			
 
-			if (result['serial'] && result['serial'].value != 'xxx') {
+			if (result['serial']) {
 				const serial = result['serial'].value;
 				const current = this.getSetting('serial');		
 				if (current !== serial) {
@@ -505,7 +505,7 @@ export class Deye extends Homey.Device {
 				}
 			}
 
-			if (result['ratedpower'] && result['ratedpower'].value != 'xxx') {
+			if (result['ratedpower']) {
 				const ratedpower = (Number(result['ratedpower'].value) * (Math.pow(10, Number(result['ratedpower'].scale)))).toString();
 				const current = this.getSetting('ratedpower');		
 				if (current !== ratedpower) {
@@ -513,7 +513,7 @@ export class Deye extends Homey.Device {
 				}
 			}
 
-			if (result['HMIversion1'] && result['HMIversion2'] && result['HMIversion1'].value != 'xxx' && result['HMIversion2'].value != 'xxx') {
+			if (result['HMIversion1'] && result['HMIversion2']) {
 				var HMIversion1 = result['HMIversion1'].value;
 				var HMIversion2 = result['HMIversion2'].value;
 				const HMIversion = HMIversion1 + '-' + HMIversion2;
@@ -523,7 +523,7 @@ export class Deye extends Homey.Device {
 				}
 			}
 
-			if (result['controlpanelversion1'] && result['controlpanelversion2'] && result['controlpanelversion1'].value != 'xxx' && result['controlpanelversion2'].value != 'xxx') {
+			if (result['controlpanelversion1'] && result['controlpanelversion2']) {
 				var controlpanelversion1 = result['controlpanelversion1'].value;
 				var controlpanelversion2 = result['controlpanelversion2'].value;
 				const controlpanelversion = controlpanelversion1 + '-' + controlpanelversion2;

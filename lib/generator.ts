@@ -62,6 +62,6 @@ export class DeyeGenerator extends Homey.Device {
     }
 
     const serial = snapshot[SERIAL_KEY];
-    if (serial && serial.value !== 'xxx') await this.setSettingIfChanged('serial', serial.value);
+    if (serial) await this.setSettingIfChanged('serial', serial.value);
   }
 }

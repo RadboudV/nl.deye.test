@@ -18,7 +18,7 @@ export const GRID_MIN_VOLTAGE = 80;
 /** Snapshot value in real units (value * 10^scale), or null when missing. */
 export function measured(snap: Snapshot, key: string): number | null {
   const m = snap[key];
-  if (!m || m.value === 'xxx') return null;
+  if (!m) return null;
   const n = Number(m.value) * Math.pow(10, Number(m.scale));
   return Number.isFinite(n) ? n : null;
 }
