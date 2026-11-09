@@ -1,0 +1,28 @@
+{
+  "triggers": [
+    {
+      "id": "measure_solar_power_changed",
+      "title": {
+        "en": "Power from the solar cells changed"
+      },
+      "tokens": [
+        {
+          "name": "measure_solar_power",
+          "title": {
+            "en": "Power from the solar cells"
+          },
+          "type": "number",
+          "example": 1000
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "solar_production",
+      "title": {
+        "en": "Solar power !{{available|unavailable}}"
+      }
+    }
+  ]
+}

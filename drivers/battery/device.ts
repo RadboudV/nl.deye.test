@@ -1,5 +1,6 @@
 import { DeyeBattery, BATTERY_CAPABILITIES } from '../../lib/battery';
 import { InverterLink } from '../../lib/inverterlink';
+import type { Snapshot } from '../../lib/registers';
 
 /**
  * Deye home battery.
@@ -25,6 +26,9 @@ class MyDeyeBatteryDevice extends DeyeBattery {
     }
     this.link.start();
   }
+
+  /** Latest snapshot of the linked inverter, used by the flow conditions of this driver. */
+  getSnapshot(): Snapshot { return this.link.getSnapshot(); }
 
   async onUninit() { this.link.stop(); }
   async onDeleted() { this.link.stop(); }

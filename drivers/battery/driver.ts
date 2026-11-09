@@ -1,4 +1,6 @@
 import Homey from 'homey';
+import * as conditions from '../../lib/conditions';
+import { registerConditionCard } from '../../lib/conditioncard';
 
 /**
  * The battery can only be added for an existing Deye inverter device, because
@@ -10,6 +12,8 @@ module.exports = class DeyeBatteryDriver extends Homey.Driver {
 
   async onInit() {
     this.log('Deye Battery Driver has been initialized');
+    registerConditionCard(this, 'battery_charging', 'battery power', conditions.batteryCharging);
+    registerConditionCard(this, 'battery_discharging', 'battery power', conditions.batteryDischarging);
   }
 
   async onPairListDevices() {

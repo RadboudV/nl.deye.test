@@ -1,5 +1,6 @@
 import { DeyeSolar, SOLAR_CAPABILITIES } from '../../lib/solar';
 import { InverterLink } from '../../lib/inverterlink';
+import type { Snapshot } from '../../lib/registers';
 
 /**
  * Deye solar (PV inputs).
@@ -25,6 +26,9 @@ class MyDeyeSolarDevice extends DeyeSolar {
     }
     this.link.start();
   }
+
+  /** Latest snapshot of the linked inverter, used by the flow conditions of this driver. */
+  getSnapshot(): Snapshot { return this.link.getSnapshot(); }
 
   async onUninit() { this.link.stop(); }
   async onDeleted() { this.link.stop(); }

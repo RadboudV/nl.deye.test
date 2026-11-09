@@ -13,22 +13,6 @@
       }
     },
     {
-      "id": "measure_battery_power_changed",
-      "title": {
-        "en": "Power from the battery changed"
-      },
-      "tokens": [
-        {
-          "name": "measure_battery_power",
-          "title": {
-            "en": "Power from the battery"
-          },
-          "type": "number",
-          "example": 333
-        }
-      ]
-    },
-    {
       "id": "measure_consumption_power_changed",
       "title": {
         "en": "Power consumption of the house changed"
@@ -59,22 +43,6 @@
           "example": 7
         }
       ]
-    },
-    {
-      "id": "measure_solar_power_changed",
-      "title": {
-        "en": "Power from the solar cells changed"
-      },
-      "tokens": [
-        {
-          "name": "measure_solar_power",
-          "title": {
-            "en": "Power from the solar cells"
-          },
-          "type": "number",
-          "example": 1000
-        }
-      ]
     }
   ],
   "conditions": [
@@ -85,27 +53,9 @@
       }
     },
     {
-      "id": "battery_charging",
-      "title": {
-        "en": "!{{Battery|Battery not}} charging"
-      }
-    },
-    {
-      "id": "battery_discharging",
-      "title": {
-        "en": "!{{Battery|Battery not}} discharging"
-      }
-    },
-    {
       "id": "grid_feeding",
       "title": {
         "en": "!{{Feeding|Not feeding}} the grid"
-      }
-    },
-    {
-      "id": "solar_production",
-      "title": {
-        "en": "Solar power !{{available|unavailable}}"
       }
     }
   ],
