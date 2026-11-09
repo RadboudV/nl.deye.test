@@ -486,6 +486,19 @@ export class Deye extends Homey.Device {
                 var loadtotalpower = Number(result['loadtotalpower'].value) * (Math.pow(10, Number(result['loadtotalpower'].scale)));
                 await this.setCapabilityValue('measure_power.loadtotalpower', loadtotalpower).catch(this.error);
             }
+// Home load energy counters (register 526 daily, 527 total), exposed as "imported" energy of the device
+            for (const [key, capability, en, nl] of [
+                ['loaddailyconsumption', 'meter_power.dailyimported', 'Today Home Load Imported', 'Vandaag Huisverbruik'],
+                ['loadtotalconsumption', 'meter_power.imported', 'Total Home Load Imported', 'Totaal Huisverbruik'],
+            ]) {
+                const m = result[key];
+                if (!m || m.value == 'xxx') continue;
+                if (!this.hasCapability(capability)) {
+                    await this.addCapability(capability).catch(this.error);
+                    await this.setCapabilityOptions(capability, { "title": { "en": en, "nl": nl }, "decimals": 2, "duration": false });
+                }
+                await this.setCapabilityValue(capability, Number(m.value) * Math.pow(10, Number(m.scale))).catch(this.error);
+            }
 // **************
 // ****** Grid
 // **************
