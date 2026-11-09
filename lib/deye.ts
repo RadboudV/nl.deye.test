@@ -18,9 +18,13 @@ const MIN_BATTERY_TEMP_RAW = 1000;
 
 export class Deye extends Homey.Device {
 
-    // Daily / total energy of the inverter's own power usage (integrated from measure_power.deyeownconsumption)
+    // Daily / total energy, integrated from a power reading (see lib/energycounter.ts):
+    //  - ownCounter:    the inverter's own power usage (measure_power.deyeownconsumption)
+    //  - exportCounter: energy flowing from the home load side into the inverter (negative load power,
+    //                   e.g. a grid-tied microinverter on the load side producing more than the house uses)
     private ownCounter?: OwnEnergyCounter;
-    private ownCounterSaved = 0;
+    private exportCounter?: OwnEnergyCounter;
+    private countersSaved = 0;
 
     /** Local date (Homey's timezone) as YYYY-MM-DD */
     private localDay(nowMs: number): string {
@@ -28,31 +32,52 @@ export class Deye extends Homey.Device {
         return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(nowMs));
     }
 
-    private async countOwnUsage(powerW: number) {
-        if (!this.ownCounter) this.ownCounter = new OwnEnergyCounter(this.getStoreValue('ownUsageCounter'));
+    /** Adds a power reading to a counter and updates its daily and total capability. Returns true at midnight. */
+    private async countEnergy(counter: OwnEnergyCounter, powerW: number, capabilities: [id: string, en: string, nl: string][]): Promise<boolean> {
         const now = Date.now();
-        const { daily, total, rolledOver } = this.ownCounter.update(powerW, now, this.localDay(now));
+        const { daily, total, rolledOver } = counter.update(powerW, now, this.localDay(now));
 
-        const counters: [string, number, string, string][] = [
-            ['meter_power.deyeowndailyconsumption', daily, 'Today Deye Inverter own usage', 'Vandaag Deye Inverter eigen verbruik'],
-            ['meter_power.deyeowntotalconsumption', total, 'Total Deye Inverter own usage', 'Totaal Deye Inverter eigen verbruik'],
-        ];
-        for (const [capability, value, en, nl] of counters) {
+        const values = [daily, total];
+        for (let i = 0; i < capabilities.length; i++) {
+            const [capability, en, nl] = capabilities[i];
             if (!this.hasCapability(capability)) {
                 await this.addCapability(capability).catch(this.error);
                 await this.setCapabilityOptions(capability, { "title": { "en": en, "nl": nl }, "decimals": 2, "duration": false });
             }
-            await this.setCapabilityValue(capability, Math.round(value * 1000) / 1000).catch(this.error);
+            await this.setCapabilityValue(capability, Math.round(values[i] * 1000) / 1000).catch(this.error);
         }
+        return rolledOver;
+    }
 
-        // Persist at most every 5 minutes (and at midnight), so a restart loses at most a few minutes of data
-        if (rolledOver || Date.now() - this.ownCounterSaved > 5 * 60 * 1000) await this.saveOwnUsage();
+    private async countOwnUsage(powerW: number) {
+        if (!this.ownCounter) this.ownCounter = new OwnEnergyCounter(this.getStoreValue('ownUsageCounter'));
+        const rolledOver = await this.countEnergy(this.ownCounter, powerW, [
+            ['meter_power.deyeowndailyconsumption', 'Today Deye Inverter own usage', 'Vandaag Deye Inverter eigen verbruik'],
+            ['meter_power.deyeowntotalconsumption', 'Total Deye Inverter own usage', 'Totaal Deye Inverter eigen verbruik'],
+        ]);
+        await this.saveCounters(rolledOver);
+    }
+
+    /** loadPowerW is negative while power flows from the home load side into the inverter */
+    private async countLoadExport(loadPowerW: number) {
+        if (!this.exportCounter) this.exportCounter = new OwnEnergyCounter(this.getStoreValue('loadExportCounter'));
+        const rolledOver = await this.countEnergy(this.exportCounter, Math.max(0, -loadPowerW), [
+            ['meter_power.dailyexported', 'Today Home Load Exported', 'Vandaag Huisverbruik teruggeleverd'],
+            ['meter_power.exported', 'Total Home Load Exported', 'Totaal Huisverbruik teruggeleverd'],
+        ]);
+        await this.saveCounters(rolledOver);
+    }
+
+    /** Persist at most every 5 minutes (and at midnight), so a restart loses at most a few minutes of data */
+    private async saveCounters(force = false) {
+        if (!force && Date.now() - this.countersSaved <= 5 * 60 * 1000) return;
+        await this.saveOwnUsage();
     }
 
     async saveOwnUsage() {
-        if (!this.ownCounter) return;
-        this.ownCounterSaved = Date.now();
-        await this.setStoreValue('ownUsageCounter', this.ownCounter.state).catch(this.error);
+        this.countersSaved = Date.now();
+        if (this.ownCounter) await this.setStoreValue('ownUsageCounter', this.ownCounter.state).catch(this.error);
+        if (this.exportCounter) await this.setStoreValue('loadExportCounter', this.exportCounter.state).catch(this.error);
     }
 
     async processDeyeResult(result: Record<string, DeyeMeasurement>) {
@@ -485,6 +510,20 @@ export class Deye extends Homey.Device {
 				}
                 var loadtotalpower = Number(result['loadtotalpower'].value) * (Math.pow(10, Number(result['loadtotalpower'].scale)));
                 await this.setCapabilityValue('measure_power.loadtotalpower', loadtotalpower).catch(this.error);
+                await this.countLoadExport(loadtotalpower);
+            }
+// Home load energy counters (register 526 daily, 527 total), exposed as "imported" energy of the device
+            for (const [key, capability, en, nl] of [
+                ['loaddailyconsumption', 'meter_power.dailyimported', 'Today Home Load Imported', 'Vandaag Huisverbruik'],
+                ['loadtotalconsumption', 'meter_power.imported', 'Total Home Load Imported', 'Totaal Huisverbruik'],
+            ]) {
+                const m = result[key];
+                if (!m || m.value == 'xxx') continue;
+                if (!this.hasCapability(capability)) {
+                    await this.addCapability(capability).catch(this.error);
+                    await this.setCapabilityOptions(capability, { "title": { "en": en, "nl": nl }, "decimals": 2, "duration": false });
+                }
+                await this.setCapabilityValue(capability, Number(m.value) * Math.pow(10, Number(m.scale))).catch(this.error);
             }
 // **************
 // ****** Grid
