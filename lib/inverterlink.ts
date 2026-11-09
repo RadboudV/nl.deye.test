@@ -32,6 +32,11 @@ export class InverterLink {
     this.watchdog = this.device.homey.setInterval(() => this.sync(), WATCHDOG_INTERVAL_MS);
   }
 
+  /** Latest snapshot of the linked inverter (empty while there is none), e.g. for flow conditions. */
+  getSnapshot(): Snapshot {
+    return this.inverter ? this.inverter.getSnapshot() : {};
+  }
+
   stop() {
     if (this.watchdog) this.device.homey.clearInterval(this.watchdog);
     this.watchdog = undefined;

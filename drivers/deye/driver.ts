@@ -3,7 +3,7 @@
 import Homey from 'homey';
 import * as controls from '../../lib/controls';
 import * as conditions from '../../lib/conditions';
-import { Snapshot } from '../../lib/registers';
+import { registerConditionCard } from '../../lib/conditioncard';
 
 module.exports = class MyDeyeDriver extends Homey.Driver {
 
@@ -19,24 +19,12 @@ module.exports = class MyDeyeDriver extends Homey.Driver {
   }
 
   /**
-   * Flow condition cards. They evaluate the latest inverter snapshot, so they cost no
-   * Modbus traffic. The inverted wording ("Battery not charging") is handled by Homey.
+   * Flow condition cards of the inverter driver. The battery and solar conditions live in
+   * their own drivers. See lib/conditioncard.ts.
    */
   private registerConditionCards() {
-    const condition = (id: string, what: string, test: (snap: Snapshot) => boolean | null) => {
-      this.homey.flow.getConditionCard(id).registerRunListener(async (args: any) => {
-        const device = args.device;
-        if (!device.getAvailable()) throw new Error('The Deye inverter is not available right now');
-        const result = test(device.getSnapshot());
-        if (result === null) throw new Error(`No ${what} reading from the inverter yet`);
-        return result;
-      });
-    };
-    condition('grid_available', 'grid voltage', conditions.gridAvailable);
-    condition('battery_charging', 'battery power', conditions.batteryCharging);
-    condition('battery_discharging', 'battery power', conditions.batteryDischarging);
-    condition('grid_feeding', 'grid power', conditions.gridFeeding);
-    condition('solar_production', 'solar power', conditions.solarProducing);
+    registerConditionCard(this, 'grid_available', 'grid voltage', conditions.gridAvailable);
+    registerConditionCard(this, 'grid_feeding', 'grid power', conditions.gridFeeding);
   }
 
   /**

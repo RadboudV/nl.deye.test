@@ -1,4 +1,6 @@
 import Homey from 'homey';
+import * as conditions from '../../lib/conditions';
+import { registerConditionCard } from '../../lib/conditioncard';
 
 /**
  * The solar device can only be added for an existing Deye inverter device,
@@ -10,6 +12,7 @@ module.exports = class DeyeSolarDriver extends Homey.Driver {
 
   async onInit() {
     this.log('Deye Solar Driver has been initialized');
+    registerConditionCard(this, 'solar_production', 'solar power', conditions.solarProducing);
   }
 
   async onPairListDevices() {

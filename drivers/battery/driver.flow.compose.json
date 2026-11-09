@@ -1,0 +1,34 @@
+{
+  "triggers": [
+    {
+      "id": "measure_battery_power_changed",
+      "title": {
+        "en": "Power from the battery changed"
+      },
+      "tokens": [
+        {
+          "name": "measure_battery_power",
+          "title": {
+            "en": "Power from the battery"
+          },
+          "type": "number",
+          "example": 333
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "battery_charging",
+      "title": {
+        "en": "!{{Battery|Battery not}} charging"
+      }
+    },
+    {
+      "id": "battery_discharging",
+      "title": {
+        "en": "!{{Battery|Battery not}} discharging"
+      }
+    }
+  ]
+}
