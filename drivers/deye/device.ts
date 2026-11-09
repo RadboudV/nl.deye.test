@@ -172,6 +172,7 @@ private debug(...args: any[]): void {
    */
   async onInit() {
 	this.debug('Deye device has been initialized');
+	// await this.setClass('sensor').catch(this.error)
     //this.log('Deye device has been initialized');
  
     let name = this.getData().id;

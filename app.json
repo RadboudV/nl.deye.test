@@ -212,14 +212,33 @@
         "small": "/drivers/deye/assets/images/small.png",
         "large": "/drivers/deye/assets/images/large.png"
       },
-      "class": "solarpanel",
+      "class": "sensor",
       "capabilities": [
         "meter_power",
+        "measure_power",
         "meter_power.batterytotalcharge",
         "meter_power.batterytotaldischarge",
+        "meter_power.dailyimported",
+        "meter_power.imported",
         "measure_temperature.heatsinktemperature"
       ],
       "capabilitiesOptions": {
+        "meter_power.dailyimported": {
+          "title": {
+            "en": "Today Home Load Imported",
+            "nl": "Vandaag Huisverbruik"
+          },
+          "decimals": 2,
+          "duration": false
+        },
+        "meter_power.imported": {
+          "title": {
+            "en": "Total Home Load Imported",
+            "nl": "Totaal Huisverbruik"
+          },
+          "decimals": 2,
+          "duration": false
+        },
         "measure_temperature.heatsinktemperature": {
           "title": {
             "en": "Heatsink temperature",
@@ -228,6 +247,10 @@
           },
           "decimals": 2
         }
+      },
+      "energy": {
+        "cumulative": true,
+        "cumulativeImportedCapability": "meter_power.imported"
       },
       "platforms": [
         "local"
