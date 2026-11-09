@@ -4,9 +4,10 @@
 		"small": "{{driverAssetsPath}}/images/small.png",
 		"large": "{{driverAssetsPath}}/images/large.png"
 		},
-	"class": "solarpanel",
+	"class": "sensor",
 	"capabilities": [
 		"meter_power",
+		"measure_power",
 		"meter_power.batterytotalcharge",
 		"meter_power.batterytotaldischarge",
 		"meter_power.dailyimported",

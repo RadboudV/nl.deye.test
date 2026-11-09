@@ -36,6 +36,7 @@ export class Deye extends Homey.Device {
         const counters: [string, number, string, string][] = [
             ['meter_power.deyeowndailyconsumption', daily, 'Today Deye Inverter own usage', 'Vandaag Deye Inverter eigen verbruik'],
             ['meter_power.deyeowntotalconsumption', total, 'Total Deye Inverter own usage', 'Totaal Deye Inverter eigen verbruik'],
+			['meter_power', total, 'Total Deye Inverter own usage', 'Totaal Deye Inverter eigen verbruik'],
         ];
         for (const [capability, value, en, nl] of counters) {
             if (!this.hasCapability(capability)) {
@@ -89,21 +90,7 @@ export class Deye extends Homey.Device {
                 await await this.setCapabilityValue('measure_temperature.dctransformertemperature', ((dctransformertemperature-1000)/10));
             }
 */
-//Grid Power
-/*
-            if (result['gridpower'] && result['gridpower'].value != 'xxx') {
-				if (!this.hasCapability('measure_power.gridpower')) {
-					await this.addCapability('measure_power.gridpower').catch(this.error);
-					await this.setCapabilityOptions('measure_power.gridpower', { "title": {
-						"en": "Grid Power",
-						"nl": "Vermogen Net"
-						},
-						});
-				}
-                var gridpower = Number(result['gridpower'].value) * (Math.pow(10, Number(result['gridpower'].scale)));
-                await this.setCapabilityValue('measure_power.gridpower', gridpower);
-            }
-*/
+
 //L1 Grid Voltage
             if (result['l1gridvoltage'] && result['l1gridvoltage'].value != 'xxx') {
 				if (!this.hasCapability('measure_voltage.l1gridvoltage')) {
@@ -193,150 +180,6 @@ export class Deye extends Homey.Device {
 				}
                 var gridfrequency = Number(result['gridfrequency'].value) * (Math.pow(10, Number(result['gridfrequency'].scale)));
                 await this.setCapabilityValue('measure_frequency.gridfrequency', gridfrequency).catch(this.error);
-            }
-// ************
-// ****** Solar
-// ************
-//PV1 Input Power
-            if (result['pv1inputpower'] && result['pv1inputpower'].value != 'xxx') {
-				if (!this.hasCapability('measure_power.pv1inputpower')) {
-					await this.addCapability('measure_power.pv1inputpower').catch(this.error);
-					await this.setCapabilityOptions('measure_power.pv1inputpower', { "title": {
-						"en": "PV1 Power",
-						"nl": "PV1 vermogen"
-						},
-						"uiComponent": null
-						});
-				}
-                var pv1inputpower = Number(result['pv1inputpower'].value) * (Math.pow(10, Number(result['pv1inputpower'].scale)));
-				if (pv1inputpower < MAX_PV_POWER) {
-					await this.setCapabilityValue('measure_power.pv1inputpower', pv1inputpower).catch(this.error);
-					}
-            }
-//PV2 Input Power
-            if (result['pv2inputpower'] && result['pv2inputpower'].value != 'xxx') {
-				if (!this.hasCapability('measure_power.pv2inputpower')) {
-					await this.addCapability('measure_power.pv2inputpower').catch(this.error);
-					await this.setCapabilityOptions('measure_power.pv2inputpower', { "title": {
-						"en": "PV2 Power",
-						"nl": "PV2 vermogen"
-						},
-						"uiComponent": null
-						});
-				}
-                var pv2inputpower = Number(result['pv2inputpower'].value) * (Math.pow(10, Number(result['pv2inputpower'].scale)));
-				if (pv2inputpower < MAX_PV_POWER) {
-					await this.setCapabilityValue('measure_power.pv2inputpower', pv2inputpower).catch(this.error);
-					}
-            }
-/*PV3 Input Power
-            if (result['pv3inputpower'] && result['pv3inputpower'].value != 'xxx') {
-				if (!this.hasCapability('measure_power.pv3inputpower')) {
-					await this.addCapability('measure_power.pv3inputpower').catch(this.error);
-					await this.setCapabilityOptions('measure_power.pv3inputpower', { "title": {
-						"en": "PV3 Power",
-						"nl": "PV3 vermogen"
-						},
-						"uiComponent": null
-						});
-				}
-                var pv3inputpower = Number(result['pv3inputpower'].value) * (Math.pow(10, Number(result['pv3inputpower'].scale)));
-                await this.setCapabilityValue('measure_power.pv3inputpower', pv3inputpower);
-            }
-*/
-
-//Total PV Power calculated
-			if (result['pv1inputpower'] && result['pv1inputpower'].value != 'xxx' && result['pv2inputpower'] && result['pv2inputpower'].value != 'xxx') {
-				if (!this.hasCapability('measure_power.totalpvinputpower')) {
-					await this.addCapability('measure_power.totalpvinputpower').catch(this.error);
-					await this.setCapabilityOptions('measure_power.totalpvinputpower', { "title": {
-						"en": "Total PV Power",
-						"nl": "Totaal PV vermogen"
-						},
-						"uiComponent": null
-						});
-				}
-			var totalpvinputpower = Number(result['pv1inputpower'].value) + Number(result['pv2inputpower'].value);
-			
-            // var totalpvinputpower = ((Number(result['pv2inputpower'].value) * (Math.pow(10, Number(result['pv2inputpower'].scale)))) + (Number(result['pv1inputpower'].value) * (Math.pow(10, Number(result['pv1inputpower'].scale)))));
-			// var totalpvinputpower = (this.getCapabilityValue('measure_power.pv1inputpower') + this.getCapabilityValue('measure_power.pv2inputpower'));
-			if (totalpvinputpower < MAX_PV_POWER) {
-				await this.setCapabilityValue('measure_power.totalpvinputpower', totalpvinputpower).catch(this.error);
-				}
-			}
-//PV1 Voltage
-            if (result['pv1voltage'] && result['pv1voltage'].value != 'xxx') {
-				if (!this.hasCapability('measure_voltage.pv1voltage')) {
-					await this.addCapability('measure_voltage.pv1voltage').catch(this.error);
-					await this.setCapabilityOptions('measure_voltage.pv1voltage', { "title": {
-						"en": "PV1 Voltage",
-						"nl": "PV1 voltage"
-						},
-						"uiComponent": null
-						});
-				}
-                var pv1voltage = Number(result['pv1voltage'].value) * (Math.pow(10, Number(result['pv1voltage'].scale)));
-                await this.setCapabilityValue('measure_voltage.pv1voltage', pv1voltage).catch(this.error);
-            }
-//PV2 Voltage
-            if (result['pv2voltage'] && result['pv2voltage'].value != 'xxx') {
-				if (!this.hasCapability('measure_voltage.pv2voltage')) {
-					await this.addCapability('measure_voltage.pv2voltage').catch(this.error);
-					await this.setCapabilityOptions('measure_voltage.pv2voltage', { "title": {
-						"en": "PV2 Voltage",
-						"nl": "PV2 voltage"
-						},
-						"uiComponent": null
-						});
-				}
-                var pv2voltage = Number(result['pv2voltage'].value) * (Math.pow(10, Number(result['pv2voltage'].scale)));
-                await this.setCapabilityValue('measure_voltage.pv2voltage', pv2voltage).catch(this.error);
-            }
-/*PV3 Voltage
-            if (result['pv3voltage'] && result['pv3voltage'].value != 'xxx') {
-				if (!this.hasCapability('measure_voltage.pv3voltage')) {
-					await this.addCapability('measure_voltage.pv3voltage').catch(this.error);
-					await this.setCapabilityOptions('measure_voltage.pv3voltage', { "title": {
-						"en": "PV3 Voltage",
-						"nl": "PV3 voltage"
-						},
-						"uiComponent": null
-						});
-				}
-                var pv3voltage = Number(result['pv3voltage'].value) * (Math.pow(10, Number(result['pv3voltage'].scale)));
-                await this.setCapabilityValue('measure_voltage.pv3voltage', pv3voltage);
-            }
-*/
-
-// Today Solar Power
-            if (result['dailysolarproduction'] && result['dailysolarproduction'].value != 'xxx') {
-				if (!this.hasCapability('meter_power.dailysolarproduction')) {
-					await this.addCapability('meter_power.dailysolarproduction').catch(this.error);
-					await this.setCapabilityOptions('meter_power.dailysolarproduction', { "title": {
-						"en": "Today Solar Power",
-						"nl": "Vandaag Solar opbrengst"
-						},
-						"duration": false
-						});
-				}
-                var dailysolarproduction = Number(result['dailysolarproduction'].value) * (Math.pow(10, Number(result['dailysolarproduction'].scale)));
-                await this.setCapabilityValue('meter_power.dailysolarproduction', dailysolarproduction).catch(this.error);
-            }
-
-// Total Solar Power
-            if (result['totalsolarproduction'] && result['totalsolarproduction'].value != 'xxx') {
-				if (!this.hasCapability('meter_power.totalsolarproduction')) {
-					await this.addCapability('meter_power.totalsolarproduction').catch(this.error);
-					await this.setCapabilityOptions('meter_power.totalsolarproduction', { "title": {
-						"en": "Total Solar Power",
-						"nl": "Totaal solar opbrengst"
-						},
-						"duration": false
-						});
-				}
-                var totalsolarproduction = Number(result['totalsolarproduction'].value) * (Math.pow(10, Number(result['totalsolarproduction'].scale)));
-                await this.setCapabilityValue('meter_power.totalsolarproduction', totalsolarproduction).catch(this.error);
-				await this.setCapabilityValue('meter_power', totalsolarproduction).catch(this.error);
             }
 
 
@@ -566,6 +409,7 @@ export class Deye extends Homey.Device {
 				if (Number(result['gridpower'].value) < 24150 && Number(result['gridpower'].value) > -24150 && Number(result['pv1inputpower'].value) < MAX_PV_POWER && Number(result['pv2inputpower'].value) < MAX_PV_POWER && Number(result['batterypower'].value) < 24150 && Number(result['batterypower'].value) > -24150) {
 					var deyeownconsumption = Number(result['gridpower'].value) + Number(result['pv1inputpower'].value) + Number(result['pv2inputpower'].value) - (-Number(result['batterypower'].value)) - Number(result['loadtotalpower'].value)
 					await this.setCapabilityValue('measure_power.deyeownconsumption', deyeownconsumption).catch(this.error);
+					await this.setCapabilityValue('measure_power', deyeownconsumption).catch(this.error);
 					await this.countOwnUsage(deyeownconsumption);
 					}
             }
