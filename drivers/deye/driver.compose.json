@@ -40,10 +40,6 @@
 			"decimals": 2
 			}
   },
-  	"energy": {
-		"cumulative": true,
-		"cumulativeImportedCapability": "meter_power.imported"
-		},
    "platforms": [
     "local"
   ],
