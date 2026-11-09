@@ -21,9 +21,6 @@
 			"decimals": 2
 			}
   },
-  	"energy": {
-		"cumulative": true
-		},
    "platforms": [
     "local"
   ],
