@@ -174,12 +174,8 @@ private debug(...args: any[]): void {
    */
   async onInit() {
 	this.debug('Deye device has been initialized');
-	// await this.setClass('sensor').catch(this.error)
-    //this.log('Deye device has been initialized');
  
     let name = this.getData().id;
-    //this.log("Device name id " + name );
-    //this.log("Device name " + this.getName());
     this.debug("Device name id " + name );
     this.debug("Device name " + this.getName());
 
@@ -187,7 +183,7 @@ private debug(...args: any[]): void {
 	let settings = this.getSettings();
 
     if (settings.pollinginterval === undefined) {
-      this.setSettings({ pollinginterval: DEFAULT_POLLING_INTERVAL });
+      await this.setSettings({ pollinginterval: DEFAULT_POLLING_INTERVAL }).catch(this.error);
       settings.pollinginterval = DEFAULT_POLLING_INTERVAL;
 	}
 
@@ -204,7 +200,6 @@ private debug(...args: any[]): void {
    * onAdded is called when the user adds the device, called just after pairing.
    */
   async onAdded() {
-    //this.log('Deye Hybrid Inverter device has been added');
 	this.debug('Deye Hybrid Inverter device has been added');
   }
 
@@ -226,7 +221,6 @@ private debug(...args: any[]): void {
     changedKeys: string[];
   }): Promise<string | void> {
   
-    //this.log("Deye settings where changed");
 	this.debug("Deye settings where changed");
 
 // Time sync switched on: set the inverter clock right away (whatever the difference), then daily
@@ -248,7 +242,6 @@ private debug(...args: any[]): void {
       this.log('Changing the "pollinginterval" settings from', oldSettings.pollinginterval, 'to', newSettings.pollinginterval);
 
       this.homey.clearInterval(this.datatimer);
-	  //this.homey.clearInterval(this.settingstimer);
       this.datatimer = this.homey.setInterval(() => {
         // poll device state from the Deye inverter
         this.pollDeyeInverter('datavalues');
@@ -289,7 +282,6 @@ private debug(...args: any[]): void {
 	this.bus.removeAllListeners();
 	this.homey.clearInterval(this.datatimer);
 	this.dropConnection();
-	// this.homey.clearInterval(this.settingstimer);
   }
 //********************************************************
 
@@ -312,7 +304,7 @@ private debug(...args: any[]): void {
    */
   async pollDeyeInverter(datatofetch: string) {
  
- 	this.log("pollDeyeInverter", datatofetch);
+ 	this.debug("pollDeyeInverter", datatofetch);
 	if (this.busy) return;                 // previous poll/write still running -> skip
 	this.busy = true;
 
@@ -343,7 +335,7 @@ private debug(...args: any[]): void {
         await this.processDeyeResult(finalRes);        // inverter groups only
         this.bus.emit('snapshot', finalRes);           // battery device picks up its part
       } else {
-        this.log('pollDeyeInverter: skipping processDeyeResult, write settling');
+        this.debug('pollDeyeInverter: skipping processDeyeResult, write settling');
       }
     } catch (err) {
       this.error('poll failed', (err as Error).message);

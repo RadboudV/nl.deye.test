@@ -81,19 +81,12 @@ export class Deye extends Homey.Device {
 
             await this.checkGridTrigger(result);
 
-            // Show result
-			// disabled logging 
-//            for (let k in result) {
-//                console.log(k, result[k].value, result[k].scale, result[k].label)
-//				//this.debug(k, result[k].value, result[k].scale, result[k].label)
-//            }
-
 // Heat Sink Temperature
             if (result['heatsinktemperature']) {
 				if (!this.hasCapability('measure_temperature.heatsinktemperature')) {
 					await this.addCapability('measure_temperature.heatsinktemperature').catch(this.error);
 				}
-                var heatsinktemperature = Number(result['heatsinktemperature'].value) * (Math.pow(10, Number(result['heatsinktemperature'].scale)));
+                const heatsinktemperature = Number(result['heatsinktemperature'].value) * (Math.pow(10, Number(result['heatsinktemperature'].scale)));
                 await this.setCapabilityValue('measure_temperature.heatsinktemperature', ((heatsinktemperature-1000)/10)).catch(this.error);
             }
 // DC Transformer Temperature
@@ -107,7 +100,7 @@ export class Deye extends Homey.Device {
 						}, "uiComponent": null
 						});
 				}
-                var dctransformertemperature = Number(result['dctransformertemperature'].value) * (Math.pow(10, Number(result['dctransformertemperature'].scale)));
+                const dctransformertemperature = Number(result['dctransformertemperature'].value) * (Math.pow(10, Number(result['dctransformertemperature'].scale)));
                 await await this.setCapabilityValue('measure_temperature.dctransformertemperature', ((dctransformertemperature-1000)/10));
             }
 */
@@ -123,7 +116,7 @@ export class Deye extends Homey.Device {
 						"uiComponent": null
 						});
 				}
-                var l1gridvoltage = Number(result['l1gridvoltage'].value) * (Math.pow(10, Number(result['l1gridvoltage'].scale)));
+                const l1gridvoltage = Number(result['l1gridvoltage'].value) * (Math.pow(10, Number(result['l1gridvoltage'].scale)));
                 await this.setCapabilityValue('measure_voltage.l1gridvoltage', l1gridvoltage).catch(this.error);
             }
 //L2 Grid Voltage
@@ -137,7 +130,7 @@ export class Deye extends Homey.Device {
 						"uiComponent": null
 						});
 				}
-                var l2gridvoltage = Number(result['l2gridvoltage'].value) * (Math.pow(10, Number(result['l2gridvoltage'].scale)));
+                const l2gridvoltage = Number(result['l2gridvoltage'].value) * (Math.pow(10, Number(result['l2gridvoltage'].scale)));
                 await this.setCapabilityValue('measure_voltage.l2gridvoltage', l2gridvoltage).catch(this.error);
             }
 //L3 Grid Voltage
@@ -151,7 +144,7 @@ export class Deye extends Homey.Device {
 						"uiComponent": null
 						});
 				}
-                var l3gridvoltage = Number(result['l3gridvoltage'].value) * (Math.pow(10, Number(result['l3gridvoltage'].scale)));
+                const l3gridvoltage = Number(result['l3gridvoltage'].value) * (Math.pow(10, Number(result['l3gridvoltage'].scale)));
                 await this.setCapabilityValue('measure_voltage.l3gridvoltage', l3gridvoltage).catch(this.error);
             }
 
@@ -167,7 +160,7 @@ export class Deye extends Homey.Device {
 						"decimals": 2
 						});
 				}
-                var inverterfrequency = Number(result['inverterfrequency'].value) * (Math.pow(10, Number(result['inverterfrequency'].scale)));
+                const inverterfrequency = Number(result['inverterfrequency'].value) * (Math.pow(10, Number(result['inverterfrequency'].scale)));
                 await this.setCapabilityValue('measure_frequency.inverterfrequency', inverterfrequency).catch(this.error);
             }
 
@@ -183,7 +176,7 @@ export class Deye extends Homey.Device {
 						"decimals": 2
 						});
 				}
-                var loadfrequency = Number(result['loadfrequency'].value) * (Math.pow(10, Number(result['loadfrequency'].scale)));
+                const loadfrequency = Number(result['loadfrequency'].value) * (Math.pow(10, Number(result['loadfrequency'].scale)));
                 await this.setCapabilityValue('measure_frequency.loadfrequency', loadfrequency).catch(this.error);
             }
 
@@ -199,7 +192,7 @@ export class Deye extends Homey.Device {
 						"decimals": 2
 						});
 				}
-                var gridfrequency = Number(result['gridfrequency'].value) * (Math.pow(10, Number(result['gridfrequency'].scale)));
+                const gridfrequency = Number(result['gridfrequency'].value) * (Math.pow(10, Number(result['gridfrequency'].scale)));
                 await this.setCapabilityValue('measure_frequency.gridfrequency', gridfrequency).catch(this.error);
             }
 
@@ -228,7 +221,7 @@ export class Deye extends Homey.Device {
 						},
 						});
 				}
-                var loadtotalpower = Number(result['loadtotalpower'].value) * (Math.pow(10, Number(result['loadtotalpower'].scale)));
+                const loadtotalpower = Number(result['loadtotalpower'].value) * (Math.pow(10, Number(result['loadtotalpower'].scale)));
                 await this.setCapabilityValue('measure_power.loadtotalpower', loadtotalpower).catch(this.error);
                 await this.firePowerChanged('measure_consumption_power_changed', 'measure_consumption_power', loadtotalpower);
             }
@@ -288,7 +281,7 @@ export class Deye extends Homey.Device {
 						},
 						});
 				}
-                var gridpower = Number(result['gridpower'].value) * (Math.pow(10, Number(result['gridpower'].scale)));
+                const gridpower = Number(result['gridpower'].value) * (Math.pow(10, Number(result['gridpower'].scale)));
 				
 				if (gridpower < MAX_GRIDPOWER_ABSOLUTE && gridpower > -MAX_GRIDPOWER_ABSOLUTE) {
 					await this.setCapabilityValue('measure_power.gridpower', gridpower).catch(this.error);
@@ -311,7 +304,7 @@ export class Deye extends Homey.Device {
 						});
 				}
 				if (Number(result['gridpower'].value) < 24150 && Number(result['gridpower'].value) > -24150 && Number(result['pv1inputpower'].value) < MAX_PV_POWER && Number(result['pv2inputpower'].value) < MAX_PV_POWER && Number(result['batterypower'].value) < 24150 && Number(result['batterypower'].value) > -24150) {
-					var deyeownconsumption = Number(result['gridpower'].value) + Number(result['pv1inputpower'].value) + Number(result['pv2inputpower'].value) - (-Number(result['batterypower'].value)) - Number(result['loadtotalpower'].value)
+					const deyeownconsumption = Number(result['gridpower'].value) + Number(result['pv1inputpower'].value) + Number(result['pv2inputpower'].value) - (-Number(result['batterypower'].value)) - Number(result['loadtotalpower'].value)
 					await this.setCapabilityValue('measure_power.deyeownconsumption', deyeownconsumption).catch(this.error);
 					await this.setCapabilityValue('measure_power', deyeownconsumption).catch(this.error);
 					await this.countOwnUsage(deyeownconsumption);
@@ -386,8 +379,8 @@ export class Deye extends Homey.Device {
 			}
 
 			if (result['HMIversion1'] && result['HMIversion2']) {
-				var HMIversion1 = result['HMIversion1'].value;
-				var HMIversion2 = result['HMIversion2'].value;
+				const HMIversion1 = result['HMIversion1'].value;
+				const HMIversion2 = result['HMIversion2'].value;
 				const HMIversion = HMIversion1 + '-' + HMIversion2;
 				const current = this.getSetting('HMIversion');
 				if (current !== HMIversion) {
@@ -396,8 +389,8 @@ export class Deye extends Homey.Device {
 			}
 
 			if (result['controlpanelversion1'] && result['controlpanelversion2']) {
-				var controlpanelversion1 = result['controlpanelversion1'].value;
-				var controlpanelversion2 = result['controlpanelversion2'].value;
+				const controlpanelversion1 = result['controlpanelversion1'].value;
+				const controlpanelversion2 = result['controlpanelversion2'].value;
 				const controlpanelversion = controlpanelversion1 + '-' + controlpanelversion2;
 				const current = this.getSetting('controlpanelversion');
 				if (current !== controlpanelversion) {
