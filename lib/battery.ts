@@ -1,5 +1,6 @@
 import Homey from 'homey';
 import type { Measurement, Snapshot } from './registers';
+import { ChangeTracker, fireTrigger } from './triggers';
 
 export type BatteryMeasurement = Measurement;
 
@@ -58,6 +59,8 @@ export class DeyeBattery extends Homey.Device {
     await this.setCapabilityValue(capability, value).catch(this.error);
   }
 
+  private powerChanges = new ChangeTracker();   // flow trigger "Power from the battery changed"
+
   private async setSettingIfChanged(key: string, value: string) {
     if (this.getSetting(key) !== value) await this.setSettings({ [key]: value }).catch(this.error);
   }
@@ -74,6 +77,9 @@ export class DeyeBattery extends Homey.Device {
     const power = this.num(result, 'batterypower');
     if (power !== null && Math.abs(power) < MAX_BATTERY_POWER) {
       await this.setCap('measure_power', HOMEY_SIGN * power);
+      if (this.powerChanges.changed('measure_battery_power_changed', HOMEY_SIGN * power)) {
+        await fireTrigger(this, 'measure_battery_power_changed', { measure_battery_power: HOMEY_SIGN * power });
+      }
     }
 
     const voltage = this.num(result, 'batteryvoltage');
