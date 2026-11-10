@@ -72,6 +72,9 @@ const DEFS: SettingDef[] = [
     write: (io, v) => controls.setGridSignal(io, onOff(v)) },
   { id: 'settings_generatorsignal', key: 'gridgensignal', read: (r) => (r & 0x02) === 0x02,
     write: (io, v) => controls.setGeneratorSignal(io, onOff(v)) },
+  // Register 340: maximum solar sell power
+  { id: 'settings_maxsolarsellpower', key: 'maxsolarpower', read: (r) => r,
+    write: (io, v) => controls.setMaxSolarPower(io, v) },
   // Register 143: maximum power to the grid
   { id: 'settings_maxoutputtogrid', key: 'maxsellpower', read: (r) => r,
     write: (io, v) => controls.setMaxSellPower(io, v) },

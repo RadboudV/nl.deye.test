@@ -435,6 +435,23 @@
         "value": false
       },
       {
+        "id": "settings_maxsolarsellpower",
+        "type": "number",
+        "value": 8000,
+        "min": 0,
+        "max": 65535,
+        "step": 1,
+        "units": "W",
+        "label": {
+          "en": "Maximum Solar Sell Power",
+          "nl": "Maximaal zonne-verkoopvermogen"
+        },
+        "hint": {
+          "en": "Maximum solar power that is sold (register 340).",
+          "nl": "Maximaal zonnevermogen dat wordt verkocht (register 340)."
+        }
+      },
+      {
         "id": "settings_maxoutputtogrid",
         "type": "number",
         "value": 3000,
