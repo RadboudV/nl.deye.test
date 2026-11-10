@@ -280,6 +280,32 @@ export async function setSolarSell(io: RegisterIO, state: unknown) {
   await writeVerified(io, addr(io, 'solarsell'), [state === 'on' ? 1 : 0], 'solar selling');
 }
 
+export async function setGridChargeEnabled(io: RegisterIO, state: unknown) {
+  if (state !== 'on' && state !== 'off') throw new ControlError(`Grid charge must be on or off, got "${state}"`);
+  await writeVerified(io, addr(io, 'gridchargeenable'), [state === 'on' ? 1 : 0], 'grid charge');
+}
+
+export async function setGeneratorChargeEnabled(io: RegisterIO, state: unknown) {
+  if (state !== 'on' && state !== 'off') throw new ControlError(`Generator charge must be on or off, got "${state}"`);
+  await writeVerified(io, addr(io, 'generatorchargeenable'), [state === 'on' ? 1 : 0], 'generator charge');
+}
+
+export async function setGeneratorPeakShavingPower(io: RegisterIO, watts: unknown) {
+  const w = checkInt(reqNumber(watts, 'Generator peak shaving power'), 0, MAX_POWER_W, 'Generator peak shaving power', ' W');
+  await writeVerified(io, addr(io, 'generatorpeakshavingpower'), [w], 'generator peak shaving power');
+}
+
+export async function setAsymetricPhaseFeeding(io: RegisterIO, state: unknown) {
+  if (state !== 'on' && state !== 'off') throw new ControlError(`Asymetric phase feeding must be on or off, got "${state}"`);
+  await writeVerified(io, addr(io, 'asymetricphasefeeding'), [state === 'on' ? 1 : 0], 'asymetric phase feeding');
+}
+
+/** Only the power, without switching grid peak shaving on or off. */
+export async function setGridPeakShavingPower(io: RegisterIO, watts: unknown) {
+  const w = checkInt(reqNumber(watts, 'Grid peak shaving power'), 0, MAX_POWER_W, 'Grid peak shaving power', ' W');
+  await writeVerified(io, addr(io, 'gridpeakshavingpower'), [w], 'grid peak shaving power');
+}
+
 export async function setEnergyPattern(io: RegisterIO, pattern: unknown) {
   if (pattern !== 'batt_first' && pattern !== 'load_first') {
     throw new ControlError(`Unknown energy pattern "${pattern}"`);

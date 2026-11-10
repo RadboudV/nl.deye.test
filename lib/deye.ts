@@ -3,6 +3,7 @@ import Homey from 'homey';
 import type { Measurement } from './registers';
 import { OwnEnergyCounter } from './energycounter';
 import { gridAvailable } from './conditions';
+import { settingsFromSnapshot } from './settings';
 import { ChangeTracker, StateDebouncer, fireTrigger } from './triggers';
 
 // The inverter device processes the inverter groups of the snapshot only.
@@ -362,15 +363,11 @@ export class Deye extends Homey.Device {
 				}
 			}
 
-// Settings: Asymetric Phase Feeding
-			if (result['asymetricphasefeeding']) {
-				const asymetricphasefeeding = Number(result['asymetricphasefeeding'].value);
-				const current = this.getSetting('settings_asymetricphasefeeding');		
-				if (current !== asymetricphasefeeding) {
-					await this.setSettings( {settings_asymetricphasefeeding: Boolean(asymetricphasefeeding)} ).catch(this.error);
-				}
+// Settings that mirror an inverter register (time of use, work mode, peak shaving, asymetric phase feeding ...)
+			const settingChanges = settingsFromSnapshot(result, this.getSettings());
+			if (Object.keys(settingChanges).length > 0) {
+				await this.setSettings(settingChanges).catch(this.error);
 			}
-			
 
 			if (result['serial']) {
 				const serial = result['serial'].value;

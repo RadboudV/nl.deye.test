@@ -169,6 +169,9 @@ const V104_REGISTERS: Record<string, RegisterDef> = {
   workmode: { address: 142, length: 1, type: 'UINT16', label: 'Work Mode (0 sell, 1 zero export load, 2 zero export CT)', scale: 0, group: 'misc' },
   maxsellpower: { address: 143, length: 1, type: 'UINT16', label: 'Max Sell Power', scale: 0, group: 'misc' },
   solarsell: { address: 145, length: 1, type: 'UINT16', label: 'Solar Selling', scale: 0, group: 'misc' },
+  // Grid / generator charge: the global switches that apply while Time of Use is disabled (with Time of Use enabled the per-slot flags 172..177 apply)
+  generatorchargeenable: { address: 129, length: 1, type: 'UINT16', label: 'Generator Charge Enable (Time of Use disabled)', scale: 0, group: 'misc' },
+  gridchargeenable: { address: 130, length: 1, type: 'UINT16', label: 'Grid Charge Enable (Time of Use disabled)', scale: 0, group: 'misc' },
   gridpeakshavingmode: { address: 178, length: 1, type: 'UINT16', label: 'Peak shaving flags (bits 4-5 grid: 3 on, 2 off)', scale: 0, group: 'misc' },
   gridpeakshavingpower: { address: 191, length: 1, type: 'UINT16', label: 'Grid Peak Shaving Power', scale: 0, group: 'misc' },
   maxsolarpower: { address: 340, length: 1, type: 'UINT16', label: 'Max Solar Power', scale: 0, group: 'misc' },

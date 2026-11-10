@@ -9,6 +9,7 @@ import {
   RegisterSet, Snapshot, SnapshotSource,
 } from '../../lib/registers';
 import { ControlError, RegisterIO } from '../../lib/controls';
+import { CONTROL_SETTING_IDS, applySettingChanges } from '../../lib/settings';
 
 import Homey from 'homey';
 
@@ -227,22 +228,12 @@ private debug(...args: any[]): void {
     //this.log("Deye settings where changed");
 	this.debug("Deye settings where changed");
 
-//Time of Use
-    if (changedKeys.includes('settings_timeofuseenabled')) {
-	  // this.log('Deye settings "settings_timeofuseenabled" were changed. Changed settings from', oldSettings.settings_timeofuseenabled, 'to', newSettings.settings_timeofuseenabled);
-	  this.debug('Deye settings "settings_timeofuseenabled" were changed. Changed settings from', oldSettings.settings_timeofuseenabled, 'to', newSettings.settings_timeofuseenabled);
-    }
-
-//solarsellenabled
-    if (changedKeys.includes('settings_solarsellenabled')) {
-	  //this.log('Deye settings "settings_solarsellenabled" were changed. Changed settings from', oldSettings.settings_solarsellenabled, 'to', newSettings.settings_solarsellenabled);
-	  this.debug('Deye settings "settings_solarsellenabled" were changed. Changed settings from', oldSettings.settings_solarsellenabled, 'to', newSettings.settings_solarsellenabled);
-    }
-
-//Asymetric Phase Feeding
-    if (changedKeys.includes('settings_asymetricphasefeeding')) {
-	  this.log('Deye settings "settings_asymetricphasefeeding" were changed. Changed settings from', oldSettings.settings_asymetricphasefeeding, 'to', newSettings.settings_asymetricphasefeeding);
-	  this.updateDeyev2('asymetricphasefeeding', Number(newSettings.settings_asymetricphasefeeding), this);
+// Settings that mirror an inverter register: write the changed ones to the inverter. An error
+// (refused write, inverter not reachable) is shown to the user and the setting is not saved.
+    const registerSettings = changedKeys.filter((k) => CONTROL_SETTING_IDS.includes(k));
+    if (registerSettings.length > 0) {
+      this.log('Deye settings changed, writing to the inverter:', registerSettings.join(', '));
+      await this.control('Changing the Deye settings', (io) => applySettingChanges(io, registerSettings, newSettings));
     }
 
 //Polling Interval has changed, clear current timer and set and start new timer
@@ -362,44 +353,6 @@ private debug(...args: any[]): void {
  
  
 
-
-//*****************************************************************************************************
-// Update Deye settings
-//*****************************************************************************************************
-
-async updateDeyev2(type: string, value: number, device: Homey.Device) {
-	this.log("updateDeyev2");
-    const set = this.registerSet;
-    const def = set?.registers.asymetricphasefeeding;
-    if (!set || !set.writesVerified || !def) {
-      this.error('write skipped: no verified register map for this inverter yet', type);
-      return;
-    }
-    // wait for a running poll to finish instead of clearing/restarting the timer
-    while (this.busy) await new Promise(r => this.homey.setTimeout(r, 100));
-    this.busy = true;
-    try {
-      await this.connect();
-      const c = this.client!;
-      switch (type) {
-//        case 'settemperature':      await c.writeSingleRegister(2, value); break;
-//        case 'settemperatureshift': await c.writeSingleRegister(4, value); break;
-//        case 'setthermostatmode':   await c.writeSingleRegister(0, value); break;
-//        case 'setsilentmode':       await c.writeSingleCoil(2, Boolean(value)); break;
-//        case 'setonoff':            await c.writeSingleCoil(0, Boolean(value)); break;
-		case 'asymetricphasefeeding': await c.writeMultipleRegisters(def.address, [value]); break;
-      }
-      this.lastWrite = Date.now();
-      this.markSuccess();                  // a successful write proves the deye inverter is reachable
-    } catch (err) {
-      // Not counted as an availability failure: a Modbus exception (e.g. rejected value) is not a connection
-      // problem. The poll loop decides when the device is unavailable.
-      this.error('write failed', type, (err as Error).message);
-      this.dropConnection();
-    } finally {
-      this.busy = false;
-    }
-  }
 
 //*****************************************************************************************************
 // Control: run flow card actions (writes) on the inverter
