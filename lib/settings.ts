@@ -57,6 +57,21 @@ const DEFS: SettingDef[] = [
     write: (io, v) => controls.setBatteryCapacityLimit(io, 'batteryrestartcapacity', v) },
   { id: 'settings_batterylowcapacity', key: 'batterylowcapacity', read: (r) => r,
     write: (io, v) => controls.setBatteryCapacityLimit(io, 'batterylowcapacity', v) },
+  // Registers 124 / 127: battery capacity (%) where generator / grid charging starts; 128: grid charge current (A)
+  { id: 'settings_generatorchargestartcapacity', key: 'generatorchargestartcapacity', read: (r) => r,
+    write: (io, v) => controls.setChargeStartCapacity(io, 'generatorchargestartcapacity', v) },
+  { id: 'settings_gridchargestartcapacity', key: 'gridchargestartcapacity', read: (r) => r,
+    write: (io, v) => controls.setChargeStartCapacity(io, 'gridchargestartcapacity', v) },
+  { id: 'settings_gridchargecurrent', key: 'gridchargecurrent', read: (r) => r,
+    write: (io, v) => controls.setChargeCurrent(io, 'gridchargecurrent', v) },
+  // Register 125: generator charge current (A)
+  { id: 'settings_generatorchargecurrent', key: 'generatorchargecurrent', read: (r) => r,
+    write: (io, v) => controls.setChargeCurrent(io, 'generatorchargecurrent', v) },
+  // Register 140: bit 0 = grid signal, bit 1 = generator signal
+  { id: 'settings_gridsignal', key: 'gridgensignal', read: (r) => (r & 0x01) === 0x01,
+    write: (io, v) => controls.setGridSignal(io, onOff(v)) },
+  { id: 'settings_generatorsignal', key: 'gridgensignal', read: (r) => (r & 0x02) === 0x02,
+    write: (io, v) => controls.setGeneratorSignal(io, onOff(v)) },
   // Register 143: maximum power to the grid
   { id: 'settings_maxoutputtogrid', key: 'maxsellpower', read: (r) => r,
     write: (io, v) => controls.setMaxSellPower(io, v) },

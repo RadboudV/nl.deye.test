@@ -176,6 +176,12 @@ const V104_REGISTERS: Record<string, RegisterDef> = {
   batteryshutdowncapacity: { address: 115, length: 1, type: 'UINT16', label: 'Battery Capacity ShutDown (%)', scale: 0, group: 'misc' },
   batteryrestartcapacity: { address: 116, length: 1, type: 'UINT16', label: 'Battery Capacity Restart (%)', scale: 0, group: 'misc' },
   batterylowcapacity: { address: 117, length: 1, type: 'UINT16', label: 'Battery Capacity LowBatt (%)', scale: 0, group: 'misc' },
+  // Charging start points and the grid / generator signal switches (register 140: bit 0 = grid signal, bit 1 = generator signal)
+  generatorchargestartcapacity: { address: 124, length: 1, type: 'UINT16', label: 'Generator Charging Start Capacity (%)', scale: 0, group: 'misc' },
+  generatorchargecurrent: { address: 125, length: 1, type: 'UINT16', label: 'Generator Charge Current to Battery (A)', scale: 0, group: 'misc' },
+  gridchargestartcapacity: { address: 127, length: 1, type: 'UINT16', label: 'Grid Charging Start Capacity (%)', scale: 0, group: 'misc' },
+  gridchargecurrent: { address: 128, length: 1, type: 'UINT16', label: 'Grid Charge Current to Battery (A)', scale: 0, group: 'misc' },
+  gridgensignal: { address: 140, length: 1, type: 'UINT16', label: 'Signal switches (bit0: grid signal, bit1: generator signal)', scale: 0, group: 'misc' },
   gridpeakshavingmode: { address: 178, length: 1, type: 'UINT16', label: 'Peak shaving flags (bits 4-5 grid: 3 on, 2 off)', scale: 0, group: 'misc' },
   gridpeakshavingpower: { address: 191, length: 1, type: 'UINT16', label: 'Grid Peak Shaving Power', scale: 0, group: 'misc' },
   maxsolarpower: { address: 340, length: 1, type: 'UINT16', label: 'Max Solar Power', scale: 0, group: 'misc' },
