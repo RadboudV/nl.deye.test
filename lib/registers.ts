@@ -172,6 +172,10 @@ const V104_REGISTERS: Record<string, RegisterDef> = {
   // Grid / generator charge: the global switches that apply while Time of Use is disabled (with Time of Use enabled the per-slot flags 172..177 apply)
   generatorchargeenable: { address: 129, length: 1, type: 'UINT16', label: 'Generator Charge Enable (Time of Use disabled)', scale: 0, group: 'misc' },
   gridchargeenable: { address: 130, length: 1, type: 'UINT16', label: 'Grid Charge Enable (Time of Use disabled)', scale: 0, group: 'misc' },
+  // Battery capacity limits in percent
+  batteryshutdowncapacity: { address: 115, length: 1, type: 'UINT16', label: 'Battery Capacity ShutDown (%)', scale: 0, group: 'misc' },
+  batteryrestartcapacity: { address: 116, length: 1, type: 'UINT16', label: 'Battery Capacity Restart (%)', scale: 0, group: 'misc' },
+  batterylowcapacity: { address: 117, length: 1, type: 'UINT16', label: 'Battery Capacity LowBatt (%)', scale: 0, group: 'misc' },
   gridpeakshavingmode: { address: 178, length: 1, type: 'UINT16', label: 'Peak shaving flags (bits 4-5 grid: 3 on, 2 off)', scale: 0, group: 'misc' },
   gridpeakshavingpower: { address: 191, length: 1, type: 'UINT16', label: 'Grid Peak Shaving Power', scale: 0, group: 'misc' },
   maxsolarpower: { address: 340, length: 1, type: 'UINT16', label: 'Max Solar Power', scale: 0, group: 'misc' },

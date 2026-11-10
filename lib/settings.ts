@@ -50,6 +50,13 @@ const DEFS: SettingDef[] = [
   // Register 190: generator peak shaving power
   { id: 'settings_energygeneratorpower', key: 'generatorpeakshavingpower', read: (r) => r,
     write: (io, v) => controls.setGeneratorPeakShavingPower(io, v) },
+  // Registers 115 / 116 / 117: battery capacity limits (%)
+  { id: 'settings_batteryshutdowncapacity', key: 'batteryshutdowncapacity', read: (r) => r,
+    write: (io, v) => controls.setBatteryCapacityLimit(io, 'batteryshutdowncapacity', v) },
+  { id: 'settings_batteryrestartcapacity', key: 'batteryrestartcapacity', read: (r) => r,
+    write: (io, v) => controls.setBatteryCapacityLimit(io, 'batteryrestartcapacity', v) },
+  { id: 'settings_batterylowcapacity', key: 'batterylowcapacity', read: (r) => r,
+    write: (io, v) => controls.setBatteryCapacityLimit(io, 'batterylowcapacity', v) },
   // Register 143: maximum power to the grid
   { id: 'settings_maxoutputtogrid', key: 'maxsellpower', read: (r) => r,
     write: (io, v) => controls.setMaxSellPower(io, v) },
