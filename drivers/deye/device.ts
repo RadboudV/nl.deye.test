@@ -10,6 +10,7 @@ import {
 } from '../../lib/registers';
 import { ControlError, RegisterIO } from '../../lib/controls';
 import { CONTROL_SETTING_IDS, applySettingChanges } from '../../lib/settings';
+import { SYNC_INTERVAL_MS, formatDelta, syncInverterTime } from '../../lib/timesync';
 
 import Homey from 'homey';
 
@@ -228,6 +229,12 @@ private debug(...args: any[]): void {
     //this.log("Deye settings where changed");
 	this.debug("Deye settings where changed");
 
+// Time sync switched on: set the inverter clock right away (whatever the difference), then daily
+    if (changedKeys.includes('settings_timesync') && newSettings.settings_timesync) {
+      const result = await this.control('Syncing the inverter time', (io) => syncInverterTime(io, this.homey.clock.getTimezone(), true));
+      this.homey.setTimeout(() => this.timeSyncDone(result).catch(this.error), 0);   // settings cannot be written from inside onSettings
+    }
+
 // Settings that mirror an inverter register: write the changed ones to the inverter. An error
 // (refused write, inverter not reachable) is shown to the user and the setting is not saved.
     const registerSettings = changedKeys.filter((k) => CONTROL_SETTING_IDS.includes(k));
@@ -326,6 +333,7 @@ private debug(...args: any[]): void {
       if (Object.keys(finalRes).length === 0) throw new Error('no registers could be read');
  
       this.markSuccess();
+      this.homey.setTimeout(() => this.dailyTimeSync().catch(this.error), 0);   // after this poll has released the connection
       if (this.getSetting('modbusstatus') !== 'Connected') {
         this.setSettings({ modbusstatus: 'Connected' }).catch(this.error);   // only write when the value changes
       }
@@ -353,6 +361,46 @@ private debug(...args: any[]): void {
  
  
 
+
+//*****************************************************************************************************
+// Time sync: the inverter clock follows Homey, checked once every 24 hours
+//*****************************************************************************************************
+
+  private timeSyncBusy = false;
+  private timeSyncTried = 0;
+
+  /** Remembers the result and shows it in the settings. */
+  private async timeSyncDone(result: { status: 'synced' | 'too-far'; deltaMs: number | null }) {
+    const stamp = new Intl.DateTimeFormat('en-GB', { timeZone: this.homey.clock.getTimezone(), dateStyle: 'short', timeStyle: 'short' }).format(new Date());
+    if (result.status === 'synced') {
+      await this.setStoreValue('timeSyncedAt', Date.now());
+      await this.setSettings({ timesync_status: `Synced on ${stamp} (inverter clock before: ${formatDelta(result.deltaMs)})` });
+    } else {
+      this.log(`Time sync switched off: inverter time is off by more than 1 minute (${formatDelta(result.deltaMs)})`);
+      await this.setSettings({
+        settings_timesync: false,
+        timesync_status: `Switched off on ${stamp}: the inverter clock was off (${formatDelta(result.deltaMs)}), the limit is 1 minute`,
+      });
+    }
+  }
+
+  /** Called after every successful poll; acts when the sync is on and the last sync is 24 hours ago. */
+  async dailyTimeSync() {
+    if (!this.getSetting('settings_timesync') || this.timeSyncBusy) return;
+    const now = Date.now();
+    if (now - Number(this.getStoreValue('timeSyncedAt') ?? 0) < SYNC_INTERVAL_MS) return;
+    if (now - this.timeSyncTried < 10 * 60 * 1000) return;       // a failed attempt is retried after 10 minutes
+    this.timeSyncTried = now;
+    this.timeSyncBusy = true;
+    try {
+      const result = await this.control('Syncing the inverter time', (io) => syncInverterTime(io, this.homey.clock.getTimezone(), false));
+      await this.timeSyncDone(result);
+    } catch (err) {
+      this.error('time sync failed', (err as Error).message);
+    } finally {
+      this.timeSyncBusy = false;
+    }
+  }
 
 //*****************************************************************************************************
 // Control: run flow card actions (writes) on the inverter

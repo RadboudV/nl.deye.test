@@ -164,6 +164,37 @@
   {
     "type": "group",
     "label": {
+      "en": "Basic Settings",
+      "nl": "Basisinstellingen"
+    },
+    "children": [
+      {
+        "id": "settings_timesync",
+        "type": "checkbox",
+        "label": {
+          "en": "Sync the inverter time to Homey",
+          "nl": "Synchroniseer de tijd van de omvormer met Homey"
+        },
+        "hint": {
+          "en": "Sets the clock of the inverter to the time of Homey: right away when you switch this on, and then once every 24 hours. Note: the Time Sync is disabled automatically if the time difference between the inverter and Homey is more than 1 minute at the daily check.",
+          "nl": "Zet de klok van de omvormer gelijk aan de tijd van Homey: direct als je dit aanzet en daarna elke 24 uur. Let op: de tijdsynchronisatie wordt automatisch uitgeschakeld als het tijdsverschil tussen de omvormer en Homey bij de dagelijkse controle groter is dan 1 minuut."
+        },
+        "value": false
+      },
+      {
+        "id": "timesync_status",
+        "type": "label",
+        "label": {
+          "en": "Time sync status",
+          "nl": "Status tijdsynchronisatie"
+        },
+        "value": "not synced yet"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
       "en": "Deye Settings"
     },
     "children": [
