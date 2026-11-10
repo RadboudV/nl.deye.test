@@ -352,8 +352,8 @@
           "nl": "Grid Signal"
         },
         "hint": {
-          "en": "Grid signal switch of the inverter (register 140, bit 0).",
-          "nl": "Netsignaal-schakelaar van de omvormer (register 140, bit 0)."
+          "en": "Determines whether the inverter is allowed to draw power from the utility grid to charge or support the battery.",
+          "nl": "Bepaalt of de omvormer stroom van het openbare net mag gebruiken om de batterij te laden of te ondersteunen."
         },
         "value": false
       },
@@ -365,8 +365,8 @@
           "nl": "Generator Signal"
         },
         "hint": {
-          "en": "Generator signal switch of the inverter (register 140, bit 1).",
-          "nl": "Generatorsignaal-schakelaar van de omvormer (register 140, bit 1)."
+          "en": "Controls the dry-contact relay output (G-start / GS / GV ports) that automatically starts and stops an external backup generator.",
+          "nl": "Bestuurt de potentiaalvrije relaisuitgang (G-start / GS / GV-poorten) waarmee een externe noodgenerator automatisch wordt gestart en gestopt."
         },
         "value": false
       }
