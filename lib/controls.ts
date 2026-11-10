@@ -295,6 +295,13 @@ export async function setGeneratorPeakShavingPower(io: RegisterIO, watts: unknow
   await writeVerified(io, addr(io, 'generatorpeakshavingpower'), [w], 'generator peak shaving power');
 }
 
+/** Battery capacity limits in percent: shutdown (115), restart (116) and low battery (117). */
+export async function setBatteryCapacityLimit(io: RegisterIO, key: 'batteryshutdowncapacity' | 'batteryrestartcapacity' | 'batterylowcapacity', percent: unknown) {
+  const what = { batteryshutdowncapacity: 'Battery shutdown capacity', batteryrestartcapacity: 'Battery restart capacity', batterylowcapacity: 'Battery low capacity' }[key];
+  const p = checkInt(reqNumber(percent, what), 0, 100, what, ' %');
+  await writeVerified(io, addr(io, key), [p], what.toLowerCase());
+}
+
 export async function setAsymetricPhaseFeeding(io: RegisterIO, state: unknown) {
   if (state !== 'on' && state !== 'off') throw new ControlError(`Asymetric phase feeding must be on or off, got "${state}"`);
   await writeVerified(io, addr(io, 'asymetricphasefeeding'), [state === 'on' ? 1 : 0], 'asymetric phase feeding');
