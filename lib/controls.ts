@@ -330,6 +330,13 @@ export async function setGeneratorSignal(io: RegisterIO, state: unknown) {
   await updateRegister(io, addr(io, 'gridgensignal'), (cur) => (state === 'on' ? cur | 0x02 : cur & ~0x02), 'generator signal');
 }
 
+/** Maximum battery charge (218) or discharge (219) current in A. */
+export async function setBatteryMaxCurrent(io: RegisterIO, key: 'batterysettingsmaxchargecurrent' | 'batterysettingsmaxdischargecurrent', amps: unknown) {
+  const what = key === 'batterysettingsmaxchargecurrent' ? 'Battery max charge current' : 'Battery max discharge current';
+  const a = checkInt(reqNumber(amps, what), 0, MAX_CHARGE_CURRENT_A, what, ' A');
+  await writeVerified(io, addr(io, key), [a], what.toLowerCase());
+}
+
 export async function setAsymetricPhaseFeeding(io: RegisterIO, state: unknown) {
   if (state !== 'on' && state !== 'off') throw new ControlError(`Asymetric phase feeding must be on or off, got "${state}"`);
   await writeVerified(io, addr(io, 'asymetricphasefeeding'), [state === 'on' ? 1 : 0], 'asymetric phase feeding');

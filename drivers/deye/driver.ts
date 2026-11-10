@@ -60,6 +60,13 @@ module.exports = class MyDeyeDriver extends Homey.Driver {
       controls.setEnergyPattern(io, a.energyPattern === 'LOAD_FIRST' ? 'load_first' : 'batt_first'));
     actioncard('set_grid_peak_shaving', 'Set grid peak shaving', (a, io) =>
       a.onoff === 'on' ? controls.setGridPeakShavingOn(io, a.power) : controls.setGridPeakShavingOff(io));
+    // battery actions (the same registers as the Battery Settings of the device)
+    actioncard('set_battery_grid_charge', 'Set battery grid charge', (a, io) => controls.setGridChargeEnabled(io, a.onoff));
+    actioncard('set_battery_gen_charge', 'Set battery generator charge', (a, io) => controls.setGeneratorChargeEnabled(io, a.onoff));
+    actioncard('set_battery_grid_charge_current', 'Set battery grid charge current', (a, io) => controls.setChargeCurrent(io, 'gridchargecurrent', a.current));
+    actioncard('set_battery_low', 'Set battery low capacity', (a, io) => controls.setBatteryCapacityLimit(io, 'batterylowcapacity', a.percent));
+    actioncard('set_battery_max_charge_current', 'Set battery max charge current', (a, io) => controls.setBatteryMaxCurrent(io, 'batterysettingsmaxchargecurrent', a.current));
+    actioncard('set_battery_max_discharge_current', 'Set battery max discharge current', (a, io) => controls.setBatteryMaxCurrent(io, 'batterysettingsmaxdischargecurrent', a.current));
     actioncard('set_max_sell_power', 'Set max sell power', (a, io) => controls.setMaxSellPower(io, a.power));
     actioncard('set_max_solar_power', 'Set max solar power', (a, io) => controls.setMaxSolarPower(io, a.power));
 
