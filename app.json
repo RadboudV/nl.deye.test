@@ -436,7 +436,11 @@
               }
             ]
           }
-        ]
+        ],
+        "hint": {
+          "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies.",
+          "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak."
+        }
       },
       {
         "id": "set_battery_gen_charge",
@@ -473,7 +477,11 @@
               }
             ]
           }
-        ]
+        ],
+        "hint": {
+          "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies.",
+          "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak."
+        }
       },
       {
         "id": "set_battery_max_discharge_current",
@@ -496,7 +504,7 @@
               "en": "Current"
             },
             "min": 0,
-            "max": 120,
+            "max": 240,
             "step": 1
           }
         ]
@@ -522,7 +530,7 @@
               "en": "Current"
             },
             "min": 0,
-            "max": 120,
+            "max": 240,
             "step": 1
           }
         ]
@@ -574,7 +582,7 @@
               "en": "Current"
             },
             "min": 0,
-            "max": 120,
+            "max": 240,
             "step": 1
           }
         ]
