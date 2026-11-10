@@ -195,7 +195,43 @@
   {
     "type": "group",
     "label": {
-      "en": "Deye Settings"
+      "en": "Battery Settings",
+      "nl": "Batterij-instellingen"
+    },
+    "children": [
+      {
+        "id": "settings_energygridchargeenabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Grid Charge Enabled",
+          "nl": "Grid Charge Enabled"
+        },
+        "hint": {
+          "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
+          "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
+        },
+        "value": false
+      },
+      {
+        "id": "settings_energygenchargeenabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Generator Charge Enabled",
+          "nl": "Generator Charge Enabled"
+        },
+        "hint": {
+          "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
+          "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
+        },
+        "value": false
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "System Work Mode",
+      "nl": "Systeem werkmodus"
     },
     "children": [
       {
@@ -206,21 +242,8 @@
           "nl": "Time of Use Enabled"
         },
         "hint": {
-          "en": "When enabled, the settings of the timeslots apply (change them with the flow cards) and not the Solar Sell, Grid Charge and Generator Charge settings below. When disabled, those three settings apply.",
-          "nl": "Als dit aan staat gelden de instellingen van de tijdvakken (te wijzigen met flowkaarten) en niet de instellingen Solar Sell, Grid Charge en Generator Charge hieronder. Als dit uit staat gelden die drie instellingen wel."
-        },
-        "value": false
-      },
-      {
-        "id": "settings_solarsellenabled",
-        "type": "checkbox",
-        "label": {
-          "en": "Solar Sell Enabled",
-          "nl": "Solar Sell Enabled"
-        },
-        "hint": {
-          "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
-          "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
+          "en": "When enabled, the settings of the timeslots apply (change them with the flow cards) and not the Solar Sell, Grid Charge and Generator Charge settings (Grid Charge and Generator Charge are in Battery Settings). When disabled, those three settings apply.",
+          "nl": "Als dit aan staat gelden de instellingen van de tijdvakken (te wijzigen met flowkaarten) en niet de instellingen Solar Sell, Grid Charge en Generator Charge (Grid Charge en Generator Charge staan bij Batterij-instellingen). Als dit uit staat gelden die drie instellingen wel."
         },
         "value": false
       },
@@ -254,6 +277,19 @@
         ]
       },
       {
+        "id": "settings_solarsellenabled",
+        "type": "checkbox",
+        "label": {
+          "en": "Solar Sell Enabled",
+          "nl": "Solar Sell Enabled"
+        },
+        "hint": {
+          "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
+          "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
+        },
+        "value": false
+      },
+      {
         "id": "settings_energypriority",
         "type": "dropdown",
         "label": {
@@ -280,8 +316,8 @@
         "id": "settings_energygridshavingenabled",
         "type": "checkbox",
         "label": {
-          "en": "Energy Gridshaving Enabled",
-          "nl": "Energy Gridshaving Enabled"
+          "en": "Grid Peak Shaving",
+          "nl": "Grid Peak Shaving"
         },
         "value": false
       },
@@ -296,36 +332,18 @@
         },
         "step": 1,
         "label": {
-          "en": "Grid Shaving Power Amount",
-          "nl": "Grid Shaving Power Amount"
+          "en": "Grid Peak Shaving Power",
+          "nl": "Grid Peak Shaving Power"
         }
-      },
-      {
-        "id": "settings_energygridchargeenabled",
-        "type": "checkbox",
-        "label": {
-          "en": "Grid Charge Enabled",
-          "nl": "Grid Charge Enabled"
-        },
-        "hint": {
-          "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
-          "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
-        },
-        "value": false
-      },
-      {
-        "id": "settings_energygenchargeenabled",
-        "type": "checkbox",
-        "label": {
-          "en": "Generator Charge Enabled",
-          "nl": "Generator Charge Enabled"
-        },
-        "hint": {
-          "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
-          "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
-        },
-        "value": false
-      },
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Deye Settings"
+    },
+    "children": [
       {
         "id": "settings_energygeneratorpower",
         "type": "number",
@@ -355,7 +373,16 @@
           "en": "Limit the maximum power output of the grid connection",
           "nl": "Limit the maximum power output of the grid connection"
         }
-      },
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Advanced Function",
+      "nl": "Geavanceerde functie"
+    },
+    "children": [
       {
         "id": "settings_asymetricphasefeeding",
         "type": "checkbox",
