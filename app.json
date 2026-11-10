@@ -1851,6 +1851,10 @@
                 "en": "Time of Use Enabled",
                 "nl": "Time of Use Enabled"
               },
+              "hint": {
+                "en": "When enabled, the settings of the timeslots apply (change them with the flow cards) and not the Solar Sell, Grid Charge and Generator Charge settings below. When disabled, those three settings apply.",
+                "nl": "Als dit aan staat gelden de instellingen van de tijdvakken (te wijzigen met flowkaarten) en niet de instellingen Solar Sell, Grid Charge en Generator Charge hieronder. Als dit uit staat gelden die drie instellingen wel."
+              },
               "value": false
             },
             {
@@ -1859,6 +1863,10 @@
               "label": {
                 "en": "Solar Sell Enabled",
                 "nl": "Solar Sell Enabled"
+              },
+              "hint": {
+                "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
+                "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
               },
               "value": false
             },
@@ -1892,7 +1900,7 @@
               ]
             },
             {
-              "id": "setting_energypriority",
+              "id": "settings_energypriority",
               "type": "dropdown",
               "label": {
                 "en": "Energy Priority",
@@ -1927,8 +1935,8 @@
               "id": "settings_energygridshavingpower",
               "type": "number",
               "value": 11040,
-              "min": 1000,
-              "max": 16000,
+              "min": 0,
+              "max": 65535,
               "hint": {
                 "en": "Grid Peak Shaving Amount."
               },
@@ -1945,6 +1953,10 @@
                 "en": "Grid Charge Enabled",
                 "nl": "Grid Charge Enabled"
               },
+              "hint": {
+                "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
+                "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
+              },
               "value": false
             },
             {
@@ -1954,14 +1966,18 @@
                 "en": "Generator Charge Enabled",
                 "nl": "Generator Charge Enabled"
               },
+              "hint": {
+                "en": "Only applies when Time of Use is disabled. When Time of Use is enabled, the setting of each timeslot applies (change it with the flow cards).",
+                "nl": "Geldt alleen als Time of Use uit staat. Als Time of Use aan staat geldt de instelling van elk tijdvak (te wijzigen met flowkaarten)."
+              },
               "value": false
             },
             {
               "id": "settings_energygeneratorpower",
               "type": "number",
               "value": 11040,
-              "min": 1000,
-              "max": 16000,
+              "min": 0,
+              "max": 65535,
               "hint": {
                 "en": "Generator Peak Shaving Amount."
               },
@@ -1975,8 +1991,8 @@
               "id": "settings_maxoutputtogrid",
               "type": "number",
               "value": 3000,
-              "min": 1000,
-              "max": 8000,
+              "min": 0,
+              "max": 65535,
               "hint": {
                 "en": "Maximum power output to the grid."
               },
