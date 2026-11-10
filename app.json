@@ -1952,6 +1952,100 @@
                 "en": "Battery capacity (%) at which the low battery alarm is given.",
                 "nl": "Batterijcapaciteit (%) waarbij het alarm voor lage batterij wordt gegeven."
               }
+            },
+            {
+              "id": "settings_generatorchargestartcapacity",
+              "type": "number",
+              "value": 50,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "units": "%",
+              "label": {
+                "en": "Generator Charging Start Capacity",
+                "nl": "Generator laden startcapaciteit"
+              },
+              "hint": {
+                "en": "Battery capacity (%) at which charging from the generator starts.",
+                "nl": "Batterijcapaciteit (%) waarbij het laden vanaf de generator start."
+              }
+            },
+            {
+              "id": "settings_gridchargestartcapacity",
+              "type": "number",
+              "value": 50,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "units": "%",
+              "label": {
+                "en": "Grid Charging Start Capacity",
+                "nl": "Net laden startcapaciteit"
+              },
+              "hint": {
+                "en": "Battery capacity (%) at which charging from the grid starts.",
+                "nl": "Batterijcapaciteit (%) waarbij het laden vanaf het net start."
+              }
+            },
+            {
+              "id": "settings_generatorchargecurrent",
+              "type": "number",
+              "value": 40,
+              "min": 0,
+              "max": 240,
+              "step": 1,
+              "units": "A",
+              "label": {
+                "en": "Generator Charge Current",
+                "nl": "Generator laadstroom"
+              },
+              "hint": {
+                "en": "Current used to charge the battery from the generator.",
+                "nl": "Stroom waarmee de batterij vanaf de generator wordt geladen."
+              }
+            },
+            {
+              "id": "settings_gridchargecurrent",
+              "type": "number",
+              "value": 40,
+              "min": 0,
+              "max": 240,
+              "step": 1,
+              "units": "A",
+              "label": {
+                "en": "Grid Charge Current",
+                "nl": "Netlaadstroom"
+              },
+              "hint": {
+                "en": "Current used to charge the battery from the grid.",
+                "nl": "Stroom waarmee de batterij vanaf het net wordt geladen."
+              }
+            },
+            {
+              "id": "settings_gridsignal",
+              "type": "checkbox",
+              "label": {
+                "en": "Grid Signal",
+                "nl": "Grid Signal"
+              },
+              "hint": {
+                "en": "Determines whether the inverter is allowed to draw power from the utility grid to charge or support the battery.",
+                "nl": "Bepaalt of de omvormer stroom van het openbare net mag gebruiken om de batterij te laden of te ondersteunen."
+              },
+              "value": false
+            },
+            {
+              "id": "settings_generatorsignal",
+              "type": "checkbox",
+              "label": {
+                "en": "Generator Signal",
+                "nl": "Generator Signal"
+              },
+              "hint": {
+                "en": "Controls the dry-contact relay output (G-start / GS / GV ports) that automatically starts and stops an external backup generator.",
+                "nl": "Bestuurt de potentiaalvrije relaisuitgang (G-start / GS / GV-poorten) waarmee een externe noodgenerator automatisch wordt gestart en gestopt."
+              },
+              "value": false
             }
           ]
         },
