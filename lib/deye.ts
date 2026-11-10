@@ -2,6 +2,8 @@ import Homey from 'homey';
 
 import type { Measurement } from './registers';
 import { OwnEnergyCounter } from './energycounter';
+import { gridAvailable } from './conditions';
+import { ChangeTracker, StateDebouncer, fireTrigger } from './triggers';
 
 // The inverter device processes the inverter groups of the snapshot only.
 // Battery values are handled by the battery device (lib/battery.ts).
@@ -21,6 +23,22 @@ export class Deye extends Homey.Device {
     // Daily / total energy of the inverter's own power usage (integrated from measure_power.deyeownconsumption)
     private ownCounter?: OwnEnergyCounter;
     private ownCounterSaved = 0;
+
+    // Flow triggers: "grid became (un)available" needs 2 polls to confirm, power triggers fire when the value changes
+    private gridState = new StateDebouncer<boolean>();
+    private powerChanges = new ChangeTracker();
+
+    /** Forget a pending grid state change (called when a poll fails, the state is unknown then). */
+    resetTriggerState() { this.gridState.reset(); }
+
+    private async checkGridTrigger(result: Record<string, DeyeMeasurement>) {
+        const change = this.gridState.update(gridAvailable(result));
+        if (change) await fireTrigger(this, change.value ? 'grid_available_true' : 'grid_available_false');
+    }
+
+    private async firePowerChanged(card: string, token: string, watts: number) {
+        if (this.powerChanges.changed(card, watts)) await fireTrigger(this, card, { [token]: watts });
+    }
 
     /** Local date (Homey's timezone) as YYYY-MM-DD */
     private localDay(nowMs: number): string {
@@ -59,6 +77,8 @@ export class Deye extends Homey.Device {
     async processDeyeResult(result: Record<string, DeyeMeasurement>) {
 
         if (result) {
+
+            await this.checkGridTrigger(result);
 
             // Show result
 			// disabled logging 
@@ -209,6 +229,7 @@ export class Deye extends Homey.Device {
 				}
                 var loadtotalpower = Number(result['loadtotalpower'].value) * (Math.pow(10, Number(result['loadtotalpower'].scale)));
                 await this.setCapabilityValue('measure_power.loadtotalpower', loadtotalpower).catch(this.error);
+                await this.firePowerChanged('measure_consumption_power_changed', 'measure_consumption_power', loadtotalpower);
             }
 
 // Home load energy counters (register 526 daily, 527 total), exposed as "imported" energy of the device
@@ -270,6 +291,7 @@ export class Deye extends Homey.Device {
 				
 				if (gridpower < MAX_GRIDPOWER_ABSOLUTE && gridpower > -MAX_GRIDPOWER_ABSOLUTE) {
 					await this.setCapabilityValue('measure_power.gridpower', gridpower).catch(this.error);
+					await this.firePowerChanged('measure_grid_power_changed', 'measure_grid_power', gridpower);
 					}
             }
 

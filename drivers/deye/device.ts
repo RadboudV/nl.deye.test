@@ -349,6 +349,7 @@ private debug(...args: any[]): void {
     } catch (err) {
       this.error('poll failed', (err as Error).message);
       this.dropConnection();               // next poll reconnects from scratch
+      this.resetTriggerState();            // grid state is unknown while the inverter cannot be read
       if (this.getSetting('modbusstatus') !== 'Error') {
         this.setSettings({ modbusstatus: 'Error' }).catch(this.error);
       }

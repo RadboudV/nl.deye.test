@@ -1,5 +1,6 @@
 import Homey from 'homey';
 import type { Snapshot } from './registers';
+import { ChangeTracker, fireTrigger } from './triggers';
 import { measured } from './conditions';
 
 // Plausibility limit: ignore obviously corrupt readings
@@ -36,6 +37,8 @@ export const SOLAR_CAPABILITIES = [
  */
 export class DeyeSolar extends Homey.Device {
 
+  private powerChanges = new ChangeTracker();   // flow trigger "Power from the solar cells changed"
+
   private async setCap(capability: string, value: number | null) {
     if (value === null || !Number.isFinite(value)) return;
     if (!this.hasCapability(capability)) await this.addCapability(capability).catch(this.error);
@@ -70,7 +73,12 @@ export class DeyeSolar extends Homey.Device {
     // Total = sum of the PV inputs that could be read (a missing input counts as unknown, not 0)
     if (powers.length > 0 && !corrupt) {
       const total = powers.reduce((a, b) => a + b, 0);
-      if (total < MAX_PV_POWER) await this.setCap('measure_power', total);
+      if (total < MAX_PV_POWER) {
+        await this.setCap('measure_power', total);
+        if (this.powerChanges.changed('measure_solar_power_changed', total)) {
+          await fireTrigger(this, 'measure_solar_power_changed', { measure_solar_power: total });
+        }
+      }
     }
     await this.setCap('meter_power', measured(solar, 'totalsolarproduction'));
 
