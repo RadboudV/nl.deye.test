@@ -290,6 +290,22 @@
         "value": false
       },
       {
+        "id": "settings_maxoutputtogrid",
+        "type": "number",
+        "value": 3000,
+        "min": 0,
+        "max": 65535,
+        "hint": {
+          "en": "Maximum power sold to the grid.",
+          "nl": "Maximaal vermogen dat aan het net wordt verkocht."
+        },
+        "step": 1,
+        "label": {
+          "en": "Maximum Selling Power",
+          "nl": "Maximaal verkoopvermogen"
+        }
+      },
+      {
         "id": "settings_energypriority",
         "type": "dropdown",
         "label": {
@@ -341,7 +357,8 @@
   {
     "type": "group",
     "label": {
-      "en": "Deye Settings"
+      "en": "Generator Port Use",
+      "nl": "Generatorpoort gebruik"
     },
     "children": [
       {
@@ -357,21 +374,6 @@
         "label": {
           "en": "Generator Power Amount",
           "nl": "Generator Power Amount"
-        }
-      },
-      {
-        "id": "settings_maxoutputtogrid",
-        "type": "number",
-        "value": 3000,
-        "min": 0,
-        "max": 65535,
-        "hint": {
-          "en": "Maximum power output to the grid."
-        },
-        "step": 1,
-        "label": {
-          "en": "Limit the maximum power output of the grid connection",
-          "nl": "Limit the maximum power output of the grid connection"
         }
       }
     ]
