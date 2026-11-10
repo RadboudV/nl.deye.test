@@ -10,11 +10,11 @@ export type DeyeMeasurement = Measurement;
 
 // Plausibility limits: readings outside these are ignored
 const MAX_PV_POWER = 15600;
-const MAX_BATTERY_VOLTAGE = 60;
+//const MAX_BATTERY_VOLTAGE = 60;
 
 const MAX_GRIDPOWER_ABSOLUTE = 24150;
-const MAX_BATTERY_TEMP_RAW = 1500;
-const MIN_BATTERY_TEMP_RAW = 1000;
+//const MAX_BATTERY_TEMP_RAW = 1500;
+//const MIN_BATTERY_TEMP_RAW = 1000;
 
 export class Deye extends Homey.Device {
 
@@ -216,13 +216,13 @@ export class Deye extends Homey.Device {
                 ['loaddailyconsumption', 'meter_power.dailyimported', 'Today Home Load Imported', 'Vandaag Huisverbruik'],
                 ['loadtotalconsumption', 'meter_power.imported', 'Total Home Load Imported', 'Totaal Huisverbruik'],
             ]) {
-                const m = result[key];
-                if (!m) continue;
+                const readitem = result[key];
+                if (!readitem) continue;
                 if (!this.hasCapability(capability)) {
                     await this.addCapability(capability).catch(this.error);
                     await this.setCapabilityOptions(capability, { "title": { "en": en, "nl": nl }, "decimals": 2, "duration": false });
                 }
-                await this.setCapabilityValue(capability, Number(m.value) * Math.pow(10, Number(m.scale))).catch(this.error);
+                await this.setCapabilityValue(capability, Number(readitem.value) * Math.pow(10, Number(readitem.scale))).catch(this.error);
             }
 // **************
 // ****** Grid
