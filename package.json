@@ -3,6 +3,7 @@
   "version": "1.0.34",
   "scripts": {
     "build": "tsc",
+    "test": "node test/run.js",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore ."
   },
   "devDependencies": {
