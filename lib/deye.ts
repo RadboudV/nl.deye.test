@@ -184,133 +184,14 @@ export class Deye extends Homey.Device {
 
 
 // **************
+// ****** Solar
+// **************
+//removed solar items, and moved them to solar device
+
+// **************
 // ****** Battery
 // **************
-//Battery Power
-            if (result['batterypower']) {
-				if (!this.hasCapability('measure_power.batterypower')) {
-					await this.addCapability('measure_power.batterypower').catch(this.error);
-					await this.setCapabilityOptions('measure_power.batterypower', { "title": {
-						"en": "Battery Power",
-						"nl": "Batterij vermogen"
-						},
-						});
-				}
-                var batterypower = Number(result['batterypower'].value) * (Math.pow(10, Number(result['batterypower'].scale)));
-
-                if (batterypower < 24150 && batterypower > -24150) {
-					await this.setCapabilityValue('measure_power.batterypower', batterypower).catch(this.error);
-					}
-            }
-// Battery Voltage
-            if (result['batteryvoltage']) {
-				if (!this.hasCapability('measure_voltage.batteryvoltage')) {
-					await this.addCapability('measure_voltage.batteryvoltage').catch(this.error);
-					await this.setCapabilityOptions('measure_voltage.batteryvoltage', { "title": {
-						"en": "Battery Voltage",
-						"nl": "Batterij voltage"
-						},
-						});
-				}
-                var batteryvoltage = Number(result['batteryvoltage'].value) * (Math.pow(10, Number(result['batteryvoltage'].scale)));
-				if (batteryvoltage < MAX_BATTERY_VOLTAGE) {
-					await this.setCapabilityValue('measure_voltage.batteryvoltage', batteryvoltage).catch(this.error);
-					}
-            }
-// Battery Current
-            if (result['batterycurrent']) {
-				if (!this.hasCapability('measure_current.batterycurrent')) {
-					await this.addCapability('measure_current.batterycurrent').catch(this.error);
-				}
-                var batterycurrent = Number(result['batterycurrent'].value) * (Math.pow(10, Number(result['batterycurrent'].scale)));
-					await await this.setCapabilityValue('measure_current.batterycurrent', batterycurrent).catch(this.error);
-            }
-// Battery Percentage
-            if (result['batterypercentage']) {
-				if (!this.hasCapability('measure_battery')) {
-					await this.addCapability('measure_battery').catch(this.error);
-				}
-                var batterypercentage = Number(result['batterypercentage'].value) * (Math.pow(10, Number(result['batterypercentage'].scale)));
-				if (batterypercentage > 0 && batterypercentage <= 100) {
-					await this.setCapabilityValue('measure_battery', batterypercentage).catch(this.error);
-					}
-            }
-
-// Battery Temperature
-            if (result['batterytemperature']) {
-				if (!this.hasCapability('measure_temperature.batterytemperature')) {
-					await this.addCapability('measure_temperature.batterytemperature').catch(this.error);
-					await this.setCapabilityOptions('measure_temperature.batterytemperature', { "title": {
-						"en": "Battery Temperature",
-						"nl": "Accu temperatuur"
-						},
-						});
-				}
-                var batterytemperature = Number(result['batterytemperature'].value) * (Math.pow(10, Number(result['batterytemperature'].scale)));
-
-				if (batterytemperature >= MIN_BATTERY_TEMP_RAW && batterytemperature <= MAX_BATTERY_TEMP_RAW) {
-					await this.setCapabilityValue('measure_temperature.batterytemperature', ((batterytemperature-1000)/10)).catch(this.error);
-					}
-            }
-// Today Battery Charge
-            if (result['batterytodaycharge']) {
-				if (!this.hasCapability('meter_power.batterytodaycharge')) {
-					await this.addCapability('meter_power.batterytodaycharge').catch(this.error);
-					await this.setCapabilityOptions('meter_power.batterytodaycharge', { "title": {
-						"en": "Today Battery Charge",
-						"nl": "Vandaag vermogen geladen"
-						},
-						"duration": false
-						});
-				}
-                var batterytodaycharge = Number(result['batterytodaycharge'].value) * (Math.pow(10, Number(result['batterytodaycharge'].scale)));
-                await this.setCapabilityValue('meter_power.batterytodaycharge', batterytodaycharge).catch(this.error);
-            }
-
-// Total Battery Charge
-            if (result['batterytotalcharge']) {
-				if (!this.hasCapability('meter_power.batterytotalcharge')) {
-					await this.addCapability('meter_power.batterytotalcharge').catch(this.error);
-					await this.setCapabilityOptions('meter_power.batterytotalcharge', { "title": {
-						"en": "Total Battery Charge",
-						"nl": "Totaal vermogen geladen"
-						},
-						"duration": false
-						});
-				}
-                var batterytotalcharge = Number(result['batterytotalcharge'].value) * (Math.pow(10, Number(result['batterytotalcharge'].scale)));
-                await this.setCapabilityValue('meter_power.batterytotalcharge', batterytotalcharge).catch(this.error);
-            }
-
-// Today Battery DISCharge
-            if (result['batterytodaydischarge']) {
-				if (!this.hasCapability('meter_power.batterytodaydischarge')) {
-					await this.addCapability('meter_power.batterytodaydischarge').catch(this.error);
-					await this.setCapabilityOptions('meter_power.batterytodaydischarge', { "title": {
-						"en": "Today Battery Discharge",
-						"nl": "Vandaag vermogen ontladen"
-						},
-						"duration": false
-						});
-				}
-                var batterytodaydischarge = Number(result['batterytodaydischarge'].value) * (Math.pow(10, Number(result['batterytodaydischarge'].scale)));
-                await this.setCapabilityValue('meter_power.batterytodaydischarge', batterytodaydischarge).catch(this.error);
-            }
-
-// Total Battery DISCharge
-            if (result['batterytotaldischarge']) {
-				if (!this.hasCapability('meter_power.batterytotaldischarge')) {
-					await this.addCapability('meter_power.batterytotaldischarge').catch(this.error);
-					await this.setCapabilityOptions('meter_power.batterytotaldischarge', { "title": {
-						"en": "Total Battery Discharge",
-						"nl": "Totaal vermogen ontladen"
-						},
-						"duration": false
-						});
-				}
-                var batterytotaldischarge = Number(result['batterytotaldischarge'].value) * (Math.pow(10, Number(result['batterytotaldischarge'].scale)));
-                await this.setCapabilityValue('meter_power.batterytotaldischarge', batterytotaldischarge).catch(this.error);
-            }
+//removed battery items, and moved them to battery device
 
 // **************
 // ****** Load
@@ -329,6 +210,7 @@ export class Deye extends Homey.Device {
                 var loadtotalpower = Number(result['loadtotalpower'].value) * (Math.pow(10, Number(result['loadtotalpower'].scale)));
                 await this.setCapabilityValue('measure_power.loadtotalpower', loadtotalpower).catch(this.error);
             }
+
 // Home load energy counters (register 526 daily, 527 total), exposed as "imported" energy of the device
             for (const [key, capability, en, nl] of [
                 ['loaddailyconsumption', 'meter_power.dailyimported', 'Today Home Load Imported', 'Vandaag Huisverbruik'],
@@ -394,9 +276,8 @@ export class Deye extends Homey.Device {
 // ********************************************************************************
 // Calculated Deye Own Consumption
 // ********************************************************************************
-
-
 // Calculated Deye Own Consumption
+
             if (result['batterypower'] && result['gridpower'] && result['pv1inputpower']  && result['pv2inputpower']  && result['loadtotalpower']) {
 				if (!this.hasCapability('measure_power.deyeownconsumption')) {
 					await this.addCapability('measure_power.deyeownconsumption').catch(this.error);
@@ -417,23 +298,8 @@ export class Deye extends Homey.Device {
 // ********************************************************************************
 // Settings
 // ********************************************************************************
-
 // Read Settings and assing them a setting
-/*Cooling Mode
-            if (result['statuscooling']) {
-//			var statuscooling = Number(result['statuscooling'].value);
-			const statuscooling = Number(result['statuscooling'].value) === 1;
-			const current = this.getSetting('settings_coolingmode');
 
-			// var statuscooling = Boolean(result['statuscooling'].value);
-			
-			if (current !== statuscooling) {
-				await this.setSettings({
-				settings_coolingmode: statuscooling
-			});
-			}
-            }
-*/
    			if (result['batterysettingschargevoltage']) {
 				const batterysettingschargevoltage = (Number(result['batterysettingschargevoltage'].value) * (Math.pow(10, Number(result['batterysettingschargevoltage'].scale)))).toString();
 				const current = this.getSetting('maxchargevoltage');		
@@ -442,7 +308,6 @@ export class Deye extends Homey.Device {
 				}
             }
 
-
    			if (result['batterysettingschargecurrent']) {
 				const batterysettingschargecurrent = (Number(result['batterysettingschargecurrent'].value) * (Math.pow(10, Number(result['batterysettingschargecurrent'].scale)))).toString();
 				const current = this.getSetting('chargecurrent');		
@@ -450,18 +315,6 @@ export class Deye extends Homey.Device {
 					await this.setSettings( {chargecurrent: batterysettingschargecurrent } ).catch(this.error);
 				}
             }
-
-
-
-//			if (result['batterysettingschargevoltage']) {
-//				var batterysettingschargevoltage = (Number(result['batterysettingschargevoltage'].value) * (Math.pow(10, Number(result['batterysettingschargevoltage'].scale)))).toString();
-//				await this.setSettings( {maxchargevoltage: batterysettingschargevoltage } ).catch(this.error);
-//			}
-
-//			if (result['batterysettingschargecurrent']) {
-//				var batterysettingschargecurrent = (Number(result['batterysettingschargecurrent'].value) * (Math.pow(10, Number(result['batterysettingschargecurrent'].scale)))).toString();
-//				await this.setSettings( {chargecurrent: batterysettingschargecurrent } ).catch(this.error);
-//			}
 
 			if (result['batterysettingsdischargecurrent']) {
 				const batterysettingsdischargecurrent = (Number(result['batterysettingsdischargecurrent'].value) * (Math.pow(10, Number(result['batterysettingsdischargecurrent'].scale)))).toString();
@@ -532,8 +385,6 @@ export class Deye extends Homey.Device {
 					await this.setSettings( {controlpanelversion: controlpanelversion } ).catch(this.error);
 				}
 			}
-
-//
 
         }
     }
