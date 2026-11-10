@@ -108,6 +108,9 @@ export function toFlag(input: unknown, what: string): Flag {
   throw new ControlError(`${what}: unknown option "${input}"`);
 }
 
+/** Highest battery charge current accepted from the grid (A); the inverter refuses what its battery settings do not allow. */
+const MAX_CHARGE_CURRENT_A = 240;
+
 function checkInt(value: number, min: number, max: number, what: string, unit = ''): number {
   if (!Number.isInteger(value) || value < min || value > max) {
     throw new ControlError(`${what} must be a whole number between ${min} and ${max}${unit}, got ${value}`);
@@ -300,6 +303,31 @@ export async function setBatteryCapacityLimit(io: RegisterIO, key: 'batteryshutd
   const what = { batteryshutdowncapacity: 'Battery shutdown capacity', batteryrestartcapacity: 'Battery restart capacity', batterylowcapacity: 'Battery low capacity' }[key];
   const p = checkInt(reqNumber(percent, what), 0, 100, what, ' %');
   await writeVerified(io, addr(io, key), [p], what.toLowerCase());
+}
+
+/** Battery capacity (%) at which charging from the generator (124) or the grid (127) starts. */
+export async function setChargeStartCapacity(io: RegisterIO, key: 'generatorchargestartcapacity' | 'gridchargestartcapacity', percent: unknown) {
+  const what = key === 'gridchargestartcapacity' ? 'Grid charging start capacity' : 'Generator charging start capacity';
+  const p = checkInt(reqNumber(percent, what), 0, 100, what, ' %');
+  await writeVerified(io, addr(io, key), [p], what.toLowerCase());
+}
+
+/** Current (A) used to charge the battery from the grid (128) or the generator (125). */
+export async function setChargeCurrent(io: RegisterIO, key: 'gridchargecurrent' | 'generatorchargecurrent', amps: unknown) {
+  const what = key === 'gridchargecurrent' ? 'Grid charge current' : 'Generator charge current';
+  const a = checkInt(reqNumber(amps, what), 0, MAX_CHARGE_CURRENT_A, what, ' A');
+  await writeVerified(io, addr(io, key), [a], what.toLowerCase());
+}
+
+/** Register 140: bit 0 = grid signal, bit 1 = generator signal; the other bits are kept. */
+export async function setGridSignal(io: RegisterIO, state: unknown) {
+  if (state !== 'on' && state !== 'off') throw new ControlError(`Grid signal must be on or off, got "${state}"`);
+  await updateRegister(io, addr(io, 'gridgensignal'), (cur) => (state === 'on' ? cur | 0x01 : cur & ~0x01), 'grid signal');
+}
+
+export async function setGeneratorSignal(io: RegisterIO, state: unknown) {
+  if (state !== 'on' && state !== 'off') throw new ControlError(`Generator signal must be on or off, got "${state}"`);
+  await updateRegister(io, addr(io, 'gridgensignal'), (cur) => (state === 'on' ? cur | 0x02 : cur & ~0x02), 'generator signal');
 }
 
 export async function setAsymetricPhaseFeeding(io: RegisterIO, state: unknown) {
