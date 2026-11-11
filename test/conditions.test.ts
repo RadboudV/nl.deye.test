@@ -1,0 +1,14 @@
+import * as C from '../lib/conditions';
+const m = (v: number, scale = 0) => ({ value: String(v), scale, label: '', group: 'solar' as const });
+let f = 0; const ok = (c: boolean, s: string) => { if (!c) f++; console.log(c ? 'ok  ' : 'FAIL', s); };
+ok(C.gridAvailable({}) === null, 'grid: no data -> unknown');
+ok(C.gridAvailable({ l1gridvoltage: m(2310, -1) }) === true, 'grid: 231 V -> available');
+ok(C.gridAvailable({ l1gridvoltage: m(0), l2gridvoltage: m(0), l3gridvoltage: m(0) }) === false, 'grid: 0 V -> unavailable');
+ok(C.gridAvailable({ l1gridvoltage: m(0), l2gridvoltage: m(2300, -1) }) === true, 'grid: one phase present');
+ok(C.batteryCharging({ batterypower: m(-1500) }) === true && C.batteryDischarging({ batterypower: m(-1500) }) === false, 'battery -1500 raw = charging');
+ok(C.batteryCharging({ batterypower: m(800) }) === false && C.batteryDischarging({ batterypower: m(800) }) === true, 'battery +800 raw = discharging');
+ok(C.batteryCharging({ batterypower: m(5) }) === false && C.batteryDischarging({ batterypower: m(5) }) === false, 'battery 5 W = idle (neither)');
+ok(C.batteryCharging({}) === null, 'battery: no data -> unknown');
+ok(C.gridFeeding({ gridpower: m(-900) }) === true && C.gridFeeding({ gridpower: m(300) }) === false && C.gridFeeding({ gridpower: m(-5) }) === false, 'grid feeding: export negative');
+ok(C.solarProducing({ pv1inputpower: m(0), pv2inputpower: m(450) }) === true && C.solarProducing({ pv1inputpower: m(2), pv2inputpower: m(3) }) === false, 'solar sum');
+console.log(f ? f + ' FAILED' : 'all passed'); process.exit(f ? 1 : 0);
