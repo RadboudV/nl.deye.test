@@ -36,5 +36,30 @@ const now = Date.parse('2026-11-10T11:00:30Z');            // 12:00:30 in Amster
   const stuck = io(); stuck.write = async () => {}; set({ ...lp, hour: 7 }); let msg = '';
   await ts.syncInverterTime(stuck, TZ, true, () => now).catch((e: Error) => (msg = e.message)); ok(/did not accept/.test(msg), 'write not accepted -> error: ' + msg);
   ok(ts.formatDelta(40000) === '40 seconds ahead' && ts.formatDelta(-330000) === '6 minutes behind', 'delta text: ' + ts.formatDelta(-330000));
+
+  // ---- the daily check on the device: when does it run, what does it do
+  const Dev: any = require('../drivers/deye/device');
+  const makeDevice = (enabled: boolean, syncedHoursAgo: number | null, inverterOffsetSeconds: number) => {
+    const d = new Dev();
+    d.settings = { settings_timesync: enabled, timesync_status: 'not synced yet' };
+    if (syncedHoursAgo !== null) d.store = { timeSyncedAt: Date.now() - syncedHoursAgo * 3600 * 1000 };
+    const local = ts.localParts(Date.now() + inverterOffsetSeconds * 1000, 'Europe/Amsterdam');
+    ts.encodeTime(local).forEach((w, i) => { mem[62 + i] = w; });
+    log.length = 0;
+    d.control = async (_label: string, run: (io: any) => Promise<void>) => run(io());
+    return d;
+  };
+  let dev = makeDevice(true, 25, 20);
+  await dev.dailyTimeSync();
+  ok(log.length === 1 && dev.store.timeSyncedAt > Date.now() - 5000 && /^Synced/.test(dev.settings.timesync_status) && dev.settings.settings_timesync === true, 'due (25 h) and 20 s off: written, remembered, status shown: ' + dev.settings.timesync_status);
+  dev = makeDevice(true, 1, 20); await dev.dailyTimeSync(); ok(log.length === 0, 'synced 1 h ago: nothing to do');
+  dev = makeDevice(true, 25, 180); await dev.dailyTimeSync();
+  ok(log.length === 0 && dev.settings.settings_timesync === false && /^Switched off/.test(dev.settings.timesync_status), 'due and 3 min off: switched off, nothing written: ' + dev.settings.timesync_status);
+  dev = makeDevice(false, 25, 20); await dev.dailyTimeSync(); ok(log.length === 0, 'switched off: nothing to do');
+  dev = makeDevice(true, null, 20); await dev.dailyTimeSync(); ok(log.length === 1, 'never synced before (no timestamp): syncs');
+  dev = makeDevice(true, 25, 20); dev.control = async () => { throw new Error('The inverter did not accept the new time'); }; dev.error = () => {};
+  await dev.dailyTimeSync();
+  ok(dev.settings.settings_timesync === true && /^Failed on .*did not accept the new time.*retrying in 10 minutes/.test(dev.settings.timesync_status), 'failed attempt: stays on, reason shown in the status: ' + dev.settings.timesync_status);
+  await dev.dailyTimeSync(); ok(dev.settings.timesync_status.startsWith('Failed'), 'second attempt within 10 minutes is not made');
   console.log(f ? f + ' FAILED' : 'all passed'); process.exit(f ? 1 : 0);
 })();

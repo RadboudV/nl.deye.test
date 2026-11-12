@@ -362,9 +362,14 @@ private debug(...args: any[]): void {
   private timeSyncTried = 0;
 
   /** Remembers the result and shows it in the settings. */
+  private timeStamp() {
+    return new Intl.DateTimeFormat('en-GB', { timeZone: this.homey.clock.getTimezone(), dateStyle: 'short', timeStyle: 'short' }).format(new Date());
+  }
+
   private async timeSyncDone(result: { status: 'synced' | 'too-far'; deltaMs: number | null }) {
-    const stamp = new Intl.DateTimeFormat('en-GB', { timeZone: this.homey.clock.getTimezone(), dateStyle: 'short', timeStyle: 'short' }).format(new Date());
+    const stamp = this.timeStamp();
     if (result.status === 'synced') {
+      this.log(`Time sync: inverter clock set to Homey time (before: ${formatDelta(result.deltaMs)})`);
       await this.setStoreValue('timeSyncedAt', Date.now());
       await this.setSettings({ timesync_status: `Synced on ${stamp} (inverter clock before: ${formatDelta(result.deltaMs)})` });
     } else {
@@ -389,6 +394,8 @@ private debug(...args: any[]): void {
       await this.timeSyncDone(result);
     } catch (err) {
       this.error('time sync failed', (err as Error).message);
+      // show the reason in the settings too: a failed attempt is retried after 10 minutes
+      await this.setSettings({ timesync_status: `Failed on ${this.timeStamp()}: ${(err as Error).message} (retrying in 10 minutes)` }).catch(this.error);
     } finally {
       this.timeSyncBusy = false;
     }
