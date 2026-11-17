@@ -27,9 +27,10 @@ export type RegisterType = 'UINT16' | 'INT16' | 'UINT32' | 'STRING' | 'HEX';
  * battery         live battery values and energy counters       (battery device)
  * batterysettings BMS charge/discharge limits (read only)       (battery device)
  * tou             time-of-use schedule                          (inverter device)
+ * alarm           warning and fault words                       (inverter device)
  * misc            other inverter options                        (inverter device)
  */
-export type RegisterGroup = 'info' | 'inverter' | 'solar' | 'generator' | 'battery' | 'batterysettings' | 'tou' | 'misc';
+export type RegisterGroup = 'info' | 'inverter' | 'solar' | 'generator' | 'battery' | 'batterysettings' | 'tou' | 'alarm' | 'misc';
 
 export interface RegisterDef {
   address: number;      // holding register address (0-based, as sent on the wire)
@@ -95,6 +96,13 @@ const V104_REGISTERS: Record<string, RegisterDef> = {
   l1inverterpower: { address: 633, length: 1, type: 'INT16', label: 'Inverter L1 Power', scale: 0, group: 'inverter' },
   l2inverterpower: { address: 634, length: 1, type: 'INT16', label: 'Inverter L2 Power', scale: 0, group: 'inverter' },
   l3inverterpower: { address: 635, length: 1, type: 'INT16', label: 'Inverter L3 Power', scale: 0, group: 'inverter' },
+  // Warning words (553, 554) and fault words (555-558), decoded in errorcodes.ts
+  warningword1: { address: 553, length: 1, type: 'UINT16', label: 'Warning Message Word 1', scale: 0, group: 'alarm' },
+  warningword2: { address: 554, length: 1, type: 'UINT16', label: 'Warning Message Word 2', scale: 0, group: 'alarm' },
+  faultword1: { address: 555, length: 1, type: 'UINT16', label: 'Fault Information Word 1', scale: 0, group: 'alarm' },
+  faultword2: { address: 556, length: 1, type: 'UINT16', label: 'Fault Information Word 2', scale: 0, group: 'alarm' },
+  faultword3: { address: 557, length: 1, type: 'UINT16', label: 'Fault Information Word 3', scale: 0, group: 'alarm' },
+  faultword4: { address: 558, length: 1, type: 'UINT16', label: 'Fault Information Word 4', scale: 0, group: 'alarm' },
   heatsinktemperature: { address: 541, length: 1, type: 'UINT16', label: 'HeatSink Temperature', scale: 0, group: 'inverter' },
   inverterfrequency: { address: 638, length: 1, type: 'UINT16', label: 'Inverter Frequency', scale: -2, group: 'inverter' },
   loadfrequency: { address: 655, length: 1, type: 'UINT16', label: 'Load Frequency', scale: -2, group: 'inverter' },

@@ -3,6 +3,7 @@ import Homey from 'homey';
 import type { Measurement } from './registers';
 import { OwnEnergyCounter } from './energycounter';
 import { gridAvailable } from './conditions';
+import { decodeAlarms, diffAlarms } from './errorcodes';
 import { settingsFromSnapshot } from './settings';
 import { ChangeTracker, StateDebouncer, fireTrigger } from './triggers';
 
@@ -31,6 +32,74 @@ export class Deye extends Homey.Device {
 
     /** Forget a pending grid state change (called when a poll fails, the state is unknown then). */
     resetTriggerState() { this.gridState.reset(); }
+
+    /**
+     * Faults and warnings (registers 553-558). alarm_generic is the on/off flag for faults, deye_error shows the codes
+     * with their description, and every change gets a notification (stored text on the Homey timeline).
+     * Homey resolves the titles of a boolean capability when the timeline is shown, so alarm_generic only gets
+     * fixed titles and the code with its description is written where it is stored with the entry (notification, text, trigger).
+     * Warnings give a notification only: they do not set the alarm and have no trigger.
+     */
+    private async processAlarms(result: Record<string, DeyeMeasurement>) {
+        const wordOf = (key: string) => (result[key] ? Number(result[key].value) : NaN);
+        const current = decodeAlarms(
+            ['faultword1', 'faultword2', 'faultword3', 'faultword4'].map(wordOf),
+            ['warningword1', 'warningword2'].map(wordOf),
+        );
+        if (!current) return;     // a register is missing or the read was corrupt: leave everything as it is
+
+        await this.ensureAlarmCapabilities();
+        const storedKeys = this.getStoreValue('activeAlarms');
+        const previousKeys: string[] = Array.isArray(storedKeys) ? storedKeys : [];
+        const { raised, cleared } = diffAlarms(previousKeys, current);
+        const activeFaults = current.filter((item) => item.kind === 'fault');
+
+        if (Array.isArray(storedKeys) && raised.length === 0 && cleared.length === 0) return;
+
+        await this.setCapabilityValue('alarm_generic', activeFaults.length > 0).catch(this.error);
+        await this.setCapabilityValue('deye_error', activeFaults.length > 0 ? activeFaults.map((item) => item.text).join('; ') : 'No fault').catch(this.error);
+
+        const deviceName = this.getName();
+        for (const item of cleared) await this.notifyAlarm(`${deviceName}: ${item.kind} cleared - ${item.text}`);
+        for (const item of raised) {
+            this.log(`${item.kind} ${item.text}`);
+            await this.notifyAlarm(`${deviceName}: ${item.kind} ${item.text}`);
+        }
+        // Stored before the triggers fire, so a poll that fails halfway never fires the same trigger twice
+        await this.setStoreValue('activeAlarms', current.map((item) => item.key));
+        for (const item of cleared.filter((entry) => entry.kind === 'fault')) {
+            await fireTrigger(this, 'fault_cleared', { code: item.code, description: item.description });
+        }
+        for (const item of raised.filter((entry) => entry.kind === 'fault')) {
+            await fireTrigger(this, 'fault_detected', { code: item.code, description: item.description });
+        }
+    }
+
+    private async ensureAlarmCapabilities() {
+        for (const capability of ['alarm_generic', 'deye_error']) {
+            if (!this.hasCapability(capability)) await this.addCapability(capability).catch(this.error);
+        }
+        // fixed titles, applied once per start
+        if (!this.alarmTitlesApplied) {
+            this.alarmTitlesApplied = true;
+            await this.setCapabilityOptions('alarm_generic', {
+                title: { en: 'Fault', nl: 'Storing' },
+                insightsTitleTrue: { en: 'Fault active', nl: 'Storing actief' },
+                insightsTitleFalse: { en: 'Fault cleared', nl: 'Storing opgelost' },
+            }).catch(this.error);
+        }
+    }
+
+    private alarmTitlesApplied = false;
+
+    /** One Homey notification; failing to create it must never block the alarm handling (no permission needed in app.json). */
+    private async notifyAlarm(excerpt: string) {
+        try {
+            await this.homey.notifications.createNotification({ excerpt });
+        } catch (error) {
+            this.error('Could not create notification:', error);
+        }
+    }
 
     private async checkGridTrigger(result: Record<string, DeyeMeasurement>) {
         const change = this.gridState.update(gridAvailable(result));
@@ -80,6 +149,7 @@ export class Deye extends Homey.Device {
         if (result) {
 
             await this.checkGridTrigger(result);
+            await this.processAlarms(result).catch(this.error);
 
 // Heat Sink Temperature
             if (result['heatsinktemperature']) {

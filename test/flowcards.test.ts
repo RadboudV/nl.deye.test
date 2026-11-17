@@ -10,9 +10,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
   const dey = flow('deye'), bat = flow('battery'), sol = flow('solar');
   ok(JSON.stringify(ids(bat)) === JSON.stringify({ triggers: ['measure_battery_power_changed'], conditions: ['battery_charging', 'battery_discharging'] }), 'battery compose: ' + JSON.stringify(ids(bat)));
   ok(JSON.stringify(ids(sol)) === JSON.stringify({ triggers: ['measure_solar_power_changed'], conditions: ['solar_production'] }), 'solar compose: ' + JSON.stringify(ids(sol)));
-  ok(JSON.stringify(dey.conditions.map((c: any) => c.id)) === '["grid_available","grid_feeding"]' && dey.triggers.length === 4 && dey.actions.length === 21, 'deye keeps 2 conditions, 4 triggers, 21 actions');
+  ok(JSON.stringify(dey.conditions.map((c: any) => c.id)) === '["grid_available","grid_feeding"]' && dey.triggers.length === 6 && dey.actions.length === 21, 'deye keeps 2 conditions, 6 triggers, 21 actions');
   const all = [dey, bat, sol].flatMap((d) => Object.values<any>(d).flat().map((c: any) => c.id));
-  ok(new Set(all).size === all.length && all.length === 32, 'every card id is unique, 32 cards in total');
+  ok(new Set(all).size === all.length && all.length === 34, 'every card id is unique, 34 cards in total');
 
   // listeners registered per driver
   const listeners: Record<string, (a: any) => Promise<boolean>> = {};
