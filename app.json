@@ -125,6 +125,74 @@
         ]
       },
       {
+        "id": "fault_detected",
+        "title": {
+          "en": "A fault was detected",
+          "nl": "Er is een storing gedetecteerd"
+        },
+        "tokens": [
+          {
+            "name": "code",
+            "type": "string",
+            "title": {
+              "en": "Code",
+              "nl": "Code"
+            },
+            "example": "F35"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "title": {
+              "en": "Description",
+              "nl": "Omschrijving"
+            },
+            "example": "No AC grid"
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
+        "id": "fault_cleared",
+        "title": {
+          "en": "A fault was cleared",
+          "nl": "Een storing is verholpen"
+        },
+        "tokens": [
+          {
+            "name": "code",
+            "type": "string",
+            "title": {
+              "en": "Code",
+              "nl": "Code"
+            },
+            "example": "F35"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "title": {
+              "en": "Description",
+              "nl": "Omschrijving"
+            },
+            "example": "No AC grid"
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=deye"
+          }
+        ]
+      },
+      {
         "id": "measure_solar_power_changed",
         "title": {
           "en": "Power from the solar cells changed"
@@ -1644,7 +1712,9 @@
         "meter_power.batterytotaldischarge",
         "meter_power.dailyimported",
         "meter_power.imported",
-        "measure_temperature.heatsinktemperature"
+        "measure_temperature.heatsinktemperature",
+        "alarm_generic",
+        "deye_error"
       ],
       "capabilitiesOptions": {
         "meter_power.dailyimported": {
@@ -2512,6 +2582,17 @@
     }
   ],
   "capabilities": {
+    "deye_error": {
+      "type": "string",
+      "title": {
+        "en": "Current fault",
+        "nl": "Huidige storing"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true
+    },
     "generatorworkingtime": {
       "type": "number",
       "title": {
