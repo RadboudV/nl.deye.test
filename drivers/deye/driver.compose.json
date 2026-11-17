@@ -12,7 +12,9 @@
 		"meter_power.batterytotaldischarge",
 		"meter_power.dailyimported",
 		"meter_power.imported",
-		"measure_temperature.heatsinktemperature"
+		"measure_temperature.heatsinktemperature",
+		"alarm_generic",
+		"deye_error"
 		],
 	"capabilitiesOptions": {
 		"meter_power.dailyimported": {
