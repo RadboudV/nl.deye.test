@@ -5,7 +5,7 @@ import { OwnEnergyCounter } from './energycounter';
 import { gridAvailable } from './conditions';
 import { decodeAlarms, diffAlarms } from './errorcodes';
 import { settingsFromSnapshot } from './settings';
-import { inverterModel } from './model';
+import { modelFromSnapshot } from './model';
 import { ChangeTracker, StateDebouncer, fireTrigger } from './triggers';
 
 // The inverter device processes the inverter groups of the snapshot only.
@@ -441,11 +441,9 @@ export class Deye extends Homey.Device {
 				}
 			}
 
-			if (result['devicetype'] && result['inverterseries']) {
-				const model = inverterModel(result['devicetype'].value, result['inverterseries'].value);
-				if (model && this.getSetting('model') !== model) {
-					await this.setSettings( {model: model } ).catch(this.error);
-				}
+			const identification = modelFromSnapshot(result);
+			if (identification && this.getSetting('model') !== identification.modelString) {
+				await this.setSettings( {model: identification.modelString } ).catch(this.error);
 			}
 
 			if (result['ratedpower']) {
