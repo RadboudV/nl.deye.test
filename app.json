@@ -1770,6 +1770,15 @@
               "value": "unknown"
             },
             {
+              "id": "model",
+              "type": "label",
+              "label": {
+                "en": "Inverter model",
+                "nl": "Omvormer model"
+              },
+              "value": "unknown"
+            },
+            {
               "id": "protocolversion",
               "type": "label",
               "label": {
