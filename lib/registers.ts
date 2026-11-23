@@ -62,8 +62,10 @@ export interface SnapshotSource {
 }
 
 const V104_REGISTERS: Record<string, RegisterDef> = {
-  devicetype: { address: 0, length: 1, type: 'UINT16', label: 'Device Type', scale: 0, group: 'info' },
-  inverterseries: { address: 28, length: 1, type: 'UINT16', label: 'Inverter Generation', scale: 0, group: 'info' },
+  devicetype: { address: 0, length: 1, type: 'HEX', label: 'Device Type', scale: 0, group: 'info' },
+  protocolversion: { address: 2, length: 1, type: 'HEX', label: 'Communication Protocol Version', scale: 0, group: 'info' },
+  localization: { address: 26, length: 1, type: 'UINT16', label: 'EU or US', scale: 0, group: 'info' },
+  generation: { address: 28, length: 1, type: 'UINT16', label: 'Inverter Generation', scale: 0, group: 'info' },
   serial: { address: 3, length: 5, type: 'STRING', label: 'Serial Number', scale: 0, group: 'info' },
   ratedpower: { address: 20, length: 2, type: 'UINT32', label: 'Rated Power', scale: -1, group: 'info' },
   controlpanelversion1: { address: 14, length: 1, type: 'HEX', label: 'Control Panel Version1', scale: 0, group: 'info' },
